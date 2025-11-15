@@ -1,0 +1,31 @@
+/* Custom styles for brands-carousel component if needed */
+
+.carousel-track {
+  width: max-content;
+}
+
+@keyframes marcas-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marcas {
+  animation: marcas-scroll 20s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .w-\[calc\(100\%\/5-1\.6rem\)\] {
+    width: calc(50% - 1rem) !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .w-\[calc\(100\%\/5-1\.6rem\)\] {
+    width: calc(33.333% - 1rem) !important;
+  }
+}

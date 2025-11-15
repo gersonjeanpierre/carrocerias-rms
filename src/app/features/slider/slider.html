@@ -1,0 +1,53 @@
+<div class="slider-container" (mouseenter)="pauseAutoPlay()" (mouseleave)="resumeAutoPlay()">
+  <!-- Blurred background -->
+  <div class="slider-background" [style.background-image]="'url(' + currentSlide().url + ')'"></div>
+
+  <!-- Main centered image -->
+  <div class="slider-content">
+    <img [src]="currentSlide().url" [alt]="currentSlide().title" class="slider-image" />
+
+    <!-- Title overlay -->
+    <div class="slider-title">
+      <h2>{{ currentSlide().title }}</h2>
+    </div>
+  </div>
+
+  <!-- Navigation buttons -->
+  <button class="slider-nav slider-nav-prev" (click)="previousSlide()" aria-label="Imagen anterior">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
+
+  <button class="slider-nav slider-nav-next" (click)="nextSlide()" aria-label="Siguiente imagen">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </button>
+
+  <!-- Slide indicators -->
+  <div class="slider-indicators">
+    @for (slide of slides(); track $index) {
+      <button
+        class="slider-indicator"
+        [class.active]="$index === currentIndex()"
+        (click)="goToSlide($index)"
+        [attr.aria-label]="'Ir a imagen ' + ($index + 1)"
+      ></button>
+    }
+  </div>
+</div>
