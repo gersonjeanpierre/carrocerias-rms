@@ -18,7 +18,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   selector: 'app-model3d',
   template: `
     <div class="relative flex justify-center w-full h-full">
-      <div #rendererContainer class="h-96 md:h-[600px]  rounded-2xl bg-amber-50 w-full mb-12"></div>
+      <div #rendererContainer class="h-80 sm:h-96 md:h-[500px] lg:h-[600px] rounded-2xl bg-amber-50 w-full mb-12"></div>
       <button
         (click)="toggleRotation()"
         class="absolute bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -77,7 +77,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
       0.1,
       1000,
     );
-    this.camera.position.set(5, 3, 7);
+    this.camera.position.set(0, 3, 7); // Vista más frontal
     this.camera.lookAt(0, 0, 0);
 
     // Renderer
@@ -113,6 +113,9 @@ export class Model3d implements AfterViewInit, OnDestroy {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
+    this.controls.enableRotate = true; // Permitir rotación manual
+    this.controls.minPolarAngle = Math.PI / 2; // Fijar ángulo polar para solo rotación en Z
+    this.controls.maxPolarAngle = Math.PI / 2;
     this.controls.autoRotate = false; // Disabled by default
     this.controls.autoRotateSpeed = 1.5;
 
@@ -162,7 +165,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
     let cameraDistanceFactor = 0.75;
     let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * cameraDistanceFactor;
 
-    this.camera.position.set(cameraZ * 1.0, modelBaseY + cameraZ * 0.3, cameraZ * 1.3);
+    this.camera.position.set(0, modelBaseY + cameraZ * 0.3, cameraZ * 1.0);
 
     this.controls.target.set(0, modelBaseY, 0);
     this.controls.update();
