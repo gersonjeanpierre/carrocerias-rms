@@ -1,19 +1,45 @@
-<div class="slider-container" (mouseenter)="pauseAutoPlay()" (mouseleave)="resumeAutoPlay()">
+<div
+  class="relative w-full h-[570px] overflow-hidden bg-black"
+  #container
+  (mouseenter)="pauseAutoPlay()"
+  (mouseleave)="resumeAutoPlay()"
+>
   <!-- Blurred background -->
-  <div class="slider-background" [style.background-image]="'url(' + currentSlide().url + ')'"></div>
+  <div
+    class="absolute inset-0 bg-cover bg-center blur-[20px] transform scale-110 opacity-60"
+    [style.background-image]="'url(' + currentSlide().url + ')'"
+  ></div>
 
   <!-- Main centered image -->
-  <div class="slider-content">
-    <img [src]="currentSlide().url" [alt]="currentSlide().title" class="slider-image" />
+  <div class="relative w-full h-full z-10">
+    <img
+      [ngSrc]="currentSlide().url"
+      fill
+      ngOptimizedImage
+      [alt]="currentSlide().title"
+      class="object-contain"
+      (load)="onImageLoad($event)"
+    />
 
     <!-- Title overlay -->
-    <div class="slider-title">
-      <h2>{{ currentSlide().title }}</h2>
+    <div
+      class="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-[10px] p-4 rounded-lg z-20 max-w-[90%] text-center"
+    >
+      <h2
+        class="text-white m-0 text-lg md:text-2xl font-semibold"
+        style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)"
+      >
+        {{ currentSlide().title }}
+      </h2>
     </div>
   </div>
 
   <!-- Navigation buttons -->
-  <button class="slider-nav slider-nav-prev" (click)="previousSlide()" aria-label="Imagen anterior">
+  <button
+    class="absolute top-1/2 left-3 md:left-5 transform -translate-y-1/2 bg-white/90 border-none w-10 h-10 md:w-12 md:h-12 rounded-full cursor-pointer flex items-center justify-center z-30 transition-all duration-300 text-gray-800 hover:bg-white hover:scale-110 focus:outline-2 focus:outline-white focus:outline-offset-2"
+    (click)="previousSlide()"
+    aria-label="Imagen anterior"
+  >
     <svg
       width="24"
       height="24"
@@ -26,7 +52,11 @@
     </svg>
   </button>
 
-  <button class="slider-nav slider-nav-next" (click)="nextSlide()" aria-label="Siguiente imagen">
+  <button
+    class="absolute top-1/2 right-3 md:right-5 transform -translate-y-1/2 bg-white/90 border-none w-10 h-10 md:w-12 md:h-12 rounded-full cursor-pointer flex items-center justify-center z-30 transition-all duration-300 text-gray-800 hover:bg-white hover:scale-110 focus:outline-2 focus:outline-white focus:outline-offset-2"
+    (click)="nextSlide()"
+    aria-label="Siguiente imagen"
+  >
     <svg
       width="24"
       height="24"
@@ -40,14 +70,28 @@
   </button>
 
   <!-- Slide indicators -->
-  <div class="slider-indicators">
+  <div
+    class="absolute bottom-16 md:bottom-24 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-3 z-30"
+  >
     @for (slide of slides(); track $index) {
       <button
-        class="slider-indicator"
-        [class.active]="$index === currentIndex()"
+        class="btn btn-circle btn-ghost btn-xs p-0"
+        [class]="{ 'btn-active': $index === currentIndex() }"
         (click)="goToSlide($index)"
         [attr.aria-label]="'Ir a imagen ' + ($index + 1)"
       ></button>
     }
   </div>
+
+  <!-- Side dot textures -->
+  <div
+    class="absolute top-0 w-24 h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2720%27%20height%3D%2720%27%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cg%20fill%3D%27%23ffffff%27%20fill-opacity%3D%270.89%27%20fill-rule%3D%27evenodd%27%3E%3Ccircle%20cx%3D%273%27%20cy%3D%273%27%20r%3D%271.5%27/%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%271.5%27/%3E%3C/g%3E%3C/svg%3E')] bg-repeat bg-center z-15 opacity-85"
+    [style.left.px]="imageLeft() - 48"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="absolute top-0 w-24 h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2720%27%20height%3D%2720%27%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cg%20fill%3D%27%23ffffff%27%20fill-opacity%3D%270.89%27%20fill-rule%3D%27evenodd%27%3E%3Ccircle%20cx%3D%273%27%20cy%3D%273%27%20r%3D%271.5%27/%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%271.5%27/%3E%3C/g%3E%3C/svg%3E')] bg-repeat bg-center z-15 opacity-85"
+    [style.left.px]="imageRight() - 48"
+    aria-hidden="true"
+  ></div>
 </div>

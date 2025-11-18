@@ -1,4 +1,13 @@
-import { Component, signal, computed, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  signal,
+  computed,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 
 interface SlideImage {
   url: string;
@@ -8,12 +17,14 @@ interface SlideImage {
 @Component({
   selector: 'app-slider',
   templateUrl: './slider.html',
-  styleUrls: ['./slider.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgOptimizedImage],
 })
 export class SliderComponent implements OnDestroy {
   private readonly autoPlayInterval = 5000; // 5 seconds
   private intervalId?: number;
+
+  @ViewChild('container', { static: true }) container!: ElementRef;
 
   slides = signal<SlideImage[]>([
     {
@@ -48,12 +59,32 @@ export class SliderComponent implements OnDestroy {
 
   totalSlides = computed(() => this.slides().length);
 
+  imageLeft = signal(0);
+  imageRight = signal(0);
+
   constructor() {
     this.startAutoPlay();
   }
 
   ngOnDestroy(): void {
     this.stopAutoPlay();
+  }
+
+  onImageLoad(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    const containerRect = this.container.nativeElement.getBoundingClientRect();
+    const aspect = img.naturalWidth / img.naturalHeight;
+    const containerAspect = containerRect.width / containerRect.height;
+    let displayedWidth: number;
+    if (aspect > containerAspect) {
+      displayedWidth = containerRect.width;
+    } else {
+      displayedWidth = containerRect.height * aspect;
+    }
+    const left = (containerRect.width - displayedWidth) / 2 + containerRect.left;
+    const right = left + displayedWidth;
+    this.imageLeft.set(left);
+    this.imageRight.set(right);
   }
 
   nextSlide(): void {

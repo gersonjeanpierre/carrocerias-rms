@@ -1,20 +1,41 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  signal,
+  computed,
+} from '@angular/core';
+import { input } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-// Ya no necesitamos RGBELoader ni PMREMGenerator
-// import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-// import { PMREMGenerator } from 'three/src/extras/PMREMGenerator.js';
 
 @Component({
   selector: 'app-model3d',
-  templateUrl: './model3d.html',
-  styleUrls: ['./model3d.css'],
+  template: `
+    <div class="relative flex justify-center w-full h-full">
+      <div #rendererContainer class="h-96 md:h-[600px]  rounded-2xl bg-amber-50 w-full mb-12"></div>
+      <button
+        (click)="toggleRotation()"
+        class="absolute bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        [class.bg-red-500]="isRotating()"
+        [class.hover:bg-red-700]="isRotating()"
+      >
+        {{ isRotating() ? 'Parar' : 'Rotar' }}
+      </button>
+    </div>
+  `,
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class Model3d implements AfterViewInit, OnDestroy {
   @ViewChild('rendererContainer', { static: false }) rendererContainer!: ElementRef;
-  @Input() modelPath: string = 'models/3d/brazo2.glb';
+  modelPath = input<string>('models/3d/brazo2.glb');
 
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
@@ -24,8 +45,9 @@ export class Model3d implements AfterViewInit, OnDestroy {
   private model3dObject: THREE.Object3D | null = null;
   private gltfLoader: GLTFLoader = new GLTFLoader();
 
+  isRotating = signal(false);
+
   constructor() {
-    // Inicialización y configuración de DRACOLoader
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
     this.gltfLoader.setDRACOLoader(dracoLoader);
@@ -33,7 +55,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initScene();
-    this.loadGltfModel(); // No necesitamos cargar entorno HDR primero
+    this.loadGltfModel();
     this.animate();
   }
 
@@ -44,27 +66,11 @@ export class Model3d implements AfterViewInit, OnDestroy {
     }
     const container = this.rendererContainer.nativeElement;
 
-    // 1. Scene Setup
     this.scene = new THREE.Scene();
-    // **Fondo Blanco Puro (FFFFFF)**
     this.scene.background = new THREE.Color(0xffffff);
-    // Aseguramos que no haya mapa de entorno para IBL si el fondo es blanco
     this.scene.environment = null;
 
-    // 2. Piso (Para recibir la sombra)
-    const floorGeometry = new THREE.PlaneGeometry(100, 100);
-    const floorMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff, // Mismo color que el fondo
-      roughness: 1.0,
-      metalness: 0.0,
-    });
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = -0.01;
-    floor.receiveShadow = true;
-    this.scene.add(floor);
-
-    // 3. Camera
+    // Camera
     this.camera = new THREE.PerspectiveCamera(
       75,
       container.clientWidth / container.clientHeight,
@@ -74,29 +80,23 @@ export class Model3d implements AfterViewInit, OnDestroy {
     this.camera.position.set(5, 3, 7);
     this.camera.lookAt(0, 0, 0);
 
-    // 4. Renderer
+    // Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-    // Configuración para colores vibrantes
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.5;
 
-    // 5. Luces (Fijas en la escena para sombras dinámicas en la rotación)
-
-    // Luz ambiental (Base de iluminación)
+    // Lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     this.scene.add(ambientLight);
 
-    // Luz direccional principal (Fuente de sombra Fija)
     const directionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
-    directionalLight.position.set(5, 10, 5); // POSICIÓN FIJA
+    directionalLight.position.set(5, 10, 5);
     directionalLight.castShadow = true;
     this.scene.add(directionalLight);
 
-    // Configuración de Sombras Normal/Optimizada
     directionalLight.shadow.mapSize.width = 1024;
     directionalLight.shadow.mapSize.height = 1024;
     directionalLight.shadow.camera.near = 0.5;
@@ -109,11 +109,11 @@ export class Model3d implements AfterViewInit, OnDestroy {
 
     container.appendChild(this.renderer.domElement);
 
-    // 6. Controls (Autorotate para rotación dinámica del modelo/cámara)
+    // Controls
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
-    this.controls.autoRotate = true; // Activar rotación
+    this.controls.autoRotate = false; // Disabled by default
     this.controls.autoRotateSpeed = 1.5;
 
     window.addEventListener('resize', this.onWindowResize.bind(this));
@@ -121,7 +121,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
 
   private loadGltfModel(): void {
     this.gltfLoader.load(
-      this.modelPath,
+      this.modelPath(),
       (gltf) => {
         gltf.scene.traverse((child: any) => {
           if (child.isMesh) {
@@ -160,7 +160,6 @@ export class Model3d implements AfterViewInit, OnDestroy {
     const fov = this.camera.fov * (Math.PI / 180);
 
     let cameraDistanceFactor = 0.75;
-
     let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * cameraDistanceFactor;
 
     this.camera.position.set(cameraZ * 1.0, modelBaseY + cameraZ * 0.3, cameraZ * 1.3);
@@ -180,6 +179,11 @@ export class Model3d implements AfterViewInit, OnDestroy {
     this.camera.aspect = container.clientWidth / container.clientHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(container.clientWidth, container.clientHeight);
+  }
+
+  toggleRotation(): void {
+    this.isRotating.update((value) => !value);
+    this.controls.autoRotate = this.isRotating();
   }
 
   ngOnDestroy(): void {

@@ -1,21 +1,28 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-video',
-  templateUrl: './video.html',
-  styleUrls: ['./video.css'],
+  template: `
+    <section class="py-12 px-4 bg-base-100">
+      <div class="container mx-auto max-w-6xl">
+        <div class="flex justify-center">
+          <div class="aspect-video w-full max-w-4xl">
+            <iframe
+              src="https://www.youtube.com/embed/0ZKkB1CxN3U?si=tNjCCkQmtliS_fVR&amp;start=0"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              class="w-full h-full rounded-lg"
+            >
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  `,
+  styles: [],
+  standalone: true,
 })
-export class VideoComponent {
-  // videoId = input<string>('0ZKkB1CxN3U?si=tNjCCkQmtliS_fVR&amp');
-  // width = input<number>(840);
-  // height = input<number>(473);
-  // startTime = input<number>(0);
-  // get embedUrl(): string {
-  //   const baseUrl = `https://www.youtube.com/embed/${this.videoId()}`;
-  //   const params = new URLSearchParams({
-  //     start: this.startTime().toString(),
-  //   });
-  //   console.log('Embed URL:', `${baseUrl}?${params.toString()}`);
-  //   return `${baseUrl}?${params.toString()}`;
-  // }
-}
+export class VideoComponent {}
