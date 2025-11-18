@@ -11,12 +11,18 @@ import { ProjectsCarouselComponent } from './features/projects-carousel/projects
 import { BrandsCarouselComponent } from './features/brands-carousel/brands-carousel';
 import { VideoComponent } from './features/video/video';
 import { FooterComponent } from './features/footer/footer';
+import { EquiposMedidaComponent } from './features/equipos-medida/equipos-medida';
+import { ProductosVendidosComponent } from './features/productos-vendidos/productos-vendidos';
+import { ProyectosComponent } from './features/proyectos/proyectos';
 
 @Component({
   selector: 'app-root',
   imports: [
     Header,
     SliderComponent,
+    EquiposMedidaComponent,
+    ProductosVendidosComponent,
+    ProyectosComponent,
     HeroComponent,
     CompanyInfoComponent,
     ProductsComponent,

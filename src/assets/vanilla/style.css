@@ -1,0 +1,398 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
+body {
+    font-family: "Rubik", Helvetica, Arial, sans-serif;
+}
+
+/* Estilo normal de los iconos */
+.card i {
+    font-size: 32px;
+    color: #10639D;
+    margin-right: 15px;
+    margin-top: 5px;
+    transition: 0.3s ease-in-out;
+}
+
+/* Transiciones para textos y tarjeta */
+.card, .card h5, .card p {
+    transition: 0.3s ease-in-out;
+}
+
+/* HOVER: fondo amarillo */
+.card:hover {
+    background-color: #10639D;
+}
+
+/* HOVER: texto blanco */
+.card:hover h5,
+.card:hover p {
+    color: white !important;
+}
+
+/* HOVER: icono blanco */
+.card:hover i {
+    color: white !important;
+}
+
+/* MINI NAVBAR ARRIBA */
+.top-bar {
+background-color: #FFBC00;
+padding: 6px 0; 
+font-size: 14px;
+letter-spacing: 0.5px;
+}
+
+
+.nav-item {
+margin: 0 8px;
+}
+.hero-image-container {
+position: relative;
+width: 100%;
+height: 700px; /* ALTURA MÁS PEQUEÑA */
+overflow: hidden;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.hero-image {
+height: 100%;
+z-index: 2;
+position: relative;
+}
+
+/* Fondo borroso */
+.hero-image-container::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-image: url('1.jpeg');
+background-size: cover;
+background-position: center;
+filter: blur(20px);
+transform: scale(1.2);
+z-index: 1;
+}
+.card {
+    min-height: 140px;           /* Altura similar al ejemplo */
+    padding: 25px;               /* Espacio interno */
+    border-radius: 18px;
+    display: flex;               /* Para centrar contenido */
+    align-items: center;         /* CENTRA verticalmente */
+    transition: 0.3s ease-in-out;
+}
+
+/* ICONOS */
+.card i {
+    font-size: 40px;
+    color: #10639D;
+    margin-right: 20px;
+}
+
+/* TÍTULO */
+.card h5 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #10639D;
+    margin-bottom: 5px;
+}
+
+/* TEXTO */
+.card p {
+    font-size: 16px;
+    color: #000000;
+    margin: 0;
+}
+
+/* HOVER opcional (si lo quieres igual a tu ejemplo anterior) */
+.card:hover {
+    background-color: #10639D;
+}
+
+.card:hover h5,
+.card:hover p,
+.card:hover i {
+    color: #fff !important;
+}
+
+.brand-carousel {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 20px 0;
+}
+
+.brand-track {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  animation: slide 30s linear infinite;
+}
+
+.brand-carousel img {
+  height: 70px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.brand-carousel img:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+.mySwiper {
+  width: 100%;
+  padding: 40px 0;
+}
+
+.mySwiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mySwiper img {
+  height: 100px;         /* AUMENTA EL TAMAÑO AQUÍ */
+  object-fit: contain;
+  transition: 0.2s ease;
+  opacity: 0.9;
+}
+
+/* Categoria */
+.producto-item {
+    position: relative;
+    overflow: hidden;
+    height: 100%; /* ajusta la altura que quieras */
+
+}
+
+/* Imagen al 100% */
+.producto-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s ease;
+    transform: scale(1.50); /* zoom inicial */
+
+}
+
+/* Zoom */
+.producto-item:hover img {
+    transform: scale(1.05);
+}
+
+/* === OVERLAY DESDE ABAJO === */
+.producto-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    
+    /* Comienza invisible */
+    height: 0;
+
+    /* Degradado desde abajo (negro → transparente) */
+    background: linear-gradient(to top, #10639D, rgba(0,0,0,0));
+
+    transition: height .4s ease;
+    z-index: 5;
+}
+
+.producto-item:hover::before {
+    /* Subirá lentamente desde abajo */
+    height: 50%; /* puedes ajustar 30%, 40%, etc. */
+}
+
+/* Texto */
+.producto-item .info {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+.producto-item h3 {
+    margin: 10px 0 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Línea */
+.producto-item .line {
+    display: block;
+    width: 0;
+    height: 3px;
+    background: #EAB130;
+    transition: width .4s ease;
+}
+
+/* Animación texto */
+.producto-item:hover .info {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.producto-item:hover .line {
+    width: 60px;
+}
+.img-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* CUADRO AZUL DETRÁS */
+.img-wrapper::before {
+    content: "";
+    position: absolute;
+    left: -20px;   /* Mueve hacia la izquierda */
+    top: -15px;     /* Mueve ligeramente hacia abajo */
+    width: 100%;    /* Tamaño del cuadro */
+    height: 100%;
+    background: #10639D;
+    z-index: 1;
+    border-radius: 5px;
+}
+
+/* IMAGEN */
+.img-wrapper img {
+    position: relative;
+    z-index: 99; /* Por encima del cuadro */
+}
+/* BLOG */
+.proyecto-card {
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.proyecto-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.proyecto-card .info {
+    padding: 18px;
+}
+
+.proyecto-card .fecha {
+    font-size: 14px;
+    font-weight: 600;
+    color: #10639D;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.proyecto-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.btn-ver {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #10639D;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.btn-ver:hover {
+    background: #0b4f7e;
+}
+h3{
+    font-weight: bold; 
+    font-size: 34px;
+    color:#10639D ;
+}
+/* wsp */
+.btn-whatsapp {
+    position: fixed;
+    width: 65px;
+    height: 65px;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25D366;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 30px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    transition: transform .3s ease;
+}
+
+.btn-whatsapp img {
+    width: 35px;
+    height: 35px;
+}
+
+.btn-whatsapp:hover {
+    transform: scale(1.12);
+}
+.footer {
+    background: #1E1E1E;
+    color: #fff;
+    padding: 50px 0 20px;
+}
+
+.footer-logo img {
+    width: 180px;
+}
+
+.footer-title {
+    color: #EAB130;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+    color: #d7d7d7;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.footer-links li i {
+    color: #EAB130;
+    margin-right: 8px;
+}
+
+.social span {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.social i {
+    font-size: 20px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.footer hr {
+    border-color: #444;
+    margin: 20px 0;
+}

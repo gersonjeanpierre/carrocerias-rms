@@ -18,7 +18,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   selector: 'app-model3d',
   template: `
     <div class="relative flex justify-center w-full h-full">
-      <div #rendererContainer class="h-80 sm:h-96 md:h-[500px] lg:h-[600px] rounded-2xl bg-amber-50 w-full mb-12"></div>
+      <div
+        #rendererContainer
+        class="h-80 sm:h-96 md:h-[500px] lg:h-[600px] rounded-2xl bg-amber-50 w-full mb-12"
+      ></div>
       <button
         (click)="toggleRotation()"
         class="absolute bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
