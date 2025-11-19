@@ -22,12 +22,12 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^20.3.11",
-    "@angular/compiler": "^20.3.11",
-    "@angular/core": "^20.3.11",
-    "@angular/forms": "^20.3.11",
-    "@angular/platform-browser": "^20.3.11",
-    "@angular/router": "^20.3.11",
+    "@angular/common": "^20.3.12",
+    "@angular/compiler": "^20.3.12",
+    "@angular/core": "^20.3.12",
+    "@angular/forms": "^20.3.12",
+    "@angular/platform-browser": "^20.3.12",
+    "@angular/router": "^20.3.12",
     "@tailwindcss/postcss": "^4.1.17",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.2",
@@ -35,14 +35,14 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@angular/build": "^20.3.10",
-    "@angular/cli": "^20.3.10",
-    "@angular/compiler-cli": "^20.3.11",
-    "@iconify/json": "^2.2.406",
+    "@angular/build": "^20.3.11",
+    "@angular/cli": "^20.3.11",
+    "@angular/compiler-cli": "^20.3.12",
+    "@iconify/json": "^2.2.408",
     "@iconify/tailwind4": "^1.1.0",
-    "@types/jasmine": "~5.1.12",
+    "@types/jasmine": "~5.1.13",
     "@types/three": "^0.181.0",
-    "daisyui": "^5.5.0",
+    "daisyui": "^5.5.5",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
@@ -50,7 +50,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "3.6.2",
-    "three": "^0.181.1",
+    "three": "^0.181.2",
     "typescript": "~5.9.3"
   }
 }

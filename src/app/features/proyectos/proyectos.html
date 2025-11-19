@@ -1,28 +1,28 @@
 <div class="max-w-7xl mx-auto px-4">
-  <h3 class="my-20 font-bold text-3xl text-primary">NUESTROS PROYECTOS</h3>
+  <h3 class="my-8 md:my-10 font-bold text-2xl md:text-3xl">NUESTROS PROYECTOS</h3>
   <div class="relative overflow-hidden w-full">
     <div
-      class="flex transition-transform duration-500 my-5"
+      class="flex gap-4 transition-transform duration-500 my-5"
       [style.transform]="'translateX(-' + currentIndex() * 33.333 + '%)'"
     >
       @for (proyecto of proyectos(); track proyecto.img) {
-        <div class="shrink-0 w-1/3 px-4">
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="card bg-white shadow-lg w-full mx-2">
+          <figure class="h-48 md:h-56">
             <img
               [ngSrc]="proyecto.img"
               alt=""
               width="400"
               height="220"
-              class="w-full h-55 object-cover"
+              class="w-full h-full object-cover"
             />
-            <div class="p-4.5">
-              <span class="block text-sm font-semibold text-primary mb-1.5">{{
-                proyecto.fecha
-              }}</span>
-              <h3 class="text-lg font-bold text-gray-800 mb-2.5">{{ proyecto.title }}</h3>
+          </figure>
+          <div class="card-body p-4 md:p-5">
+            <span class="text-xs md:text-sm font-semibold text-bluerms">{{ proyecto.fecha }}</span>
+            <h3 class="card-title text-base md:text-lg">{{ proyecto.title }}</h3>
+            <div class="card-actions justify-end">
               <a
                 href="#"
-                class="inline-block px-4 py-2 bg-primary text-white rounded text-sm no-underline transition duration-300 hover:bg-primary"
+                class="btn bg-bluerms/85 text-white rounded-lg btn-sm md:btn-md hover:bg-bluerms"
                 >Ver más</a
               >
             </div>

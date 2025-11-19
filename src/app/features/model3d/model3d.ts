@@ -24,7 +24,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
       ></div>
       <button
         (click)="toggleRotation()"
-        class="absolute bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        class="absolute bottom-4 right-4 bg-bluerms/85 hover:bg-bluerms text-white font-bold py-2 px-4 rounded"
         [class.bg-red-500]="isRotating()"
         [class.hover:bg-red-700]="isRotating()"
       >
@@ -98,10 +98,8 @@ export class Model3d implements AfterViewInit, OnDestroy {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
     directionalLight.position.set(5, 10, 5);
     directionalLight.castShadow = true;
-    this.scene.add(directionalLight);
-
-    directionalLight.shadow.mapSize.width = 1024;
-    directionalLight.shadow.mapSize.height = 1024;
+    directionalLight.shadow.mapSize.width = 2048;
+    directionalLight.shadow.mapSize.height = 2048;
     directionalLight.shadow.camera.near = 0.5;
     directionalLight.shadow.camera.far = 50;
     directionalLight.shadow.camera.left = -10;
@@ -109,6 +107,21 @@ export class Model3d implements AfterViewInit, OnDestroy {
     directionalLight.shadow.camera.top = 10;
     directionalLight.shadow.camera.bottom = -10;
     directionalLight.shadow.bias = -0.0001;
+    this.scene.add(directionalLight);
+
+    // Fill light for realism
+    const fillLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    fillLight.position.set(-5, 5, -5);
+    this.scene.add(fillLight);
+
+    // Floor for shadow projection
+    const floorGeometry = new THREE.PlaneGeometry(20, 20);
+    const floorMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = 0;
+    floor.receiveShadow = true;
+    this.scene.add(floor);
 
     container.appendChild(this.renderer.domElement);
 

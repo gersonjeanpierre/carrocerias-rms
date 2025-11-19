@@ -1,4 +1,9 @@
 @import "tailwindcss";
+
+@theme {
+  --color-bluerms: #10639D;
+}
+
 @plugin "daisyui";
 @plugin "@iconify/tailwind4";
 

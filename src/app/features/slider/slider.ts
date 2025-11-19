@@ -28,6 +28,10 @@ export class SliderComponent implements OnDestroy {
 
   slides = signal<SlideImage[]>([
     {
+      url: '/images/slider/hero.jpeg',
+      title: 'Carrocería Personalizada 1',
+    },
+    {
       url: '/images/slider/498117bc-f8f7-4a65-83b8-5018505b96ab.JPG',
       title: 'Carrocería Personalizada 1',
     },

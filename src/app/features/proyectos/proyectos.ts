@@ -7,7 +7,6 @@ import { ChangeDetectionStrategy } from '@angular/core';
   standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './proyectos.html',
-  styleUrls: ['./proyectos.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProyectosComponent implements OnInit, OnDestroy {
