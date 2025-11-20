@@ -1,64 +1,57 @@
-<section class="py-20">
-  <div class="w-[1400px] mx-auto px-4">
-    <div class="flex flex-col lg:flex-row items-center gap-8">
-      <div class="w-full lg:w-1/2 relative">
-        <div class="bg-bluerms h-[405px] w-[608px] rounded-lg -z-10"></div>
-        <img
-          ngSrc="/images/Grupo5.jpg"
-          alt="Referencial"
-          width="608"
-          height="405"
-          class="rounded-lg absolute z-10 top-4 left-4"
-        />
-      </div>
+<section class="py-12 md:py-16 lg:py-20">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+      <!-- Image Section -->
       <div class="w-full lg:w-1/2">
-        <h2 class="font-bold text-3xl mb-4">Equipos a la medida de su necesidad</h2>
-        <p class="mb-6 text-gray-700">
+        <div class="relative w-full max-w-full lg:max-w-[608px] mx-auto lg:mx-0">
+          <!-- Shadow background -->
+          <div class="bg-bluerms w-full aspect-[608/405] rounded-lg"></div>
+          <!-- Image with offset -->
+          <img
+            ngSrc="/images/grupo5.jpg"
+            alt="Equipos de fabricación de carrocerías RMS"
+            width="608"
+            height="405"
+            class="rounded-lg absolute top-0 left-0 translate-y-4 translate-x-4 w-full h-auto"
+            priority
+          />
+        </div>
+      </div>
+
+      <!-- Content Section -->
+      <div class="w-full lg:w-1/2">
+        <h2 class="font-bold text-2xl sm:text-3xl lg:text-4xl mb-4 lg:mb-6 text-base-content">
+          Equipos a la medida de su necesidad
+        </h2>
+        <p class="mb-6 lg:mb-8 text-sm sm:text-base text-base-content/70">
           Deja tu proyecto en manos de nuestros expertos y nos convertiremos en tus socios
           estratégicos brindando todas las soluciones requeridas para tu negocio.
         </p>
-        <div class="space-y-4">
-          <div
-            class="bg-white shadow-sm border-0 p-6 flex items-center hover:bg-bluerms hover:text-white transition duration-300 min-h-[140px] rounded-xl group"
-          >
-            <span
-              class="icon-[fluent--shield-task-32-regular] h-16 w-16 text-bluerms group-hover:text-white"
-            ></span>
-            <div class="pl-3">
-              <h5 class="text-2xl font-bold text-bluerms group-hover:text-white">Seguridad</h5>
-              <p class="text-gray-700 group-hover:text-white">
-                Materiales A1, maquinaria de punta y personal capacitado que permiten fabricar
-                carrocerías 100% seguras.
-              </p>
+
+        <!-- Feature Cards -->
+        <div class="space-y-3 sm:space-y-4">
+          @for (feature of features(); track feature.id) {
+            <div
+              class="bg-base-100 shadow-sm border border-base-300 p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:bg-bluerms hover:text-white transition-all duration-300 min-h-[120px] sm:min-h-[140px] rounded-xl group cursor-pointer"
+            >
+              <span
+                [class]="
+                  feature.icon +
+                  ' h-11 w-11 sm:h-13 sm:w-13 lg:h-15 lg:w-15 text-bluerms group-hover:text-white flex-shrink-0'
+                "
+              ></span>
+              <div class="flex-1">
+                <h5
+                  class="text-xl sm:text-2xl font-bold text-bluerms group-hover:text-white mb-1 sm:mb-2"
+                >
+                  {{ feature.title }}
+                </h5>
+                <p class="text-sm sm:text-base text-base-content/70 group-hover:text-white">
+                  {{ feature.description }}
+                </p>
+              </div>
             </div>
-          </div>
-          <div
-            class="bg-white shadow-sm border-0 p-6 flex items-center hover:bg-bluerms hover:text-white transition duration-300 min-h-[140px] rounded-xl group"
-          >
-            <span
-              class="icon-[fluent--clock-24-regular] h-13 w-13 text-bluerms group-hover:text-white"
-            ></span>
-            <div class="pl-3">
-              <h5 class="text-2xl font-bold text-bluerms group-hover:text-white">Garantía</h5>
-              <p class="text-gray-700 group-hover:text-white">
-                24 meses de garantía en todos los productos y seguimiento post-venta escribenos
-              </p>
-            </div>
-          </div>
-          <div
-            class="bg-white shadow-sm border-0 p-6 flex items-center hover:bg-bluerms hover:text-white transition duration-300 min-h-[140px] rounded-xl group"
-          >
-            <span
-              class="icon-[fluent--vehicle-truck-profile-32-regular] h-15 w-15 text-bluerms group-hover:text-white"
-            ></span>
-            <div class="pl-3">
-              <h5 class="text-2xl font-bold text-bluerms group-hover:text-white">Puntualidad</h5>
-              <p class="text-gray-700 group-hover:text-white">
-                Amplia planta de fabricación y personal dedicado que nos permite fabricar en tiempo
-                récord.
-              </p>
-            </div>
-          </div>
+          }
         </div>
       </div>
     </div>
