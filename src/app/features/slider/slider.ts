@@ -28,28 +28,36 @@ export class SliderComponent implements OnDestroy {
 
   slides = signal<SlideImage[]>([
     {
-      url: '/images/slider/hero.jpeg',
-      title: 'Carrocería Personalizada 1',
+      url: '/watermark/watermark-brazo-izaje/bzi-1.jpg',
+      title: 'Brazo de Izaje',
     },
     {
-      url: '/images/slider/498117bc-f8f7-4a65-83b8-5018505b96ab.JPG',
-      title: 'Carrocería Personalizada 1',
+      url: '/watermark/watermark-cama-baja/cb-1.jpg',
+      title: 'Cama Baja',
     },
     {
-      url: '/images/slider/49e91765-4a6c-4893-aa78-38d0442ddd03.JPG',
-      title: 'Carrocería Personalizada 2',
+      url: '/watermark/watermark-cisterna-vacio/cv-1.jpg',
+      title: 'Cisterna Vacio',
     },
     {
-      url: '/images/slider/IMG-20250716-WA0037.jpg',
-      title: 'Diseño Profesional',
+      url: '/watermark/watermark-contenedores/cont-1.jpg',
+      title: 'Contenedor',
     },
     {
-      url: '/images/slider/IMG-20250925-WA0005.jpg',
-      title: 'Acabados de Calidad',
+      url: '/watermark/watermark-furgon/furg-1.jpg',
+      title: 'Furgoneta',
     },
     {
-      url: '/images/slider/IMG-20250926-WA0035.jpg',
-      title: 'Proyectos Terminados',
+      url: '/watermark/watermark-grua-contenedor-chatarra/gcc-2.jpg',
+      title: 'Grua Contenedor Chatarra',
+    },
+    {
+      url: '/watermark/watermark-roquera-semirroquera/roq-1.jpg',
+      title: 'Roquera',
+    },
+    {
+      url: '/watermark/watermark-semirremolque-plataforma/sp-2.jpg',
+      title: 'Semirremolque Plataforma',
     },
   ]);
 
