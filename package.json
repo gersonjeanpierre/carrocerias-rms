@@ -1,33 +1,22 @@
 {
   "name": "carrocerias-rms",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
-  },
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": "*.html",
-        "options": {
-          "parser": "angular"
-        }
-      }
-    ]
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^20.3.12",
-    "@angular/compiler": "^20.3.12",
-    "@angular/core": "^20.3.12",
-    "@angular/forms": "^20.3.12",
-    "@angular/platform-browser": "^20.3.12",
-    "@angular/router": "^20.3.12",
+    "@angular/common": "^20.3.13",
+    "@angular/compiler": "^20.3.13",
+    "@angular/core": "^20.3.13",
+    "@angular/forms": "^20.3.13",
+    "@angular/platform-browser": "^20.3.13",
+    "@angular/router": "^20.3.13",
     "@tailwindcss/postcss": "^4.1.17",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.2",
@@ -35,14 +24,18 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
+    "@angular-eslint/builder": "20.6.0",
     "@angular/build": "^20.3.11",
     "@angular/cli": "^20.3.11",
-    "@angular/compiler-cli": "^20.3.12",
-    "@iconify/json": "^2.2.408",
+    "@angular/compiler-cli": "^20.3.13",
+    "@eslint/js": "^9.39.1",
+    "@iconify/json": "^2.2.409",
     "@iconify/tailwind4": "^1.1.0",
     "@types/jasmine": "~5.1.13",
     "@types/three": "^0.181.0",
+    "angular-eslint": "20.6.0",
     "daisyui": "^5.5.5",
+    "eslint": "^9.39.1",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
@@ -51,6 +44,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "3.6.2",
     "three": "^0.181.2",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "typescript-eslint": "8.46.3"
   }
 }
