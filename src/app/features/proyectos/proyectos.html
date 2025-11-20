@@ -1,34 +1,64 @@
-<div class="max-w-7xl mx-auto px-4">
-  <h3 class="my-8 md:my-10 font-bold text-2xl md:text-3xl">NUESTROS PROYECTOS</h3>
-  <div class="relative overflow-hidden w-full">
-    <div
-      class="flex gap-4 transition-transform duration-500 my-5"
-      [style.transform]="'translateX(-' + currentIndex() * 33.333 + '%)'"
-    >
-      @for (proyecto of proyectos(); track proyecto.img) {
-        <div class="card bg-white shadow-lg w-full mx-2">
-          <figure class="h-48 md:h-56">
-            <img
-              [ngSrc]="proyecto.img"
-              alt=""
-              width="400"
-              height="220"
-              class="w-full h-full object-cover"
-            />
-          </figure>
-          <div class="card-body p-4 md:p-5">
-            <span class="text-xs md:text-sm font-semibold text-bluerms">{{ proyecto.fecha }}</span>
-            <h3 class="card-title text-base md:text-lg">{{ proyecto.title }}</h3>
-            <div class="card-actions justify-end">
-              <a
-                href="#"
-                class="btn bg-bluerms/85 text-white rounded-lg btn-sm md:btn-md hover:bg-bluerms"
-                >Ver más</a
-              >
+<section class="w-full py-8 md:py-12 lg:py-16 bg-base-100">
+  <div class="w-full px-3 md:px-6 lg:px-8 max-w-7xl mx-auto">
+    <!-- Título responsivo -->
+    <h3 class="mb-6 md:mb-8 lg:mb-10 font-bold text-xl md:text-2xl lg:text-3xl text-neutral">
+      NUESTROS PROYECTOS
+    </h3>
+
+    <!-- Contenedor del carrusel -->
+    <div class="relative overflow-x-hidden overflow-y-visible w-full py-4">
+      <div
+        class="flex gap-3 md:gap-4 lg:gap-6 transition-transform duration-500 ease-in-out px-1"
+        [style.transform]="'translateX(-' + currentIndex() * slideWidth() + '%)'"
+      >
+        @for (proyecto of proyectos(); track proyecto.img) {
+          <div class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]">
+            <!-- Card usando DaisyUI -->
+            <div
+              class="card bg-base-200 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full"
+            >
+              <!-- Imagen del proyecto -->
+              <figure class="h-40 sm:h-48 md:h-56 lg:h-64 overflow-hidden">
+                <img
+                  [ngSrc]="proyecto.img"
+                  [alt]="proyecto.title + ' - ' + proyecto.category"
+                  width="400"
+                  height="256"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </figure>
+
+              <!-- Contenido de la card -->
+              <div class="card-body p-4 md:p-5 lg:p-6">
+                <!-- Fecha -->
+                <span class="text-xs md:text-sm font-semibold text-bluerms">
+                  {{ proyecto.fecha }}
+                </span>
+
+                <!-- Título -->
+                <h4 class="card-title text-sm md:text-base lg:text-lg text-neutral mb-1">
+                  {{ proyecto.title }}
+                </h4>
+
+                <!-- Categoría -->
+                <p class="text-xs md:text-sm text-neutral/70 mb-3 md:mb-4">
+                  {{ proyecto.category }}
+                </p>
+
+                <!-- Acciones -->
+                <div class="card-actions justify-end mt-auto">
+                  <a
+                    href="#"
+                    class="btn btn-sm md:btn-md bg-bluerms hover:bg-bluerms/90 text-white border-none rounded-lg transition-colors duration-200"
+                  >
+                    Ver más
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </div>
   </div>
-</div>
+</section>
