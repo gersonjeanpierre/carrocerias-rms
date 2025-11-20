@@ -1,4 +1,12 @@
-import { Component, signal } from '@angular/core';
+import {
+  Component,
+  signal,
+  computed,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 
 interface Brand {
   name: string;
@@ -7,12 +15,15 @@ interface Brand {
 
 @Component({
   selector: 'app-brands-carousel',
+  standalone: true,
+  imports: [NgOptimizedImage],
   templateUrl: './brands-carousel.html',
   styleUrls: ['./brands-carousel.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BrandsCarouselComponent {
-  currentIndex = signal(0);
-  brands = signal<Brand[]>([
+export class BrandsCarouselComponent implements OnInit, OnDestroy {
+  readonly currentIndex = signal(0);
+  readonly brands = signal<Brand[]>([
     { name: 'Mercedes-Benz', logo: '/images/slider/marcas/mercedes-benz.png' },
     { name: 'Volvo', logo: '/images/slider/marcas/volvo.png' },
     { name: 'Volkswagen', logo: '/images/slider/marcas/volkswagen.png' },
@@ -21,16 +32,12 @@ export class BrandsCarouselComponent {
     { name: 'JMC', logo: '/images/slider/marcas/jmc_motor.png' },
     { name: 'Toyota', logo: '/images/slider/marcas/toyota.png' },
   ]);
-  visibleSlides = signal(5);
+
+  // Computed signals for derived state
+  readonly totalSlides = computed(() => this.brands().length);
+  readonly duplicatedBrands = computed(() => [...this.brands(), ...this.brands()]);
+
   private intervalId?: number;
-
-  get totalSlides(): number {
-    return this.brands().length;
-  }
-
-  get maxIndex(): number {
-    return Math.max(0, this.totalSlides - this.visibleSlides());
-  }
 
   ngOnInit(): void {
     this.startAutoScroll();
@@ -40,41 +47,26 @@ export class BrandsCarouselComponent {
     this.stopAutoScroll();
   }
 
-  startAutoScroll(): void {
+  private startAutoScroll(): void {
     this.intervalId = window.setInterval(() => {
       this.nextSlide();
     }, 3000); // cada 3 segundos
   }
 
-  stopAutoScroll(): void {
+  private stopAutoScroll(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
   }
 
-  nextSlide(): void {
+  private nextSlide(): void {
     const current = this.currentIndex();
-    if (current < this.maxIndex) {
-      this.currentIndex.set(current + 1);
-    } else {
+    const total = this.totalSlides();
+
+    if (current >= total - 1) {
       this.currentIndex.set(0); // loop infinito
-    }
-  }
-
-  previousSlide(): void {
-    const current = this.currentIndex();
-    if (current > 0) {
-      this.currentIndex.set(current - 1);
     } else {
-      this.currentIndex.set(this.maxIndex); // loop infinito
+      this.currentIndex.set(current + 1);
     }
-  }
-
-  get canGoPrevious(): boolean {
-    return true;
-  }
-
-  get canGoNext(): boolean {
-    return true;
   }
 }

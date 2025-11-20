@@ -1,23 +1,28 @@
-<section class="py-16 px-4 bg-base-100">
-  <div class="container mx-auto max-w-7xl">
+<section class="w-full py-12 md:py-16 lg:py-20 bg-base-100">
+  <div class="w-full px-4 md:px-6 lg:px-8">
     <!-- Section title -->
-    <h2 class="text-3xl md:text-4xl font-bold text-neutral mb-8">Nuestras Marcas</h2>
-    <!-- Carousel container -->
-    <div class="relative">
-      <!-- Slides -->
-      <div class="overflow-hidden mx-12">
-        <div class="carousel-track flex gap-8 items-center animate-marcas">
-          @for (brand of brands(); track $index) {
-            <div class="shrink-0 w-[calc(100%/5-1.6rem)] flex items-center justify-center p-4">
-              <img
-                [src]="brand.logo"
-                [alt]="brand.name"
-                class="max-w-full h-auto max-h-24 object-contain"
-              />
-            </div>
-          }
-          iv>
-        </div>
+    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-neutral mb-8 md:mb-12 text-center">
+      Nuestras Marcas
+    </h2>
+
+    <!-- Carousel container - Full width -->
+    <div class="relative w-full overflow-hidden">
+      <!-- Slides track -->
+      <div class="flex gap-4 md:gap-6 lg:gap-8 items-center animate-marcas">
+        @for (brand of duplicatedBrands(); track $index) {
+          <div
+            class="shrink-0 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 flex items-center justify-center p-3 md:p-4"
+          >
+            <img
+              [ngSrc]="brand.logo"
+              [alt]="brand.name"
+              width="200"
+              height="100"
+              class="w-full h-auto max-h-16 md:max-h-20 lg:max-h-24 object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+              priority
+            />
+          </div>
+        }
       </div>
     </div>
   </div>
