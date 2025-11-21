@@ -1,16 +1,17 @@
 import {
   Component,
   AfterViewInit,
-  ViewChild,
   ElementRef,
   OnDestroy,
   ChangeDetectionStrategy,
   signal,
   inject,
   PLATFORM_ID,
+  input,
+  viewChild,
+  effect,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { input } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
@@ -28,8 +29,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 export class Model3d implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
 
-  @ViewChild('canvasContainer', { static: false }) canvasContainer!: ElementRef;
-  modelPath = input<string>('models/3d/bi-model-3d.glb');
+  // Signal-based view query
+  readonly canvasContainer = viewChild<ElementRef>('canvasContainer');
+  readonly modelPath = input<string>('models/3d/bi-model-3d.glb');
 
   // Signals para estado reactivo
   readonly isAutoRotating = signal(false);
@@ -48,11 +50,21 @@ export class Model3d implements AfterViewInit, OnDestroy {
   private resizeObserver?: ResizeObserver;
   private initialCameraPosition!: THREE.Vector3;
   private initialControlsTarget!: THREE.Vector3;
+  private pmremGenerator?: THREE.PMREMGenerator;
+  private envMap?: THREE.Texture;
 
   constructor() {
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
     this.gltfLoader.setDRACOLoader(dracoLoader);
+
+    // Reactive effect for model path changes
+    effect(() => {
+      const path = this.modelPath();
+      if (path && this.scene) {
+        this.loadGltfModel();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -65,28 +77,29 @@ export class Model3d implements AfterViewInit, OnDestroy {
   }
 
   private initScene(): void {
-    if (!this.canvasContainer?.nativeElement) {
+    const containerRef = this.canvasContainer();
+    if (!containerRef?.nativeElement) {
       console.warn('canvasContainer not found - aborting initScene');
       return;
     }
-    const container = this.canvasContainer.nativeElement;
+    const container = containerRef.nativeElement;
 
     // Scene setup con fondo cinematográfico
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0xffffff); // Fondo oscuro cinematográfico
-    this.scene.fog = new THREE.Fog(0xffffff, 20, 50); // Niebla para profundidad
+    this.scene.fog = new THREE.Fog(0xffffff, 25, 50); // Niebla para profundidad
 
     // Camera con FOV cinematográfico
     this.camera = new THREE.PerspectiveCamera(
-      45, // FOV más estrecho para efecto cinematográfico
+      55, // FOV más estrecho para efecto cinematográfico
       container.clientWidth / container.clientHeight,
       0.1,
       1000,
     );
-    this.camera.position.set(0, 4, 10);
+    this.camera.position.set(0, 4, 8);
     this.camera.lookAt(0, 0, 0);
 
-    // Renderer con configuración de alta calidad
+    // Renderer con configuración de ultra alta calidad
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -94,19 +107,23 @@ export class Model3d implements AfterViewInit, OnDestroy {
     });
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Sombras de ultra alta calidad
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.type = THREE.VSMShadowMap; // Variance Shadow Maps para sombras más suaves
+
+    // Tone mapping mejorado para mejor realismo
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.2;
+    this.renderer.toneMappingExposure = 0.5; // Reducido para evitar "quemado"
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    // Sistema de iluminación cinematográfica (3-point lighting)
+    // Sistema de iluminación cinematográfica mejorada
     this.setupCinematicLighting();
 
     // Suelo más amplio y realista
     this.createRealisticFloor();
 
-    // Ambiente con HDRI simulado
+    // Ambiente con mapa de entorno para reflejos realistas
     this.setupEnvironment();
 
     container.appendChild(this.renderer.domElement);
@@ -116,8 +133,8 @@ export class Model3d implements AfterViewInit, OnDestroy {
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
     this.controls.enableRotate = true;
-    this.controls.minDistance = 5;
-    this.controls.maxDistance = 30;
+    this.controls.minDistance = 4.5;
+    this.controls.maxDistance = 25;
     this.controls.minPolarAngle = Math.PI / 6; // Limitar ángulo superior
     this.controls.maxPolarAngle = Math.PI / 2.2; // Limitar ángulo inferior
     this.controls.autoRotate = false;
@@ -126,10 +143,12 @@ export class Model3d implements AfterViewInit, OnDestroy {
   }
 
   private setupCinematicLighting(): void {
-    // 1. Key Light (Luz principal) - Luz direccional fuerte
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
-    keyLight.position.set(8, 12, 8);
+    // 1. Key Light (Luz principal) - Suave y direccional
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.7); // Menos intensidad para evitar brillo excesivo
+    keyLight.position.set(0, 20, 0);
     keyLight.castShadow = true;
+
+    // Sombras de alta calidad perpendicular
     keyLight.shadow.mapSize.width = 4096;
     keyLight.shadow.mapSize.height = 4096;
     keyLight.shadow.camera.near = 0.5;
@@ -139,21 +158,22 @@ export class Model3d implements AfterViewInit, OnDestroy {
     keyLight.shadow.camera.top = 30;
     keyLight.shadow.camera.bottom = -30;
     keyLight.shadow.bias = -0.0001;
-    keyLight.shadow.radius = 4; // Sombras más suaves
+    keyLight.shadow.radius = 4; // Sombras muy suaves
+    keyLight.shadow.blurSamples = 12;
     this.scene.add(keyLight);
 
     // 2. Fill Light (Luz de relleno) - Suaviza las sombras
-    const fillLight = new THREE.DirectionalLight(0x4a90e2, 1.2);
+    const fillLight = new THREE.DirectionalLight(0x4a90e2, 3);
     fillLight.position.set(-8, 8, -8);
     this.scene.add(fillLight);
 
     // 3. Back Light (Luz de contorno) - Separa el objeto del fondo
-    const backLight = new THREE.DirectionalLight(0xffa500, 1.5);
+    const backLight = new THREE.DirectionalLight(0xffa500, 2);
     backLight.position.set(0, 8, -10);
     this.scene.add(backLight);
 
-    // 4. Ambient Light (Luz ambiental) - Iluminación base suave
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+    // 4. Ambient Light - Base neutra
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     this.scene.add(ambientLight);
 
     // 5. Rim Light (Luz de borde) - Efecto cinematográfico
@@ -170,12 +190,11 @@ export class Model3d implements AfterViewInit, OnDestroy {
     // Suelo más amplio (50x50) para evitar cortes al hacer zoom
     const floorGeometry = new THREE.PlaneGeometry(50, 50);
 
-    // Material con textura procedural para mayor realismo
-    const floorMaterial = new THREE.MeshStandardMaterial({
-      color: 0xb9babd,
-      roughness: 0.9,
-      metalness: 0.1,
-      envMapIntensity: 0.1,
+    // Material ShadowMaterial para sombras en suelo blanco
+    // Esto permite que el suelo sea invisible pero reciba sombras
+    const floorMaterial = new THREE.ShadowMaterial({
+      opacity: 0.38, // Sombra más sutil
+      color: 0x000000,
     });
 
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
@@ -186,10 +205,20 @@ export class Model3d implements AfterViewInit, OnDestroy {
   }
 
   private setupEnvironment(): void {
-    // Crear un ambiente con luces hemisféricas para simular HDRI
+    // Crear un ambiente con luces hemisféricas mejoradas
     const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x2a2a2a, 0.8);
     hemiLight.position.set(0, 50, 0);
     this.scene.add(hemiLight);
+
+    // Generar mapa de entorno para reflejos realistas
+    this.pmremGenerator = new THREE.PMREMGenerator(this.renderer);
+    this.pmremGenerator.compileEquirectangularShader();
+
+    // Crear un ambiente de color neutro para reflejos (no blanco puro para evitar quemado)
+    const envScene = new THREE.Scene();
+    envScene.background = new THREE.Color(0xcbe0f5);
+    this.envMap = this.pmremGenerator.fromScene(envScene).texture;
+    this.scene.environment = this.envMap;
   }
 
   private loadGltfModel(): void {
@@ -207,11 +236,15 @@ export class Model3d implements AfterViewInit, OnDestroy {
             mesh.castShadow = true;
             mesh.receiveShadow = true;
 
-            // Mejorar materiales para mayor realismo
+            // Mejorar materiales respetando el modelo original
             if (mesh.material) {
               const material = mesh.material as THREE.MeshStandardMaterial;
               if (material.isMeshStandardMaterial) {
-                material.envMapIntensity = 1.5;
+                // Reflejos ambientales controlados
+                material.envMapIntensity = 2; // Reducido de 2.0 a 1.0
+
+                // NO forzar metalness/roughness globalmente para no arruinar texturas (ej. llantas)
+                // Solo asegurar que se actualice
                 material.needsUpdate = true;
               }
             }
@@ -277,15 +310,17 @@ export class Model3d implements AfterViewInit, OnDestroy {
       this.onWindowResize();
     });
 
-    if (this.canvasContainer?.nativeElement) {
-      this.resizeObserver.observe(this.canvasContainer.nativeElement);
+    const containerRef = this.canvasContainer();
+    if (containerRef?.nativeElement) {
+      this.resizeObserver.observe(containerRef.nativeElement);
     }
   }
 
   onWindowResize(): void {
-    if (!this.canvasContainer?.nativeElement) return;
+    const containerRef = this.canvasContainer();
+    if (!containerRef?.nativeElement) return;
 
-    const container = this.canvasContainer.nativeElement;
+    const container = containerRef.nativeElement;
     this.camera.aspect = container.clientWidth / container.clientHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(container.clientWidth, container.clientHeight);
@@ -318,6 +353,15 @@ export class Model3d implements AfterViewInit, OnDestroy {
 
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
+    }
+
+    // Limpiar generadores de texturas
+    if (this.pmremGenerator) {
+      this.pmremGenerator.dispose();
+    }
+
+    if (this.envMap) {
+      this.envMap.dispose();
     }
 
     if (this.renderer) {
