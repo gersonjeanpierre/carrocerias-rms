@@ -1,243 +1,146 @@
-<section class="w-full py-8 md:py-12 lg:py-16 bg-gradient-to-b from-base-100 to-base-200">
-  <div class="w-full px-3 md:px-6 lg:px-8 max-w-7xl mx-auto">
-    <!-- Título y descripción -->
-    <div class="text-center mb-6 md:mb-8 lg:mb-10">
-      <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-neutral mb-3 md:mb-4">
-        Visualizador 3D Interactivo
-      </h2>
-      <p class="text-sm md:text-base text-neutral/70 max-w-2xl mx-auto">
-        Explora nuestros productos en 3D. Usa el mouse para rotar, zoom y explorar cada detalle.
-      </p>
-    </div>
+<div class="w-full max-w-6xl mx-auto p-4 md:p-8">
+  <!-- Header Section -->
+  <div class="mb-8 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Visualizador de Producto</h2>
+    <p class="text-gray-600 max-w-2xl mx-auto">
+      Interactúa con nuestro modelo 3D de alta fidelidad. Rota, acerca y explora cada detalle de la
+      ingeniería.
+    </p>
+  </div>
 
-    <!-- Contenedor del visor 3D -->
-    <div class="relative w-full">
-      <!-- Canvas container con borde y background blanco distintivo -->
-      <div
-        #rendererContainer
-        class="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px] rounded-2xl overflow-hidden shadow-2xl border-4 border-bluerms/30 bg-gradient-to-br from-white via-gray-50 to-white ring-2 ring-bluerms/20 ring-offset-4 ring-offset-base-100"
-        [class.cursor-wait]="isLoading()"
-        [class.cursor-grab]="!isLoading()"
-        style="
-          background-image:
-            radial-gradient(circle at 25% 25%, rgba(74, 144, 226, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(74, 144, 226, 0.04) 0%, transparent 50%);
-        "
-      >
-        <!-- Loading overlay -->
-        @if (isLoading()) {
-          <div
-            class="absolute inset-0 flex flex-col items-center justify-center bg-base-100/90 backdrop-blur-sm z-10"
-          >
-            <div class="loading loading-spinner loading-lg text-bluerms mb-4"></div>
-            <p class="text-sm md:text-base font-semibold text-neutral mb-2">
-              Cargando modelo 3D...
-            </p>
-            <div class="w-48 md:w-64">
+  <!-- Main Card -->
+  <div class="card bg-base-100 shadow-2xl overflow-hidden border border-base-200">
+    <div class="relative w-full h-[500px] md:h-[600px] bg-gray-50">
+      <!-- 3D Canvas Container -->
+      <div #canvasContainer class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+
+      <!-- Loading Overlay -->
+      @if (isLoading()) {
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10"
+        >
+          <span class="loading loading-spinner loading-lg text-primary mb-4"></span>
+          <p class="text-lg font-medium text-gray-700">Cargando Modelo 3D...</p>
+          @if (loadingProgress() > 0) {
+            <div class="w-64 mt-2">
               <progress
                 class="progress progress-primary w-full"
-                [value]="loadProgress()"
+                [value]="loadingProgress()"
                 max="100"
               ></progress>
-              <p class="text-xs text-neutral/60 text-center mt-2">{{ loadProgress() }}%</p>
+              <p class="text-xs text-center mt-1 text-gray-500">{{ loadingProgress() }}%</p>
             </div>
-          </div>
-        }
-      </div>
-
-      <!-- Controles flotantes -->
-      <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end gap-3 z-20">
-        <!-- Botón de rotación -->
-        <button
-          (click)="toggleRotation()"
-          class="btn btn-sm md:btn-md gap-2 shadow-lg transition-all duration-200"
-          [class.btn-error]="isRotating()"
-          [class.btn-primary]="!isRotating()"
-          [disabled]="isLoading()"
-        >
-          @if (isRotating()) {
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 md:h-5 md:w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span class="hidden sm:inline">Detener</span>
-          } @else {
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 md:h-5 md:w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span class="hidden sm:inline">Rotar</span>
           }
-        </button>
-
-        <!-- Información de controles -->
-        <div
-          class="hidden md:flex items-center gap-2 bg-base-100/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg"
-        >
-          <div class="flex items-center gap-2 text-xs text-neutral/70">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-              />
-            </svg>
-            <span>Click + Arrastrar: Rotar</span>
-          </div>
-          <div class="divider divider-horizontal mx-0"></div>
-          <div class="flex items-center gap-2 text-xs text-neutral/70">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-              />
-            </svg>
-            <span>Scroll: Zoom</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Indicador de carga en esquina superior -->
-      @if (isLoading()) {
-        <div class="absolute top-4 right-4 badge badge-primary gap-2 shadow-lg z-20">
-          <span class="loading loading-spinner loading-xs"></span>
-          Cargando
         </div>
       }
+
+      <!-- Error Overlay -->
+      @if (error()) {
+        <div class="absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10">
+          <div class="text-error mb-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-12 w-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+          </div>
+          <p class="text-lg font-bold text-gray-800">{{ error() }}</p>
+          <button class="btn btn-sm btn-outline mt-4" (click)="ngAfterViewInit()">
+            Reintentar
+          </button>
+        </div>
+      }
+
+      <!-- Controls Overlay (Bottom) -->
+      <div
+        class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg border border-gray-100 z-10"
+      >
+        <button
+          class="btn btn-circle btn-ghost btn-sm tooltip"
+          data-tip="Rotación Automática"
+          [class.text-primary]="isAutoRotating()"
+          (click)="toggleRotation()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+        </button>
+
+        <div class="divider divider-horizontal mx-0"></div>
+
+        <button
+          class="btn btn-circle btn-ghost btn-sm tooltip"
+          data-tip="Reiniciar Vista"
+          (click)="resetView()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Instructions Overlay (Top Right) -->
+      <div class="absolute top-4 right-4 hidden md:block">
+        <div class="badge badge-lg bg-white/80 backdrop-blur shadow-sm gap-2 text-xs text-gray-600">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+            />
+          </svg>
+          Arrastra para rotar • Scroll para zoom
+        </div>
+      </div>
     </div>
 
-    <!-- Instrucciones móviles -->
-    <div class="md:hidden mt-4 p-4 bg-base-200 rounded-lg">
-      <p class="text-xs text-neutral/70 text-center">
-        <strong>Controles:</strong> Toca y arrastra para rotar • Pellizca para hacer zoom
-      </p>
-    </div>
-
-    <!-- Features del visor -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 md:mt-10">
-      <div class="flex items-start gap-3 p-4 bg-base-200 rounded-lg">
-        <div
-          class="flex-shrink-0 w-10 h-10 bg-bluerms/10 rounded-lg flex items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-bluerms"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-            <path
-              fill-rule="evenodd"
-              d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-neutral mb-1">Vista 360°</h4>
-          <p class="text-xs text-neutral/60">Explora desde todos los ángulos</p>
-        </div>
+    <!-- Footer / Info -->
+    <div
+      class="bg-base-100 p-4 border-t border-base-200 flex flex-wrap justify-between items-center gap-4"
+    >
+      <div class="flex items-center gap-2">
+        <div class="badge badge-primary badge-outline">3D</div>
+        <span class="text-sm font-semibold text-gray-700">Modelo Interactivo</span>
       </div>
-
-      <div class="flex items-start gap-3 p-4 bg-base-200 rounded-lg">
-        <div
-          class="flex-shrink-0 w-10 h-10 bg-bluerms/10 rounded-lg flex items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-bluerms"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-neutral mb-1">Alta Calidad</h4>
-          <p class="text-xs text-neutral/60">Renderizado realista</p>
-        </div>
-      </div>
-
-      <div class="flex items-start gap-3 p-4 bg-base-200 rounded-lg">
-        <div
-          class="flex-shrink-0 w-10 h-10 bg-bluerms/10 rounded-lg flex items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-bluerms"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-neutral mb-1">Rápido</h4>
-          <p class="text-xs text-neutral/60">Carga optimizada</p>
-        </div>
-      </div>
-
-      <div class="flex items-start gap-3 p-4 bg-base-200 rounded-lg">
-        <div
-          class="flex-shrink-0 w-10 h-10 bg-bluerms/10 rounded-lg flex items-center justify-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-bluerms"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-neutral mb-1">Responsivo</h4>
-          <p class="text-xs text-neutral/60">Funciona en todos los dispositivos</p>
-        </div>
-      </div>
+      <div class="text-xs text-gray-500">Renderizado con Three.js</div>
     </div>
   </div>
-</section>
+</div>

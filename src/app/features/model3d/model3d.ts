@@ -28,13 +28,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 export class Model3d implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
 
-  @ViewChild('rendererContainer', { static: false }) rendererContainer!: ElementRef;
-  modelPath = input<string>('models/3d/brazo2.glb');
+  @ViewChild('canvasContainer', { static: false }) canvasContainer!: ElementRef;
+  modelPath = input<string>('models/3d/bi-model-3d.glb');
 
   // Signals para estado reactivo
-  readonly isRotating = signal(false);
+  readonly isAutoRotating = signal(false);
   readonly isLoading = signal(true);
-  readonly loadProgress = signal(0);
+  readonly loadingProgress = signal(0);
+  readonly error = signal<string | null>(null);
 
   // Three.js objects
   private scene!: THREE.Scene;
@@ -45,6 +46,8 @@ export class Model3d implements AfterViewInit, OnDestroy {
   private model3dObject: THREE.Object3D | null = null;
   private readonly gltfLoader: GLTFLoader = new GLTFLoader();
   private resizeObserver?: ResizeObserver;
+  private initialCameraPosition!: THREE.Vector3;
+  private initialControlsTarget!: THREE.Vector3;
 
   constructor() {
     const dracoLoader = new DRACOLoader();
@@ -62,16 +65,16 @@ export class Model3d implements AfterViewInit, OnDestroy {
   }
 
   private initScene(): void {
-    if (!this.rendererContainer?.nativeElement) {
-      console.warn('rendererContainer not found - aborting initScene');
+    if (!this.canvasContainer?.nativeElement) {
+      console.warn('canvasContainer not found - aborting initScene');
       return;
     }
-    const container = this.rendererContainer.nativeElement;
+    const container = this.canvasContainer.nativeElement;
 
     // Scene setup con fondo cinematográfico
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x1a1a1a); // Fondo oscuro cinematográfico
-    this.scene.fog = new THREE.Fog(0x1a1a1a, 20, 50); // Niebla para profundidad
+    this.scene.background = new THREE.Color(0xffffff); // Fondo oscuro cinematográfico
+    this.scene.fog = new THREE.Fog(0xffffff, 20, 50); // Niebla para profundidad
 
     // Camera con FOV cinematográfico
     this.camera = new THREE.PerspectiveCamera(
@@ -169,10 +172,10 @@ export class Model3d implements AfterViewInit, OnDestroy {
 
     // Material con textura procedural para mayor realismo
     const floorMaterial = new THREE.MeshStandardMaterial({
-      color: 0x2a2a2a,
-      roughness: 0.8,
-      metalness: 0.2,
-      envMapIntensity: 0.5,
+      color: 0xb9babd,
+      roughness: 0.9,
+      metalness: 0.1,
+      envMapIntensity: 0.1,
     });
 
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
@@ -180,11 +183,6 @@ export class Model3d implements AfterViewInit, OnDestroy {
     floor.position.y = 0;
     floor.receiveShadow = true;
     this.scene.add(floor);
-
-    // Grid helper sutil para referencia espacial
-    const gridHelper = new THREE.GridHelper(50, 50, 0x444444, 0x222222);
-    gridHelper.position.y = 0.01; // Ligeramente arriba del suelo
-    this.scene.add(gridHelper);
   }
 
   private setupEnvironment(): void {
@@ -196,7 +194,8 @@ export class Model3d implements AfterViewInit, OnDestroy {
 
   private loadGltfModel(): void {
     this.isLoading.set(true);
-    this.loadProgress.set(0);
+    this.loadingProgress.set(0);
+    this.error.set(null);
 
     this.gltfLoader.load(
       this.modelPath(),
@@ -229,12 +228,13 @@ export class Model3d implements AfterViewInit, OnDestroy {
       (xhr) => {
         if (xhr.total > 0) {
           const progress = (xhr.loaded / xhr.total) * 100;
-          this.loadProgress.set(Math.round(progress));
+          this.loadingProgress.set(Math.round(progress));
         }
       },
       (error) => {
         console.error('Error al cargar el modelo 3D:', error);
         this.isLoading.set(false);
+        this.error.set('Error al cargar el modelo 3D. Por favor, intenta de nuevo.');
       },
     );
   }
@@ -258,6 +258,10 @@ export class Model3d implements AfterViewInit, OnDestroy {
     this.camera.position.set(cameraZ * 0.5, modelBaseY + cameraZ * 0.4, cameraZ);
     this.controls.target.set(0, modelBaseY, 0);
     this.controls.update();
+
+    // Guardar posición inicial para resetView
+    this.initialCameraPosition = this.camera.position.clone();
+    this.initialControlsTarget = this.controls.target.clone();
   }
 
   private animate = (): void => {
@@ -273,15 +277,15 @@ export class Model3d implements AfterViewInit, OnDestroy {
       this.onWindowResize();
     });
 
-    if (this.rendererContainer?.nativeElement) {
-      this.resizeObserver.observe(this.rendererContainer.nativeElement);
+    if (this.canvasContainer?.nativeElement) {
+      this.resizeObserver.observe(this.canvasContainer.nativeElement);
     }
   }
 
   onWindowResize(): void {
-    if (!this.rendererContainer?.nativeElement) return;
+    if (!this.canvasContainer?.nativeElement) return;
 
-    const container = this.rendererContainer.nativeElement;
+    const container = this.canvasContainer.nativeElement;
     this.camera.aspect = container.clientWidth / container.clientHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(container.clientWidth, container.clientHeight);
@@ -289,8 +293,22 @@ export class Model3d implements AfterViewInit, OnDestroy {
   }
 
   toggleRotation(): void {
-    this.isRotating.update((value) => !value);
-    this.controls.autoRotate = this.isRotating();
+    this.isAutoRotating.update((value) => !value);
+    this.controls.autoRotate = this.isAutoRotating();
+  }
+
+  resetView(): void {
+    if (!this.initialCameraPosition || !this.initialControlsTarget) return;
+
+    // Animar la cámara de vuelta a la posición inicial
+    this.camera.position.copy(this.initialCameraPosition);
+    this.controls.target.copy(this.initialControlsTarget);
+    this.controls.update();
+
+    // Detener rotación automática si está activa
+    if (this.isAutoRotating()) {
+      this.toggleRotation();
+    }
   }
 
   ngOnDestroy(): void {
