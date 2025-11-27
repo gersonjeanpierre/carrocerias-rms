@@ -1,14 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ProductImagesService } from '@core/services/product-images-service';
+import { ProductImagesService } from '@core/services/product-images.service';
 import type { ProductImage } from '@core/models/product-image.models';
 
 interface ProductDetailModel {
   readonly id: string;
+  readonly modelId: string;
   readonly name: string;
   readonly categoryId: string;
+  readonly categoryPath: string;
   readonly subcategoryId?: string;
+  readonly subcategoryPath?: string;
+  readonly modelFolderName: string;
   readonly description: string;
   readonly features: readonly string[];
   readonly images: readonly ProductImage[];
@@ -47,52 +51,71 @@ export default class ProductDetail {
   // Estado de la imagen seleccionada
   protected readonly selectedImageIndex = signal(0);
 
-  // Producto actual
+  // Producto actual basado en modelo
   protected readonly product = computed<ProductDetailModel | null>(() => {
     const id = this.productId()?.get('id');
     if (!id) return null;
 
-    const categories = this.productImagesService.allCategories();
+    const parts = id.split('/');
 
-    // Buscar en categorías con subcategorías (formato: categoryId/subcategoryId)
-    if (id.includes('/')) {
-      const [categoryId, subcategoryId] = id.split('/');
-      const category = categories.find((c) => c.id === categoryId);
+    // Formato: categoryId/subcategoryId/modelId
+    if (parts.length === 3) {
+      const [categoryId, subcategoryId, modelId] = parts;
+      const category = this.productImagesService.categories().find((c) => c.id === categoryId);
       const subcategory = category?.subcategories?.find((s) => s.id === subcategoryId);
+      const model = subcategory?.models.find((m) => m.id === modelId);
 
-      if (subcategory && category) {
-        return {
-          id,
-          name: subcategory.name,
-          categoryId: category.id,
-          subcategoryId: subcategory.id,
-          description: `${subcategory.name} de alta calidad fabricado con los mejores materiales.`,
-          features: [
-            'Fabricado con materiales de alta resistencia',
-            'Tratamiento anticorrosivo de los metales',
-            '24 meses de garantía frente a defectos de fabricación',
-            'Cumple con estándares de seguridad internacionales'
-          ],
-          images: subcategory.images
-        };
-      }
-    }
+      if (!model || !category || !subcategory) return null;
 
-    // Buscar en categorías directas
-    const category = categories.find((c) => c.id === id);
-    if (category?.images) {
       return {
         id,
-        name: category.name,
-        categoryId: category.id,
-        description: `${category.name} de alta calidad fabricado con los mejores materiales.`,
+        modelId: model.id,
+        name: model.name,
+        categoryId,
+        categoryPath: category.path,
+        subcategoryId,
+        subcategoryPath: subcategory.path,
+        modelFolderName: model.folderName,
+        description: `Producto de alta calidad fabricado según las especificaciones más exigentes del mercado. 
+        Este ${model.name} combina durabilidad y rendimiento excepcional, diseñado para satisfacer 
+        las necesidades de operaciones industriales y comerciales de gran escala.`,
         features: [
-          'Fabricado con materiales de alta resistencia',
-          'Tratamiento anticorrosivo de los metales',
-          '24 meses de garantía frente a defectos de fabricación',
-          'Cumple con estándares de seguridad internacionales'
+          'Fabricación con materiales de primera calidad',
+          'Diseño robusto y duradero',
+          'Cumple con normativas internacionales',
+          'Mantenimiento simplificado',
+          'Garantía extendida disponible'
         ],
-        images: category.images
+        images: model.images
+      };
+    }
+
+    // Formato: categoryId/modelId
+    if (parts.length === 2) {
+      const [categoryId, modelId] = parts;
+      const category = this.productImagesService.categories().find((c) => c.id === categoryId);
+      const model = category?.models?.find((m) => m.id === modelId);
+
+      if (!model || !category) return null;
+
+      return {
+        id,
+        modelId: model.id,
+        name: model.name,
+        categoryId,
+        categoryPath: category.path,
+        modelFolderName: model.folderName,
+        description: `Producto de alta calidad fabricado según las especificaciones más exigentes del mercado. 
+        Este ${model.name} combina durabilidad y rendimiento excepcional, diseñado para satisfacer 
+        las necesidades de operaciones industriales y comerciales de gran escala.`,
+        features: [
+          'Fabricación con materiales de primera calidad',
+          'Diseño robusto y duradero',
+          'Cumple con normativas internacionales',
+          'Mantenimiento simplificado',
+          'Garantía extendida disponible'
+        ],
+        images: model.images
       };
     }
 
@@ -108,21 +131,13 @@ export default class ProductDetail {
     const image = product.images[index];
     if (!image) return null;
 
-    const categoryPath = this.productImagesService
-      .allCategories()
-      .find((c) => c.id === product.categoryId)?.path;
-
-    if (!categoryPath) return null;
-
-    const subcategoryPath = product.subcategoryId
-      ? this.productImagesService
-          .allCategories()
-          .find((c) => c.id === product.categoryId)
-          ?.subcategories?.find((s) => s.id === product.subcategoryId)?.path
-      : undefined;
-
     return {
-      path: this.productImagesService.getImagePath(categoryPath, image.path, subcategoryPath),
+      path: this.productImagesService.getImagePath(
+        product.categoryPath,
+        product.modelFolderName,
+        image.fileName,
+        product.subcategoryPath
+      ),
       alt: image.alt
     };
   });
@@ -132,8 +147,9 @@ export default class ProductDetail {
     const currentProduct = this.product();
     if (!currentProduct) return [];
 
-    const categories = this.productImagesService.allCategories();
-    const currentCategory = categories.find((c) => c.id === currentProduct.categoryId);
+    const currentCategory = this.productImagesService
+      .categories()
+      .find((c) => c.id === currentProduct.categoryId);
     if (!currentCategory) return [];
 
     const products: Array<{
@@ -143,62 +159,110 @@ export default class ProductDetail {
       imageAlt: string;
     }> = [];
 
-    // Obtener productos de subcategorías
+    // Obtener otros modelos de la misma categoría
     if (currentCategory.subcategories) {
       for (const subcategory of currentCategory.subcategories) {
-        // Excluir el producto actual
-        if (subcategory.id === currentProduct.subcategoryId) continue;
-
-        const firstImage = subcategory.images[0];
-        if (firstImage) {
+        // Si es la misma subcategoría, agregar otros modelos (excepto el actual)
+        if (subcategory.id === currentProduct.subcategoryId) {
+          for (const model of subcategory.models) {
+            const modelProductId = `${currentCategory.id}/${subcategory.id}/${model.id}`;
+            if (modelProductId !== currentProduct.id && model.images.length > 0) {
+              products.push({
+                id: modelProductId,
+                name: model.name,
+                imagePath: this.productImagesService.getImagePath(
+                  currentCategory.path,
+                  model.folderName,
+                  model.images[0].fileName,
+                  subcategory.path
+                ),
+                imageAlt: model.images[0].alt
+              });
+            }
+            if (products.length >= 3) break;
+          }
+        } else {
+          // Agregar modelos de otras subcategorías
+          for (const model of subcategory.models) {
+            if (model.images.length > 0) {
+              products.push({
+                id: `${currentCategory.id}/${subcategory.id}/${model.id}`,
+                name: model.name,
+                imagePath: this.productImagesService.getImagePath(
+                  currentCategory.path,
+                  model.folderName,
+                  model.images[0].fileName,
+                  subcategory.path
+                ),
+                imageAlt: model.images[0].alt
+              });
+            }
+            if (products.length >= 3) break;
+          }
+        }
+        if (products.length >= 3) break;
+      }
+    } else if (currentCategory.models) {
+      // Agregar otros modelos de la misma categoría
+      for (const model of currentCategory.models) {
+        const modelProductId = `${currentCategory.id}/${model.id}`;
+        if (modelProductId !== currentProduct.id && model.images.length > 0) {
           products.push({
-            id: `${currentCategory.id}/${subcategory.id}`,
-            name: subcategory.name,
+            id: modelProductId,
+            name: model.name,
             imagePath: this.productImagesService.getImagePath(
               currentCategory.path,
-              firstImage.path,
-              subcategory.path
+              model.folderName,
+              model.images[0].fileName
             ),
-            imageAlt: firstImage.alt
+            imageAlt: model.images[0].alt
           });
         }
-
-        // Limitar a 3 productos
         if (products.length >= 3) break;
       }
     }
 
     // Si no hay suficientes, buscar en otras categorías
     if (products.length < 3) {
-      for (const category of categories) {
+      for (const category of this.productImagesService.categories()) {
         if (category.id === currentCategory.id) continue;
 
         if (category.subcategories) {
           for (const subcategory of category.subcategories) {
-            const firstImage = subcategory.images[0];
-            if (firstImage) {
-              products.push({
-                id: `${category.id}/${subcategory.id}`,
-                name: subcategory.name,
-                imagePath: this.productImagesService.getImagePath(
-                  category.path,
-                  firstImage.path,
-                  subcategory.path
-                ),
-                imageAlt: firstImage.alt
-              });
+            for (const model of subcategory.models) {
+              if (model.images.length > 0) {
+                products.push({
+                  id: `${category.id}/${subcategory.id}/${model.id}`,
+                  name: model.name,
+                  imagePath: this.productImagesService.getImagePath(
+                    category.path,
+                    model.folderName,
+                    model.images[0].fileName,
+                    subcategory.path
+                  ),
+                  imageAlt: model.images[0].alt
+                });
+              }
+              if (products.length >= 3) break;
             }
-
             if (products.length >= 3) break;
           }
-        } else if (category.images && category.images.length > 0) {
-          const firstImage = category.images[0];
-          products.push({
-            id: category.id,
-            name: category.name,
-            imagePath: this.productImagesService.getImagePath(category.path, firstImage.path),
-            imageAlt: firstImage.alt
-          });
+        } else if (category.models) {
+          for (const model of category.models) {
+            if (model.images.length > 0) {
+              products.push({
+                id: `${category.id}/${model.id}`,
+                name: model.name,
+                imagePath: this.productImagesService.getImagePath(
+                  category.path,
+                  model.folderName,
+                  model.images[0].fileName
+                ),
+                imageAlt: model.images[0].alt
+              });
+            }
+            if (products.length >= 3) break;
+          }
         }
 
         if (products.length >= 3) break;
@@ -211,6 +275,18 @@ export default class ProductDetail {
   // Métodos de interacción
   protected selectImage(index: number): void {
     this.selectedImageIndex.set(index);
+  }
+
+  protected getThumbnailPath(image: ProductImage): string {
+    const product = this.product();
+    if (!product) return '';
+
+    return this.productImagesService.getImagePath(
+      product.categoryPath,
+      product.modelFolderName,
+      image.fileName,
+      product.subcategoryPath
+    );
   }
 
   protected updateFormField<K extends keyof QuoteForm>(field: K, value: QuoteForm[K]): void {

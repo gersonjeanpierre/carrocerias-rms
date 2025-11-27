@@ -7,18 +7,28 @@
  * Representa una imagen individual de producto
  */
 export interface ProductImage {
-  /** Nombre del archivo de imagen (ej: 'brazo-de-izaje-1.jpg') */
-  readonly path: string;
+  /** Nombre del archivo de imagen (ej: 'vista-frontal.jpg', 'detalle-1.jpg') */
+  readonly fileName: string;
   /** Texto alternativo descriptivo para accesibilidad */
   readonly alt: string;
-  /** ID de la categoría a la que pertenece */
-  readonly categoryId: string;
-  /** ID de la subcategoría (opcional, solo si la categoría tiene subcategorías) */
-  readonly subcategoryId?: string;
 }
 
 /**
- * Representa una subcategoría de producto
+ * Representa un modelo/producto específico con sus imágenes
+ */
+export interface ProductModel {
+  /** ID único del modelo (ej: 'brazo-de-izaje-1', 'furgon-3') */
+  readonly id: string;
+  /** Nombre del modelo para mostrar en UI */
+  readonly name: string;
+  /** Nombre de la carpeta del modelo */
+  readonly folderName: string;
+  /** Array de imágenes del modelo */
+  readonly images: readonly ProductImage[];
+}
+
+/**
+ * Representa una subcategoría de producto con sus modelos
  */
 export interface ProductSubcategory {
   /** Identificador único en formato kebab-case */
@@ -27,8 +37,8 @@ export interface ProductSubcategory {
   readonly name: string;
   /** Ruta relativa de la subcategoría */
   readonly path: string;
-  /** Imágenes pertenecientes a esta subcategoría */
-  readonly images: readonly ProductImage[];
+  /** Modelos/productos pertenecientes a esta subcategoría */
+  readonly models: readonly ProductModel[];
 }
 
 /**
@@ -43,6 +53,6 @@ export interface ProductCategory {
   readonly path: string;
   /** Subcategorías (si aplica) */
   readonly subcategories?: readonly ProductSubcategory[];
-  /** Imágenes directas (si la categoría no tiene subcategorías) */
-  readonly images?: readonly ProductImage[];
+  /** Modelos directos (si la categoría no tiene subcategorías) */
+  readonly models?: readonly ProductModel[];
 }

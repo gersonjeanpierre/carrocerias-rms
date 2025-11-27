@@ -4,7 +4,7 @@
     <div class="flex flex-col lg:flex-row items-stretch gap-0">
       <!-- Info Box (Left) -->
       <div
-        class="bg-primary text-primary-content p-12 lg:p-16 lg:w-2/5 min-h-[520px] flex flex-col justify-center"
+        class="bg-bluerms text-primary-content p-12 lg:p-16 lg:w-2/5 min-h-[520px] flex flex-col justify-center"
       >
         <h1 class="text-3xl lg:text-4xl font-bold mb-6 relative">
           {{ prod.name }}
@@ -34,7 +34,7 @@
         </ul>
 
         <button
-          class="btn btn-accent text-white mt-8 self-start px-8"
+          class="btn btn-warning text-lg text-white mt-8 self-start px-8"
           onclick="document.getElementById('quote-form').scrollIntoView({ behavior: 'smooth' })"
         >
           ¡Cotiza Ahora!
@@ -62,9 +62,7 @@
               class="w-20 h-20 overflow-hidden rounded-lg hover:ring-2 hover:ring-accent transition-all"
             >
               <img
-                [src]="
-                  productImagesService.getImagePath(prod.categoryId, image.path, prod.subcategoryId)
-                "
+                [src]="getThumbnailPath(image)"
                 [alt]="image.alt"
                 class="w-full h-full object-cover"
               />
@@ -78,7 +76,7 @@
   <!-- Quote Form Section -->
   <div class="relative mt-16 mb-16">
     <!-- Blue Background -->
-    <div class="absolute inset-0 bg-primary h-48 -z-10"></div>
+    <div class="absolute inset-0 bg-bluerms h-48 -z-10"></div>
 
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto bg-base-100 rounded-lg shadow-xl p-8 md:p-12" id="quote-form">
@@ -180,13 +178,17 @@
                 loading="lazy"
               />
             </figure>
-            <div class="card-body">
-              <div class="mb-3">
-                <span class="badge badge-primary badge-sm">PRODUCTO</span>
+            <div class="card-body bg-[#F7F7F7] gap-0">
+              <div>
+                <span class="text-gray-500 font-medium">PRODUCTO</span>
               </div>
-              <h3 class="card-title text-lg">{{ similar.name }}</h3>
+              <h3 class="card-title text-bluerms text-xl">{{ similar.name }}</h3>
               <div class="card-actions justify-end mt-4">
-                <a [routerLink]="['/productos', similar.id]" class="btn btn-primary btn-sm">
+                <a
+                  [routerLink]="['/productos', similar.id]"
+                  class="btn btn-ghost bg-bluerms text-white"
+                  [attr.aria-label]="'Ver más información sobre ' + similar.name"
+                >
                   Más Información
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

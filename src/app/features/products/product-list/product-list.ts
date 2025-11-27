@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ProductImagesService } from '@core/services/product-images-service';
-import type { ProductCategory } from '@core/models/product-image.models';
+import { ProductImagesService } from '@core/services/product-images.service';
 
 @Component({
   selector: 'app-product-list',
@@ -45,7 +44,7 @@ export default class ProductList {
     });
   });
 
-  // Productos con imágenes para mostrar en el grid
+  // Productos (modelos) para mostrar en el grid
   protected readonly displayProducts = computed(() => {
     const categories = this.filteredCategories();
     const products: Array<{
@@ -58,36 +57,48 @@ export default class ProductList {
     }> = [];
 
     for (const category of categories) {
-      // Si tiene subcategorías, crear un producto por cada subcategoría
+      // Si tiene subcategorías, crear un producto por cada MODELO
       if (category.subcategories) {
         for (const subcategory of category.subcategories) {
-          const firstImage = subcategory.images[0];
+          for (const model of subcategory.models) {
+            // Usar la primera imagen del modelo para el preview
+            const firstImage = model.images[0];
+            if (firstImage) {
+              products.push({
+                id: `${category.id}/${subcategory.id}/${model.id}`,
+                name: model.name,
+                categoryId: category.id,
+                subcategoryId: subcategory.id,
+                imagePath: this.productImagesService.getImagePath(
+                  category.path,
+                  model.folderName,
+                  firstImage.fileName,
+                  subcategory.path
+                ),
+                imageAlt: firstImage.alt
+              });
+            }
+          }
+        }
+      }
+      // Si tiene modelos directos, crear un producto por cada MODELO
+      else if (category.models && category.models.length > 0) {
+        for (const model of category.models) {
+          const firstImage = model.images[0];
           if (firstImage) {
             products.push({
-              id: `${category.id}/${subcategory.id}`,
-              name: subcategory.name,
+              id: `${category.id}/${model.id}`,
+              name: model.name,
               categoryId: category.id,
-              subcategoryId: subcategory.id,
               imagePath: this.productImagesService.getImagePath(
                 category.path,
-                firstImage.path,
-                subcategory.path
+                model.folderName,
+                firstImage.fileName
               ),
               imageAlt: firstImage.alt
             });
           }
         }
-      }
-      // Si tiene imágenes directas, crear un producto por la categoría
-      else if (category.images && category.images.length > 0) {
-        const firstImage = category.images[0];
-        products.push({
-          id: category.id,
-          name: category.name,
-          categoryId: category.id,
-          imagePath: this.productImagesService.getImagePath(category.path, firstImage.path),
-          imageAlt: firstImage.alt
-        });
       }
     }
 

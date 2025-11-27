@@ -1,16 +1,32 @@
-<!-- Hero Banner -->
-<div
-  class="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden bg-linear-to-r from-primary to-secondary"
->
-  <img
-    src="https://www.marrel.com/wp-content/uploads/2024/02/Groupe-8527.png"
-    alt="Productos Carrocerias RMS"
-    class="w-full h-full object-cover opacity-30"
-  />
-  <div class="absolute inset-0 flex items-center justify-center">
-    <div class="text-center text-white">
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Nuestros Productos</h1>
-      <p class="text-lg md:text-xl">Soluciones de calidad para el transporte</p>
+<!-- Hero Banner estilo Marrel, sin fondo gris -->
+<div class="relative w-full flex justify-center items-center overflow-hidden bg-black/90">
+  <div
+    class="absolute inset-0 bg-cover bg-center blur-[10px] transform scale-115 opacity-70"
+    [style.background-image]="
+      'url(https://www.marrel.com/wp-content/uploads/2024/02/Groupe-8527.png)'
+    "
+  ></div>
+  <div class="relative h-52 md:h-56 lg:h-60 w-full max-w-max mx-auto rounded-2xl overflow-hidden">
+    <img
+      src="https://www.marrel.com/wp-content/uploads/2024/02/Groupe-8527.png"
+      alt="Productos Carrocerias RMS"
+      class="w-full h-52 md:h-56 lg:h-60 object-cover rounded-2xl"
+      loading="lazy"
+      style="object-position: center"
+    />
+    <!-- Overlay de título -->
+    <div
+      class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-[10px] px-6 py-3 rounded-lg max-w-[90%] text-center shadow-lg border border-white/10 z-20"
+    >
+      <h1
+        class="text-white m-0 text-xl md:text-2xl lg:text-3xl font-bold mb-2 tracking-tight"
+        style="text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4)"
+      >
+        Nuestros Productos
+      </h1>
+      <p class="text-base md:text-lg text-white/80 font-medium">
+        Soluciones de calidad para el transporte
+      </p>
     </div>
   </div>
 </div>
@@ -21,7 +37,7 @@
     <!-- Sidebar -->
     <aside class="w-full lg:w-64 shrink-0">
       <!-- Search Box -->
-      <div class="card bg-base-100 shadow-lg mb-6">
+      <div class="card bg-[#ECEFF5] shadow-lg mb-6">
         <div class="card-body">
           <h2 class="card-title text-lg mb-3">Buscar</h2>
           <div class="join w-full">
@@ -33,7 +49,7 @@
               (input)="onSearchChange($any($event.target).value)"
               aria-label="Buscar productos"
             />
-            <button class="btn btn-primary join-item" aria-label="Buscar">
+            <button class="btn btn-ghost bg-bluerms text-white join-item" aria-label="Buscar">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5"
@@ -54,7 +70,7 @@
       </div>
 
       <!-- Categories -->
-      <div class="card bg-base-100 shadow-lg">
+      <div class="card bg-[#ECEFF5] shadow-lg">
         <div class="card-body">
           <h2 class="card-title text-lg mb-3">Categorías</h2>
           <ul class="menu menu-compact p-0">
@@ -84,7 +100,11 @@
 
           @if (searchQuery() || selectedCategoryId()) {
             <div class="divider my-2"></div>
-            <button type="button" class="btn btn-sm btn-ghost w-full" (click)="clearFilters()">
+            <button
+              type="button"
+              class="btn btn-ghost bg-bluerms text-white w-full"
+              (click)="clearFilters()"
+            >
               Limpiar filtros
             </button>
           }
@@ -95,27 +115,14 @@
     <!-- Products Grid -->
     <section class="flex-1">
       <!-- Section Header -->
-      <div class="flex items-center gap-4 mb-6">
-        <div class="h-1 w-16 bg-primary rounded"></div>
+      <div class="flex items-center gap-4 mb-2">
+        <div class="h-1 w-16 bg-bluerms rounded"></div>
         <h2 class="text-2xl font-semibold">Productos</h2>
       </div>
 
       @if (selectedCategoryId()) {
-        <div class="alert alert-info mb-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="stroke-current shrink-0 w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          <span>Mostrando: {{ getCategoryName(selectedCategoryId()!) }}</span>
+        <div class="mb-6">
+          <span class="text-2xl font-medium">{{ getCategoryName(selectedCategoryId()!) }}</span>
         </div>
       }
 
@@ -148,15 +155,15 @@
                   loading="lazy"
                 />
               </figure>
-              <div class="card-body">
-                <div class="mb-3">
-                  <span class="badge badge-primary badge-sm">PRODUCTO</span>
+              <div class="card-body bg-[#F7F7F7] gap-0">
+                <div>
+                  <span class="text-gray-500 font-medium">PRODUCTO</span>
                 </div>
-                <h3 class="card-title text-lg">{{ product.name }}</h3>
+                <h3 class="card-title text-bluerms text-xl">{{ product.name }}</h3>
                 <div class="card-actions justify-end mt-4">
                   <a
                     [routerLink]="['/productos', product.id]"
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-ghost bg-bluerms text-white"
                     [attr.aria-label]="'Ver más información sobre ' + product.name"
                   >
                     Más Información
