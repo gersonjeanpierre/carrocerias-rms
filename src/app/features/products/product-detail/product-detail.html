@@ -80,7 +80,9 @@
 
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto bg-base-100 rounded-lg shadow-xl p-8 md:p-12" id="quote-form">
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Solicita tu Cotización</h2>
+        <h2 class="text-2xl text-bluerms md:text-3xl font-bold text-center mb-8">
+          Solicita tu Cotización
+        </h2>
 
         <form (submit)="submitQuote(); $event.preventDefault()" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -140,12 +142,12 @@
             </div>
           </div>
 
-          <div class="form-control w-full">
+          <div class="form-control w-full flex flex-col">
             <label class="label">
               <span class="label-text">Consulta</span>
             </label>
             <textarea
-              class="textarea textarea-bordered h-32"
+              class="textarea textarea-bordered h-40 w-full"
               placeholder="Describe tu consulta o necesidad..."
               [value]="quoteForm().message"
               (input)="updateFormField('message', $any($event.target).value)"
@@ -153,7 +155,7 @@
           </div>
 
           <div class="text-center pt-4">
-            <button type="submit" class="btn btn-accent text-white px-8">
+            <button type="submit" class="btn btn-ghost bg-bluerms text-white px-8">
               Solicitar Cotización
             </button>
           </div>
