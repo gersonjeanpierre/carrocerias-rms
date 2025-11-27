@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- TIPOGRAFÍA -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- BOOTSTRAP -->  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Efecto.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: "Rubik", Helvetica, Arial, sans-serif;
+}
+.top-lang-bar {
+    background: #fff;
+    padding: 8px 0;
+}
+
+/* Logo tamaño pequeño */
+.logo-mini {
+    height: 40px;
+}
+
+/* Bandera */
+.flag {
+    width: 20px;
+    height: 14px;
+    margin-right: 5px;
+}
+
+/* Botón selector idioma */
+.lang-btn {
+    background: transparent;
+    border: none;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.lang-btn:focus {
+    box-shadow: none !important;
+}
+    </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<body>
+<!-- TOP BAR CON LOGO + SELECTOR DE IDIOMA -->
+<div class="top-lang-bar">
+    <div class="container d-flex justify-content-end align-items-center">
+
+        <!-- LOGO DERECHA -->
+        <img src="Logo RMS transparente (1).png" class="logo-mini" alt="logo">
+
+        <!-- ESPACIO PEQUEÑO -->
+        <div style="width: 15px;"></div>
+
+        <!-- SELECTOR DE IDIOMA -->
+        <div class="dropdown">
+            <button class="btn dropdown-toggle lang-btn" type="button" data-bs-toggle="dropdown">
+                <img src="https://flagcdn.com/es.svg" class="flag"> ES
+            </button>
+
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <img src="https://flagcdn.com/es.svg" class="flag"> Español
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <img src="https://flagcdn.com/gb.svg" class="flag"> English
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- NAVBAR PRINCIPAL -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+
+            <!-- LOGO IZQUIERDA -->
+            <a class="navbar-brand " href="#">
+                <img src="Logo RMS transparente (1).png" alt="Logo" height="80">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- MENÚ CENTRADO -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav justify-content-center w-100">
+    <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav justify-content-center w-100">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="descubrenos.html">Descúbrenos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Productos.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Contactanos.html">Contactanos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                </ul>
+            </div>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+<div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+    <div class="carousel-item active" data-bg="/Productos/Portadas/3c961986-96c2-4823-86b3-6a8bc0d30242.jpg">
+      <div class="dot-left"></div>
+
+      <img src="/Productos/Portadas/3c961986-96c2-4823-86b3-6a8bc0d30242.jpg" class="carousel-image">
+
+      <div class="dot-right"></div>
+    </div>
+
+    <div class="carousel-item" data-bg="/Productos/Portadas/Cisterna de Vacio  4.jpg">
+      <div class="dot-left"></div>
+      <img src="/Productos/Portadas/Cisterna de Vacio  4.jpg" class="carousel-image">
+      <div class="dot-right"></div>
+    </div>
+
+    <div class="carousel-item" data-bg="/Productos/Portadas/Cisterna de vacio 1.jpg">
+      <div class="dot-left"></div>
+      <img src="/Productos/Portadas/Cisterna de vacio 1.jpg" class="carousel-image">
+      <div class="dot-right"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container my-4">
+    <div class="row">
+
+        <div class="col-lg-6 my-5">
+            <img src="/Productos/Grupo5.jpg" alt="">
+        </div>
+
+        <div class="col-lg-6 my-5 d-flex flex-column justify-content-center">
+            <!-- CONTENEDOR DEL TITULO + LINEA -->
+        <div class="titulo-con-linea">
+        <span class="linea"></span>
+         <h3>CARROCERIAS RMS S.A.C</h3>
+        </div>
+            <p class="TextoSub my-4">
+                Es una empresa peruana dedicada a la fabricación y elaboración de Carrocerias General cuenta con experiencia en el mercado en la industria de diseño y fabricación en metal mecanica.<br> <br>
+                 Nuestros personal cuenta con experiencia en el mercado, contamos con un buen servicio post venta supliendo las necesidades del cliente, brindando la confianza en el servicio ofrecido.
+            </p>
+
+        </div>
+    </div>
+</div>
+
+    <div class="compare-container">
+    <div class="compare">
+        <img src="Imagen .png" class="after">      <!-- FOTO REAL PRIMERO -->
+        <img src="plano.jpg" class="before" id="before-img"> <!-- PLANO ENCIMA -->
+
+        <div class="divider" id="divider">
+        <span class="handle">&#60;&#62;</span>
+        </div>
+    </div>
+    </div>
+    <div class="seccion-logo">
+        <img src="/Logo RMS transparente (1).png" alt="Logo RMS" class="logo-centro">
+
+        <p class="titulo-centro ">Experiencia Carrocerías</p>
+
+        <p class="frase-centro my-3">
+            Experiencia en la Industria que marca<br>
+            Confianza y precisión
+        </p>
+    </div>
+
+
+
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-lg-1"></div>
+        
+        <div class="col-lg-5 d-flex align-items-center  gap-3">
+            <i class="fa-solid fa-industry icono-industria"></i>
+            <img src="https://www.marrel.com/wp-content/uploads/2023/11/casque.png" alt="">
+            <h3 class="titulo-industria">Un proceso industrial totalmente controlado</h3>
+        </div>
+
+        <div class="col-lg-5 texto-descripcion">
+            Nuestras instalaciones de 30.000 m² reúnen todas nuestras competencias y conocimientos:
+            diseño, sistema hidráulica, calderería, mecánica, líneas de pintura y montaje y logística.
+            Somos fabricantes, ¡y estamos orgullosos de ello!
+        </div>
+            <div class="col-lg-1"></div>
+
+    </div>
+    <hr>
+    <div class="row align-items-center">
+      
+        <div class="col-lg-1">
+        </div>
+
+        <div class="col-lg-5 d-flex align-items-center  gap-3">
+            <i class="fa-solid fa-industry icono-industria"></i>
+            <img src="https://www.marrel.com/wp-content/uploads/2023/11/casque.png" alt="">
+            <h3 class="titulo-industria">Un centro de pruebas integrado </h3>
+        </div>
+
+        <div class="col-lg-5 texto-descripcion">
+            Contamos con nuestro propio equipo interno de I+D, formado por 18 ingenieros cualificados, todos ellos especialistas en su ámbito. Trabajan en estrecha colaboración con nuestros socios distribuidores para adaptar las soluciones MARREL a las configuraciones requeridas.
+        </div>
+        <div class="col-lg-1"></div>
+
+    </div>
+    <hr>
+    <div class="row align-items-center">
+        <div class="col-lg-1"></div>
+        
+        <div class="col-lg-5 d-flex align-items-center  gap-3">
+            <i class="fa-solid fa-industry icono-industria"></i>
+            <img src="https://www.marrel.com/wp-content/uploads/2023/11/casque.png" alt="">
+
+            <h3 class="titulo-industria">Normas de calidad de referencia</h3>
+        </div>
+
+        <div class="col-lg-5 texto-descripcion">
+         Porque la calidad de nuestros equipos es nuestra prioridad, somos muy exigentes en todas las etapas de nuestras operaciones. Nuestra fábrica cuenta con la doble certificación ISO9001 e ISO14001, y nuestro centro de montaje, con la certificación UTAC CERAM.
+        </div>
+        <div class="col-lg-1"></div>
+
+    </div>
+    <hr>
+</div>
+<!-- Mision Vision Valores  -->
+
+<div class="container">
+<div class="row g-4 separacion-cuadros">
+        <!-- VISIÓN -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card-cuadro card-equal">
+                <i class="bi bi-eye-fill icono-lock"></i>
+                <h3>Visión</h3>
+                <p class="TextoSub">
+                   Aspiramos a ser una empresa líder en el mercado a nivel nacional, gracias a la alta calidad de la materia prima utilizada para la elaboración de los diferentes tipos de carrocerías y estructuras metálicas en general. Buscamos generar un fuerte compromiso con nuestro personal y con la comunidad en su conjunto a desarrollar buenas prácticas productivas y de servicios.
+                </p>
+            </div>
+        </div>
+
+        <!-- MISIÓN -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card-cuadro card-equal">
+                <i class="bi bi-globe-americas icono-lock"></i>
+                <h3>Misión</h3>
+                <p  class="TextoSub">
+                    La misión de CARROCERIAS RMS S.A.C., es diseñar y fabricar carrocerías para: Transporte de carga, carrocerias tales como (Barandas, Furgones, Volquetes, Cisternas, Cámaras Frigoríficas, Semirremolques y Remolques, Isajes , plataforma); bajo la política de suplir las necesidades de los clientes, ofreciéndoles la mayor calidad posible en la fabricación y reparación de estas; basados en los requerimientos y necesidades de nuestros clientes en aras de satisfacer las necesidades de estos. Valores
+                </p>
+            </div>
+        </div>
+
+        <!-- VALORES -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card-cuadro card-equal">
+                <i class="bi bi-lock-fill icono-lock"></i>
+                <h3>Valores</h3>
+
+                <ul class="lista-valores">
+                    <li><i class="bi bi-check-circle-fill"></i> Compromiso</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Innovación</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Responsabilidad</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Calidad</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Trabajo en equipo</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Mejora continua</li>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer-posiciones mt-5">
+    <img src="/footer/Posicion 1.png" alt="">
+    <img src="/footer/Posicion 2.png" alt="">
+    <img src="/footer/Posicion 3.png" alt="">
+    <img src="/footer/Posicion 4.png" alt="">
+</div>
+<footer class="footer ">
+    <div class="container">
+        <div class="row">
+            <!-- LOGO -->
+           <div class="col-lg-4 col-md-12 mb-4 footer-logo">
+               <div class="logo-center">
+                  <img src="/Logo RMS transparente (1).png" alt="RMS Logo">
+                </div>
+            </div>
+
+            <!-- MENÚ -->
+            <div class="col-lg-2 col-md-4 col-6 mb-4">
+                <div class="line-wrapper">
+                <h5 class="footer-title">Menu</h5>
+                    <div class="line"></div>
+                </div>
+                <ul class="footer-links">
+                    <li><i class="bi bi-caret-right-fill"></i> Inicio</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Productos</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Descúbrenos</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Servicios</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Blog</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Contáctanos</li>
+                </ul>
+            </div>
+        <div class="col-lg-3 col-md-4 col-6 mb-4">
+                <div class="line-wrapper">
+                    <h5 class="footer-title">Productos</h5>
+                    <div class="line"></div>
+                </div>
+
+                <ul class="footer-links">
+                    <li><i class="bi bi-caret-right-fill"></i> Brazos de Izaje</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Remolques</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Tanques Cisterna de Vacío</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Unidades Especiales</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Contenedores</li>
+                    <li><i class="bi bi-caret-right-fill"></i> Ver Más</li>
+                </ul>
+            </div>
+
+            <!-- CONTACTO -->
+            <div class="col-lg-3 col-md-4 col-6 mb-4">
+                <div class="line-wrapper">
+                    <h5 class="footer-title">Contactanos</h5>
+                    <div class="line"></div>
+                </div>
+
+                <ul class="footer-links">
+                    <li><i class="bi bi-telephone-fill"></i> 962 304 464</li>
+                    <li><i class="bi bi-telephone-fill"></i> 993 056 995</li>
+                    <li><i class="bi bi-geo-alt-fill"></i> Asc. Huerta Granja en Ayllu, Lima</li>
+                    <li><i class="bi bi-envelope-fill"></i> ventas@rmscarrocerias.com.pe</li>
+                    <li><i class="bi bi-envelope-fill"></i> ventas01@rmscarrocerias.com.pe</li>
+                </ul>
+                
+            </div>
+
+        </div>
+
+ <div class="linea mt-2"></div>
+
+<div class="social-bar mt-2">
+    <p class="siguenos-text">Síguenos</p>
+
+    <div class="icons-right">
+        <i class="bi bi-facebook"></i>
+        <i class="bi bi-instagram"></i>
+        <i class="bi bi-youtube"></i>
+    </div>
+</div>
+
+
+</footer>
+
+<script>
+const divider = document.getElementById("divider");
+const beforeImg = document.getElementById("before-img");
+const compareBox = divider.parentElement;
+
+let isDragging = false;
+
+// ——— ACTIVAR AL HACER CLICK EN CUALQUIER PARTE ———
+compareBox.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  moveDivider(e);
+});
+
+// Soltamos
+window.addEventListener("mouseup", () => {
+  isDragging = false;
+});
+
+// Mover mientras arrastramos
+window.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  moveDivider(e);
+});
+
+// ——— FUNCIÓN QUE MUEVE EL DIVISOR ———
+function moveDivider(e) {
+  const rect = compareBox.getBoundingClientRect();
+  let x = e.clientX - rect.left;
+
+  if (x < 0) x = 0;
+  if (x > rect.width) x = rect.width;
+
+  beforeImg.style.clipPath = `inset(0 ${rect.width - x}px 0 0)`;
+  divider.style.left = `${x}px`;
+}
+</script>
+<script>
+var swiper = new Swiper(".proyectosSwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+        delay: 2000,
+        disableOnInteraction: false,
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+        0: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+        992: { slidesPerView: 3 }
+    }
+});
+</script>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 5,        // cuántos logos visibles
+    spaceBetween: 30,
+    loop: true,
+    centeredSlides: false,
+    autoplay: {
+        delay: 2000,           // 3 segundos
+        disableOnInteraction: false,
+    },
+    breakpoints: {
+        320:  { slidesPerView: 2 },
+        480:  { slidesPerView: 3 },
+        768:  { slidesPerView: 4 },
+        1024: { slidesPerView: 5 }
+    }
+    });
+</script>
+<script>
+    var swiper = new Swiper(".productosSwiper", {
+    slidesPerView: 4,          // 4 columnas como tu ejemplo
+    spaceBetween: 0,
+    loop: true,
+    autoplay: {
+        delay: 2000,           // Cambia cada 2.5 segundos
+        disableOnInteraction: false,
+    },
+    speed: 800,                 // transición suave
+});
+</script>
+<script>
+const carousel = document.getElementById('heroCarousel');
+
+carousel.addEventListener('slide.bs.carousel', function (event) {
+  const nextSlide = event.relatedTarget;
+  const bgImage = nextSlide.getAttribute('data-bg');
+
+  nextSlide.style.setProperty('--bg-image', `url(${bgImage})`);
+});
+
+// Inicializar fondo del primer slide
+document.querySelectorAll('.carousel-item').forEach(item => {
+  const bg = item.getAttribute('data-bg');
+  item.style.setProperty('--bg-image', `url(${bg})`);
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
