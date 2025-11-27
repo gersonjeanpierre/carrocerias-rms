@@ -1,1 +1,36 @@
-<p>product-item works!</p>
+<div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+  <figure class="relative h-64 overflow-hidden">
+    <img
+      [src]="imagePath()"
+      [alt]="imageAlt()"
+      class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+      loading="lazy"
+    />
+  </figure>
+  <div class="card-body">
+    @if (showBadge()) {
+      <div class="mb-3">
+        <span class="badge badge-primary badge-sm">PRODUCTO</span>
+      </div>
+    }
+    <h3 class="card-title text-lg">{{ productName() }}</h3>
+    <div class="card-actions justify-end mt-4">
+      <a
+        [routerLink]="['/productos', productId()]"
+        class="btn btn-primary btn-sm"
+        [attr.aria-label]="'Ver más información sobre ' + productName()"
+      >
+        Más Información
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,24 +1,17 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
-  templateUrl: './header.html',
-  styleUrl: './header.css',
+  imports: [RouterLink],
+  templateUrl: './header.html'
 })
 export class Header {
-  navItems = [
-    { label: 'Inicio', link: '/' },
+  protected readonly navItems = [
+    { label: 'Inicio', link: '/landing' },
     { label: 'Descubrenos', link: '/descubrenos' },
-    {
-      label: 'Productos',
-      link: '/productos',
-      children: [
-        { label: 'Producto 1', link: '/productos/producto-1' },
-        { label: 'Producto 2', link: '/productos/producto-2' },
-      ],
-    },
-    { label: 'Servicios', link: '/servicios' },
-    { label: 'Blog', link: '/blog' },
+    { label: 'Productos', link: '/productos' },
+    { label: 'Contactanos', link: '/contactanos' },
+    { label: 'Blog', link: '/blog' }
   ];
 }

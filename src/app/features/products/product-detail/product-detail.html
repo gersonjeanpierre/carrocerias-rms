@@ -1,0 +1,239 @@
+@if (product(); as prod) {
+  <!-- Product Info Section -->
+  <div class="w-full">
+    <div class="flex flex-col lg:flex-row items-stretch gap-0">
+      <!-- Info Box (Left) -->
+      <div
+        class="bg-primary text-primary-content p-12 lg:p-16 lg:w-2/5 min-h-[520px] flex flex-col justify-center"
+      >
+        <h1 class="text-3xl lg:text-4xl font-bold mb-6 relative">
+          {{ prod.name }}
+          <span class="absolute left-0 -bottom-2 w-24 h-1 bg-accent rounded"></span>
+        </h1>
+
+        <ul class="space-y-4 mt-8">
+          @for (feature of prod.features; track $index) {
+            <li class="text-lg flex items-start gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 shrink-0 mt-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span>{{ feature }}</span>
+            </li>
+          }
+        </ul>
+
+        <button
+          class="btn btn-accent text-white mt-8 self-start px-8"
+          onclick="document.getElementById('quote-form').scrollIntoView({ behavior: 'smooth' })"
+        >
+          ¡Cotiza Ahora!
+        </button>
+      </div>
+
+      <!-- Image Box (Right) -->
+      <div class="lg:w-3/5 flex items-center justify-center p-8 bg-base-200">
+        @if (selectedImage(); as img) {
+          <img [src]="img.path" [alt]="img.alt" class="max-w-full max-h-[500px] object-contain" />
+        }
+      </div>
+    </div>
+
+    <!-- Image Thumbnails -->
+    @if (prod.images.length > 1) {
+      <div class="bg-base-100 p-4">
+        <div class="flex gap-4 justify-center flex-wrap">
+          @for (image of prod.images; track $index) {
+            <button
+              type="button"
+              (click)="selectImage($index)"
+              [class.ring-2]="selectedImageIndex() === $index"
+              [class.ring-primary]="selectedImageIndex() === $index"
+              class="w-20 h-20 overflow-hidden rounded-lg hover:ring-2 hover:ring-accent transition-all"
+            >
+              <img
+                [src]="
+                  productImagesService.getImagePath(prod.categoryId, image.path, prod.subcategoryId)
+                "
+                [alt]="image.alt"
+                class="w-full h-full object-cover"
+              />
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Quote Form Section -->
+  <div class="relative mt-16 mb-16">
+    <!-- Blue Background -->
+    <div class="absolute inset-0 bg-primary h-48 -z-10"></div>
+
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto bg-base-100 rounded-lg shadow-xl p-8 md:p-12" id="quote-form">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Solicita tu Cotización</h2>
+
+        <form (submit)="submitQuote(); $event.preventDefault()" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Nombre *</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Nombre completo"
+                class="input input-bordered w-full"
+                [value]="quoteForm().name"
+                (input)="updateFormField('name', $any($event.target).value)"
+                required
+              />
+            </div>
+
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Correo *</span>
+              </label>
+              <input
+                type="email"
+                placeholder="correo@ejemplo.com"
+                class="input input-bordered w-full"
+                [value]="quoteForm().email"
+                (input)="updateFormField('email', $any($event.target).value)"
+                required
+              />
+            </div>
+
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Teléfono *</span>
+              </label>
+              <input
+                type="tel"
+                placeholder="999 999 999"
+                class="input input-bordered w-full"
+                [value]="quoteForm().phone"
+                (input)="updateFormField('phone', $any($event.target).value)"
+                required
+              />
+            </div>
+
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Razón Social / RUC</span>
+              </label>
+              <input
+                type="text"
+                placeholder="RUC o razón social"
+                class="input input-bordered w-full"
+                [value]="quoteForm().company"
+                (input)="updateFormField('company', $any($event.target).value)"
+              />
+            </div>
+          </div>
+
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text">Consulta</span>
+            </label>
+            <textarea
+              class="textarea textarea-bordered h-32"
+              placeholder="Describe tu consulta o necesidad..."
+              [value]="quoteForm().message"
+              (input)="updateFormField('message', $any($event.target).value)"
+            ></textarea>
+          </div>
+
+          <div class="text-center pt-4">
+            <button type="submit" class="btn btn-accent text-white px-8">
+              Solicitar Cotización
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Similar Products Section -->
+  @if (similarProducts().length > 0) {
+    <div class="container mx-auto px-4 mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold mb-8">Productos Similares</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (similar of similarProducts(); track similar.id) {
+          <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <figure class="h-64 overflow-hidden">
+              <img
+                [src]="similar.imagePath"
+                [alt]="similar.imageAlt"
+                class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+              />
+            </figure>
+            <div class="card-body">
+              <div class="mb-3">
+                <span class="badge badge-primary badge-sm">PRODUCTO</span>
+              </div>
+              <h3 class="card-title text-lg">{{ similar.name }}</h3>
+              <div class="card-actions justify-end mt-4">
+                <a [routerLink]="['/productos', similar.id]" class="btn btn-primary btn-sm">
+                  Más Información
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+} @else {
+  <!-- Product Not Found -->
+  <div class="container mx-auto px-4 py-16">
+    <div class="alert alert-error max-w-2xl mx-auto">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="stroke-current shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <div>
+        <h3 class="font-bold">Producto no encontrado</h3>
+        <div class="text-sm">El producto que buscas no existe o ha sido eliminado.</div>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <a routerLink="/productos" class="btn btn-primary"> Ver todos los productos </a>
+    </div>
+  </div>
+}

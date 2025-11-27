@@ -1,1 +1,186 @@
-<p>product-list works!</p>
+<!-- Hero Banner -->
+<div
+  class="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden bg-linear-to-r from-primary to-secondary"
+>
+  <img
+    src="https://www.marrel.com/wp-content/uploads/2024/02/Groupe-8527.png"
+    alt="Productos Carrocerias RMS"
+    class="w-full h-full object-cover opacity-30"
+  />
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="text-center text-white">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Nuestros Productos</h1>
+      <p class="text-lg md:text-xl">Soluciones de calidad para el transporte</p>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-8">
+  <div class="flex flex-col lg:flex-row gap-6">
+    <!-- Sidebar -->
+    <aside class="w-full lg:w-64 shrink-0">
+      <!-- Search Box -->
+      <div class="card bg-base-100 shadow-lg mb-6">
+        <div class="card-body">
+          <h2 class="card-title text-lg mb-3">Buscar</h2>
+          <div class="join w-full">
+            <input
+              type="text"
+              placeholder="Buscar productos..."
+              class="input input-bordered join-item w-full"
+              [value]="searchQuery()"
+              (input)="onSearchChange($any($event.target).value)"
+              aria-label="Buscar productos"
+            />
+            <button class="btn btn-primary join-item" aria-label="Buscar">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <h2 class="card-title text-lg mb-3">Categorías</h2>
+          <ul class="menu menu-compact p-0">
+            <li>
+              <button
+                type="button"
+                [class.active]="selectedCategoryId() === null"
+                (click)="selectCategory(null)"
+                class="justify-start"
+              >
+                Todas las categorías
+              </button>
+            </li>
+            @for (category of allCategories(); track category.id) {
+              <li>
+                <button
+                  type="button"
+                  [class.active]="selectedCategoryId() === category.id"
+                  (click)="selectCategory(category.id)"
+                  class="justify-start"
+                >
+                  {{ category.name }}
+                </button>
+              </li>
+            }
+          </ul>
+
+          @if (searchQuery() || selectedCategoryId()) {
+            <div class="divider my-2"></div>
+            <button type="button" class="btn btn-sm btn-ghost w-full" (click)="clearFilters()">
+              Limpiar filtros
+            </button>
+          }
+        </div>
+      </div>
+    </aside>
+
+    <!-- Products Grid -->
+    <section class="flex-1">
+      <!-- Section Header -->
+      <div class="flex items-center gap-4 mb-6">
+        <div class="h-1 w-16 bg-primary rounded"></div>
+        <h2 class="text-2xl font-semibold">Productos</h2>
+      </div>
+
+      @if (selectedCategoryId()) {
+        <div class="alert alert-info mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="stroke-current shrink-0 w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>Mostrando: {{ getCategoryName(selectedCategoryId()!) }}</span>
+        </div>
+      }
+
+      @if (displayProducts().length === 0) {
+        <div class="alert alert-warning">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <span>No se encontraron productos con los filtros aplicados.</span>
+        </div>
+      } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          @for (product of displayProducts(); track product.id) {
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <figure class="relative h-64 overflow-hidden">
+                <img
+                  [src]="product.imagePath"
+                  [alt]="product.imageAlt"
+                  class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="card-body">
+                <div class="mb-3">
+                  <span class="badge badge-primary badge-sm">PRODUCTO</span>
+                </div>
+                <h3 class="card-title text-lg">{{ product.name }}</h3>
+                <div class="card-actions justify-end mt-4">
+                  <a
+                    [routerLink]="['/productos', product.id]"
+                    class="btn btn-primary btn-sm"
+                    [attr.aria-label]="'Ver más información sobre ' + product.name"
+                  >
+                    Más Información
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </div>
+</div>

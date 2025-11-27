@@ -14,6 +14,8 @@ yarn-error.log
 #bun
 bun.lock
 
+/src/assets/FINAL_RMS
+
 # IDEs and editors
 .idea/
 .project
