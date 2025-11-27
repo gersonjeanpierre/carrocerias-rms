@@ -15,9 +15,10 @@
     <img
       [ngSrc]="currentSlide().url"
       fill
-      ngOptimizedImage
       [alt]="currentSlide().title"
       class="object-contain"
+      sizes="100vw"
+      priority
       (load)="onImageLoad($event)"
     />
 

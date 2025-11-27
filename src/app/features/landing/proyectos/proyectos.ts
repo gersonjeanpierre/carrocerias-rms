@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
   inject,
   NgZone,
-  PLATFORM_ID,
+  PLATFORM_ID
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
@@ -26,8 +26,8 @@ interface Proyecto {
   templateUrl: './proyectos.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '(window:resize)': 'onResize()',
-  },
+    '(window:resize)': 'onResize()'
+  }
 })
 export class ProyectosComponent implements OnInit, OnDestroy {
   private readonly zone = inject(NgZone);
@@ -39,13 +39,13 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-brazo-izaje/bzi-3.jpg',
       fecha: '15 / Noviembre / 2024',
       title: 'Brazo de Izaje Industrial',
-      category: 'Carga Pesada',
+      category: 'Carga Pesada'
     },
     {
       img: '/watermark/watermark-brazo-izaje/bzi-4.jpg',
       fecha: '10 / Noviembre / 2024',
       title: 'Sistema de Izaje Especializado',
-      category: 'Carga Pesada',
+      category: 'Carga Pesada'
     },
 
     // Cama Baja
@@ -53,7 +53,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-cama-baja/cb-3.jpg',
       fecha: '05 / Noviembre / 2024',
       title: 'Cama Baja para Transporte',
-      category: 'Transporte Especializado',
+      category: 'Transporte Especializado'
     },
 
     // Cisterna Vacío
@@ -61,13 +61,13 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-cisterna-vacio/cv-3.jpg',
       fecha: '28 / Octubre / 2024',
       title: 'Cisterna de Vacío Industrial',
-      category: 'Transporte de Líquidos',
+      category: 'Transporte de Líquidos'
     },
     {
       img: '/watermark/watermark-cisterna-vacio/cv-4.jpg',
       fecha: '20 / Octubre / 2024',
       title: 'Sistema de Cisterna Especializado',
-      category: 'Transporte de Líquidos',
+      category: 'Transporte de Líquidos'
     },
 
     // Contenedores
@@ -75,7 +75,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-contenedores/cont-3.jpg',
       fecha: '15 / Octubre / 2024',
       title: 'Contenedores de Carga',
-      category: 'Carga General',
+      category: 'Carga General'
     },
 
     // Furgón
@@ -83,13 +83,13 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-furgon/furg-3.jpg',
       fecha: '08 / Octubre / 2024',
       title: 'Furgón de Carga Seca',
-      category: 'Carga Seca',
+      category: 'Carga Seca'
     },
     {
       img: '/watermark/watermark-furgon/furg-4.jpg',
       fecha: '01 / Octubre / 2024',
       title: 'Furgón Refrigerado',
-      category: 'Carga Seca',
+      category: 'Carga Seca'
     },
 
     // Grúa Contenedor
@@ -97,7 +97,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-grua-contenedor-chatarra/gcc-3.jpg',
       fecha: '25 / Septiembre / 2024',
       title: 'Grúa para Contenedores',
-      category: 'Manejo de Chatarra',
+      category: 'Manejo de Chatarra'
     },
 
     // Roquera
@@ -105,7 +105,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-roquera-semirroquera/roq-1.jpg',
       fecha: '18 / Septiembre / 2024',
       title: 'Roquera para Materiales',
-      category: 'Materiales de Construcción',
+      category: 'Materiales de Construcción'
     },
 
     // Semirremolque Plataforma
@@ -113,14 +113,14 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       img: '/watermark/watermark-semirremolque-plataforma/sp-3.jpg',
       fecha: '10 / Septiembre / 2024',
       title: 'Semirremolque Plataforma',
-      category: 'Carga Plana',
+      category: 'Carga Plana'
     },
     {
       img: '/watermark/watermark-semirremolque-plataforma/sp-4.jpg',
       fecha: '05 / Septiembre / 2024',
       title: 'Plataforma de Carga Extendida',
-      category: 'Carga Plana',
-    },
+      category: 'Carga Plana'
+    }
   ]);
 
   readonly currentIndex = signal(0);
@@ -141,12 +141,18 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private intervalId?: number;
 
   ngOnInit(): void {
-    this.updateVisibleProyectos();
-    this.startAutoScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateVisibleProyectos();
+      this.startAutoScroll();
+      window.addEventListener('resize', this.onResize.bind(this));
+    }
   }
 
   ngOnDestroy(): void {
     this.stopAutoScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.onResize.bind(this));
+    }
   }
 
   onResize(): void {
@@ -177,6 +183,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   }
 
   private startAutoScroll(): void {
+    this.stopAutoScroll();
     this.intervalId = window.setInterval(() => {
       this.zone.run(() => {
         this.nextSlide();
@@ -187,6 +194,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private stopAutoScroll(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.intervalId = undefined;
     }
   }
 

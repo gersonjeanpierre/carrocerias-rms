@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
   inject,
   NgZone,
-  PLATFORM_ID,
+  PLATFORM_ID
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
@@ -26,8 +26,8 @@ interface Product {
   styleUrls: ['./productos-vendidos.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '(window:resize)': 'onResize()',
-  },
+    '(window:resize)': 'onResize()'
+  }
 })
 export class ProductosVendidosComponent implements OnInit, OnDestroy {
   private readonly zone = inject(NgZone);
@@ -38,48 +38,48 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
     {
       img: '/watermark/watermark-brazo-izaje/bzi-1.jpg',
       title: 'Brazo de Izaje',
-      category: 'Carga Pesada',
+      category: 'Carga Pesada'
     },
     {
       img: '/watermark/watermark-brazo-izaje/bzi-2.jpg',
       title: 'Brazo de Izaje',
-      category: 'Carga Pesada',
+      category: 'Carga Pesada'
     },
 
     // Cama Baja (2 imágenes)
     {
       img: '/watermark/watermark-cama-baja/cb-1.jpg',
       title: 'Cama Baja',
-      category: 'Transporte Especializado',
+      category: 'Transporte Especializado'
     },
     {
       img: '/watermark/watermark-cama-baja/cb-2.jpg',
       title: 'Cama Baja',
-      category: 'Transporte Especializado',
+      category: 'Transporte Especializado'
     },
 
     // Cisterna Vacío (2 imágenes)
     {
       img: '/watermark/watermark-cisterna-vacio/cv-1.jpg',
       title: 'Cisterna Vacío',
-      category: 'Transporte de Líquidos',
+      category: 'Transporte de Líquidos'
     },
     {
       img: '/watermark/watermark-cisterna-vacio/cv-2.jpg',
       title: 'Cisterna Vacío',
-      category: 'Transporte de Líquidos',
+      category: 'Transporte de Líquidos'
     },
 
     // Contenedores (2 imágenes)
     {
       img: '/watermark/watermark-contenedores/cont-1.jpg',
       title: 'Contenedores',
-      category: 'Carga General',
+      category: 'Carga General'
     },
     {
       img: '/watermark/watermark-contenedores/cont-2.jpg',
       title: 'Contenedores',
-      category: 'Carga General',
+      category: 'Carga General'
     },
 
     // Furgón (2 imágenes)
@@ -90,37 +90,37 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
     {
       img: '/watermark/watermark-grua-contenedor-chatarra/gcc-1.jpg',
       title: 'Grúa Contenedor',
-      category: 'Manejo de Chatarra',
+      category: 'Manejo de Chatarra'
     },
     {
       img: '/watermark/watermark-grua-contenedor-chatarra/gcc-2.jpg',
       title: 'Grúa Contenedor',
-      category: 'Manejo de Chatarra',
+      category: 'Manejo de Chatarra'
     },
 
     // Roquera Semirroquera (2 imágenes)
     {
       img: '/watermark/watermark-roquera-semirroquera/roq-1.jpg',
       title: 'Roquera',
-      category: 'Materiales de Construcción',
+      category: 'Materiales de Construcción'
     },
     {
       img: '/watermark/watermark-roquera-semirroquera/roq-2.jpg',
       title: 'Roquera',
-      category: 'Materiales de Construcción',
+      category: 'Materiales de Construcción'
     },
 
     // Semirremolque Plataforma (2 imágenes)
     {
       img: '/watermark/watermark-semirremolque-plataforma/sp-1.jpg',
       title: 'Semirremolque Plataforma',
-      category: 'Carga Plana',
+      category: 'Carga Plana'
     },
     {
       img: '/watermark/watermark-semirremolque-plataforma/sp-2.jpg',
       title: 'Semirremolque Plataforma',
-      category: 'Carga Plana',
-    },
+      category: 'Carga Plana'
+    }
   ]);
 
   readonly currentIndex = signal(0);
@@ -141,12 +141,18 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
   private intervalId?: number;
 
   ngOnInit(): void {
-    this.updateVisibleProducts();
-    this.startAutoScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateVisibleProducts();
+      this.startAutoScroll();
+      window.addEventListener('resize', this.onResize.bind(this));
+    }
   }
 
   ngOnDestroy(): void {
     this.stopAutoScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.onResize.bind(this));
+    }
   }
 
   onResize(): void {
@@ -179,6 +185,7 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
   }
 
   private startAutoScroll(): void {
+    this.stopAutoScroll();
     this.intervalId = window.setInterval(() => {
       this.zone.run(() => {
         this.nextSlide();
@@ -189,6 +196,7 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
   private stopAutoScroll(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.intervalId = undefined;
     }
   }
 
