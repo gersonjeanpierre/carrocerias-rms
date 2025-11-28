@@ -13,10 +13,39 @@
 
 <!-- IMÁGENES DE POSICIÓN -->
 <div class="flex flex-wrap justify-center items-center gap-4 mt-12 mb-8 px-4">
-  <img src="/images/footer/Posicion 1.png" alt="Posición 1" class="h-6 md:h-10 object-contain" />
-  <img src="/images/footer/Posicion 2.png" alt="Posición 2" class="h-10 md:h-16 object-contain" />
-  <img src="/images/footer/Posicion 3.png" alt="Posición 3" class="h-10 md:h-16 object-contain" />
-  <img src="/images/footer/Posicion 4.png" alt="Posición 4" class="h-10 md:h-16 object-contain" />
+  <div class="w-32 h-10 relative">
+    <img
+      [ngSrc]="'/images/footer/Posicion 1.png'"
+      alt="Posición 1"
+      fill=""
+      class="object-contain"
+    />
+  </div>
+  <div class="h-16 w-44 relative">
+    <img
+      [ngSrc]="'/images/footer/Posicion 2.png'"
+      alt="Posición 2"
+      fill=""
+      class="object-contain"
+    />
+  </div>
+  <div class="w-44 h-16 relative">
+    <img
+      [ngSrc]="'/images/footer/Posicion 3.png'"
+      alt="Posición 3"
+      fill=""
+      class="object-contain"
+    />
+  </div>
+
+  <div class="w-44 h-16 relative">
+    <img
+      [ngSrc]="'/images/footer/Posicion 4.png'"
+      alt="Posición 4"
+      fill=""
+      class="object-contain"
+    />
+  </div>
 </div>
 
 <footer class="bg-[#d1d1d1] text-bluerms">
@@ -25,7 +54,15 @@
       <!-- LOGO -->
       <div class="lg:col-span-4 flex flex-col justify-center items-center text-center">
         <div class="mb-6 flex justify-center items-center h-full w-full">
-          <img src="/images/logo.png" alt="RMS Logo" class="w-52 md:w-64 max-w-full h-auto" />
+          <div class="relative h-28 w-64">
+            <img
+              ngSrc="/images/logo.png"
+              alt="RMS Logo"
+              fill=""
+              priority=""
+              class="object-contain"
+            />
+          </div>
         </div>
       </div>
 

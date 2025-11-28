@@ -1,7 +1,6 @@
 import {
   Component,
   AfterViewInit,
-  ViewChild,
   ElementRef,
   OnDestroy,
   ChangeDetectionStrategy,
@@ -9,7 +8,7 @@ import {
   inject,
   PLATFORM_ID,
   viewChild,
-  effect,
+  effect
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { input } from '@angular/core';
@@ -23,8 +22,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   templateUrl: './model3d.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '(window:resize)': 'onWindowResize()',
-  },
+    '(window:resize)': 'onWindowResize()'
+  }
 })
 export class Model3d implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
@@ -90,7 +89,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
       55, // FOV más estrecho para efecto cinematográfico
       container.clientWidth / container.clientHeight,
       0.1,
-      1000,
+      1000
     );
     this.camera.position.set(0, 4, 8);
     this.camera.lookAt(0, 0, 0);
@@ -98,7 +97,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
     // Renderer con configuración de alta calidad
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
-      powerPreference: 'high-performance',
+      powerPreference: 'high-performance'
     });
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
@@ -173,7 +172,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
     // Material con textura procedural para mayor realismo
     const floorMaterial = new THREE.ShadowMaterial({
       opacity: 0.5, // Sombra más sutil
-      color: 0x000000,
+      color: 0x000000
     });
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
@@ -232,7 +231,7 @@ export class Model3d implements AfterViewInit, OnDestroy {
         console.error('Error al cargar el modelo 3D:', error);
         this.isLoading.set(false);
         this.error.set('Error al cargar el modelo 3D. Por favor, intenta de nuevo.');
-      },
+      }
     );
   }
 

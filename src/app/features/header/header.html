@@ -1,8 +1,10 @@
 <nav class="navbar bg-base-100 shadow-sm h-[120px] flex items-center justify-center">
   <div class="navbar-start flex items-center sticky left-0 top-0 z-50">
-    <a routerLink="/landing" class="btn btn-ghost text-xl h-auto w-auto p-1">
-      <img src="images/logo.png" alt="Logotipo" class="lg:h-[100px] h-[50px]" />
-    </a>
+    <div class="relative lg:h-[100px] h-[50px] lg:w-[200px] w-[100px]">
+      <a routerLink="/landing" class="btn btn-ghost text-xl h-full w-full p-1">
+        <img ngSrc="images/logo.png" alt="Logotipo" class="object-contain" fill priority />
+      </a>
+    </div>
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
         <svg

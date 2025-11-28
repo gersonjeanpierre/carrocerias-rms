@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-video',
@@ -8,21 +8,21 @@ import { Component } from '@angular/core';
         <div class="flex justify-center">
           <div class="aspect-video w-full max-w-4xl">
             <iframe
-              src="https://www.youtube.com/embed/0ZKkB1CxN3U?si=tNjCCkQmtliS_fVR&amp;start=0"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
+              src="https://www.youtube.com/embed/0ZKkB1CxN3U?si=tNjCCkQmtliS_fVR&start=0"
+              title="Video institucional RMS"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
               class="w-full h-full rounded-lg"
-            >
-            </iframe>
+              tabindex="0"
+              aria-label="Video institucional RMS"
+              loading="eager"
+            ></iframe>
           </div>
         </div>
       </div>
     </section>
   `,
-  styles: [],
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class VideoComponent {}

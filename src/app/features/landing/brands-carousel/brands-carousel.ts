@@ -4,9 +4,12 @@ import {
   computed,
   OnInit,
   OnDestroy,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  inject,
+  NgZone,
+  PLATFORM_ID
 } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import { isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 
 interface Brand {
   name: string;
@@ -22,7 +25,9 @@ interface Brand {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BrandsCarouselComponent implements OnInit, OnDestroy {
-  readonly currentIndex = signal(0);
+  private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
+
   readonly brands = signal<Brand[]>([
     { name: 'Mercedes-Benz', logo: '/images/slider/marcas/mercedes-benz.png' },
     { name: 'Volvo', logo: '/images/slider/marcas/volvo.png' },
@@ -33,26 +38,49 @@ export class BrandsCarouselComponent implements OnInit, OnDestroy {
     { name: 'Toyota', logo: '/images/slider/marcas/toyota.png' }
   ]);
 
-  // Computed signals for derived state
-  readonly totalSlides = computed(() => this.brands().length);
+  readonly currentIndex = signal(0);
+  readonly totalBrands = computed(() => this.brands().length);
+  readonly visibleBrands = signal(5); // Desktop default
+  readonly slideWidth = computed(() => 100 / this.visibleBrands());
+
+  // Duplicar marcas para loop infinito
   readonly duplicatedBrands = computed(() => [...this.brands(), ...this.brands()]);
 
   private intervalId?: number;
 
   ngOnInit(): void {
-    this.startAutoScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateVisibleBrands();
+      this.startAutoScroll();
+      window.addEventListener('resize', this.onResize.bind(this));
+    }
   }
 
   ngOnDestroy(): void {
     this.stopAutoScroll();
-    this.intervalId = undefined;
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.onResize.bind(this));
+    }
+  }
+
+  private updateVisibleBrands(): void {
+    const width = window.innerWidth;
+    if (width < 640) {
+      this.visibleBrands.set(2); // Mobile
+    } else if (width < 1024) {
+      this.visibleBrands.set(3); // Tablet
+    } else {
+      this.visibleBrands.set(5); // Desktop
+    }
   }
 
   private startAutoScroll(): void {
     this.stopAutoScroll();
     this.intervalId = window.setInterval(() => {
-      this.nextSlide();
-    }, 3000); // cada 3 segundos
+      this.zone.run(() => {
+        this.nextSlide();
+      });
+    }, 4000); // cada 4 segundos
   }
 
   private stopAutoScroll(): void {
@@ -62,14 +90,34 @@ export class BrandsCarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  private nextSlide(): void {
-    const current = this.currentIndex();
-    const total = this.totalSlides();
+  nextSlide(): void {
+    this.stopAutoScroll();
+    this.currentIndex.update((current) => {
+      const itemWidth = this.slideWidth();
+      const maxOffset = itemWidth * this.totalBrands();
+      const newIndex = current + 1;
+      if (newIndex * itemWidth >= maxOffset) {
+        return 0;
+      }
+      return newIndex;
+    });
+    this.startAutoScroll();
+  }
 
-    if (current >= total - 1) {
-      this.currentIndex.set(0); // loop infinito
-    } else {
-      this.currentIndex.set(current + 1);
-    }
+  prevSlide(): void {
+    this.stopAutoScroll();
+    this.currentIndex.update((current) => {
+      const itemWidth = this.slideWidth();
+      const maxOffset = itemWidth * this.totalBrands();
+      if (current === 0) {
+        return Math.floor(maxOffset / itemWidth) - 1;
+      }
+      return current - 1;
+    });
+    this.startAutoScroll();
+  }
+
+  onResize(): void {
+    this.updateVisibleBrands();
   }
 }

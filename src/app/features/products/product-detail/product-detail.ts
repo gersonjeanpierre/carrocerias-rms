@@ -154,12 +154,12 @@ export default class ProductDetail {
       .find((c) => c.id === currentProduct.categoryId);
     if (!currentCategory) return [];
 
-    const products: Array<{
+    const products: {
       id: string;
       name: string;
       imagePath: string;
       imageAlt: string;
-    }> = [];
+    }[] = [];
 
     // Obtener otros modelos de la misma categoría
     if (currentCategory.subcategories) {

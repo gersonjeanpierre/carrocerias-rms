@@ -2,7 +2,6 @@ import { Injectable, signal, computed } from '@angular/core';
 import type {
   ProductCategory,
   ProductModel,
-  ProductImage,
   ProductSubcategory
 } from '../models/product-image.models';
 

@@ -88,7 +88,7 @@
         <form (submit)="submitQuote(); $event.preventDefault()" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="form-control w-full">
-              <label class="label">
+              <label class="label" for="name">
                 <span class="label-text">Nombre *</span>
               </label>
               <input
@@ -102,7 +102,7 @@
             </div>
 
             <div class="form-control w-full">
-              <label class="label">
+              <label class="label" for="email">
                 <span class="label-text">Correo *</span>
               </label>
               <input
@@ -116,7 +116,7 @@
             </div>
 
             <div class="form-control w-full">
-              <label class="label">
+              <label class="label" for="phone">
                 <span class="label-text">Teléfono *</span>
               </label>
               <input
@@ -130,7 +130,7 @@
             </div>
 
             <div class="form-control w-full">
-              <label class="label">
+              <label class="label" for="company">
                 <span class="label-text">Razón Social / RUC</span>
               </label>
               <input
@@ -144,7 +144,7 @@
           </div>
 
           <div class="form-control w-full flex flex-col">
-            <label class="label">
+            <label class="label" for="message">
               <span class="label-text">Consulta</span>
             </label>
             <textarea

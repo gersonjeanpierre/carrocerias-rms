@@ -47,14 +47,14 @@ export default class ProductList {
   // Productos (modelos) para mostrar en el grid
   protected readonly displayProducts = computed(() => {
     const categories = this.filteredCategories();
-    const products: Array<{
+    const products: {
       id: string;
       name: string;
       categoryId: string;
       subcategoryId?: string;
       imagePath: string;
       imageAlt: string;
-    }> = [];
+    }[] = [];
 
     for (const category of categories) {
       // Si tiene subcategorías, crear un producto por cada MODELO

@@ -24,7 +24,6 @@ interface Product {
   standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './productos-vendidos.html',
-  styleUrls: ['./productos-vendidos.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '(window:resize)': 'onResize()'
@@ -93,9 +92,6 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
   // Responsive: número de productos visibles según el ancho de pantalla
   readonly visibleProducts = signal(4); // Default: desktop (lg)
 
-  // Computed: máximo índice basado en productos visibles
-  readonly maxIndex = computed(() => Math.max(0, this.totalProducts() - this.visibleProducts()));
-
   // Computed: ancho de desplazamiento en porcentaje
   readonly slideWidth = computed(() => {
     const visible = this.visibleProducts();
@@ -141,11 +137,6 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
     } else {
       this.visibleProducts.set(4); // Large+: 4 productos
     }
-
-    // Resetear índice si excede el máximo
-    if (this.currentIndex() > this.maxIndex()) {
-      this.currentIndex.set(0);
-    }
   }
 
   private startAutoScroll(): void {
@@ -154,7 +145,7 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
       this.zone.run(() => {
         this.nextSlide();
       });
-    }, 3000);
+    }, 4000); // Cambio cada 4 segundos
   }
 
   private stopAutoScroll(): void {
@@ -164,10 +155,38 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
     }
   }
 
-  private nextSlide(): void {
+  // Método público para navegación manual
+  nextSlide(): void {
+    this.stopAutoScroll(); // Detener auto-scroll al navegar manualmente
     this.currentIndex.update((current) => {
-      const max = this.maxIndex();
-      return current >= max ? 0 : current + 1;
+      const itemWidth = this.slideWidth();
+      const maxOffset = itemWidth * this.totalProducts();
+      const newIndex = current + 1;
+
+      // Reset a 0 cuando alcanzamos el final del primer conjunto (loop infinito)
+      if (newIndex * itemWidth >= maxOffset) {
+        return 0;
+      }
+
+      return newIndex;
     });
+    this.startAutoScroll(); // Reiniciar auto-scroll
+  }
+
+  // Método público para navegación manual
+  prevSlide(): void {
+    this.stopAutoScroll(); // Detener auto-scroll al navegar manualmente
+    this.currentIndex.update((current) => {
+      const itemWidth = this.slideWidth();
+      const maxOffset = itemWidth * this.totalProducts();
+
+      // Si estamos en 0, ir al final del primer conjunto
+      if (current === 0) {
+        return Math.floor(maxOffset / itemWidth) - 1;
+      }
+
+      return current - 1;
+    });
+    this.startAutoScroll(); // Reiniciar auto-scroll
   }
 }

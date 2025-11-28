@@ -108,16 +108,30 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private lastTimestamp = 0;
   private readonly scrollSpeed = 0.02; // Velocidad de desplazamiento (píxeles por ms)
 
+  readonly currentIndex = signal(0);
+  readonly totalProducts = computed(() => this.proyectos().length);
+
+  // Responsive: número de productos visibles según el ancho de pantalla
+  readonly visibleProducts = signal(4); // Default: desktop (lg)
+
+  // Computed: ancho de desplazamiento en porcentaje
+  readonly slideWidth = computed(() => {
+    const visible = this.visibleProducts();
+    return 100 / visible;
+  });
+
+  private intervalId?: number;
+
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.updateVisibleProyectos();
-      this.startContinuousScroll();
+      this.startAutoScroll();
       window.addEventListener('resize', this.onResize.bind(this));
     }
   }
 
   ngOnDestroy(): void {
-    this.stopContinuousScroll();
+    this.stopAutoScroll();
     if (isPlatformBrowser(this.platformId)) {
       window.removeEventListener('resize', this.onResize.bind(this));
     }
@@ -145,43 +159,54 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     }
   }
 
-  private startContinuousScroll(): void {
-    this.stopContinuousScroll();
-    this.lastTimestamp = performance.now();
-
-    const animate = (timestamp: number) => {
-      const deltaTime = timestamp - this.lastTimestamp;
-      this.lastTimestamp = timestamp;
-
+  private startAutoScroll(): void {
+    this.stopAutoScroll();
+    this.intervalId = window.setInterval(() => {
       this.zone.run(() => {
-        // Incrementar translateX de forma continua
-        this.translateX.update((current) => {
-          const newValue = current + deltaTime * this.scrollSpeed;
-
-          // Calcular el ancho de cada item basado en proyectos visibles
-          const itemWidth = 100 / this.visibleProyectos();
-          // El punto de reseteo es cuando completamos el primer conjunto
-          const resetPoint = itemWidth * this.totalProyectos();
-
-          // Resetear a 0 cuando alcanzamos el punto de reseteo para loop infinito
-          if (newValue >= resetPoint) {
-            return newValue - resetPoint;
-          }
-
-          return newValue;
-        });
+        this.nextSlide();
       });
-
-      this.animationFrameId = requestAnimationFrame(animate);
-    };
-
-    this.animationFrameId = requestAnimationFrame(animate);
+    }, 1650);
   }
 
-  private stopContinuousScroll(): void {
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
-      this.animationFrameId = undefined;
+  private stopAutoScroll(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = undefined;
     }
+  }
+
+  // Método público para navegación manual
+  nextSlide(): void {
+    this.stopAutoScroll(); // Detener auto-scroll al navegar manualmente
+    this.currentIndex.update((current) => {
+      const itemWidth = this.slideWidth();
+      const maxOffset = itemWidth * this.totalProducts();
+      const newIndex = current + 1;
+
+      // Reset a 0 cuando alcanzamos el final del primer conjunto (loop infinito)
+      if (newIndex * itemWidth >= maxOffset) {
+        return 0;
+      }
+
+      return newIndex;
+    });
+    this.startAutoScroll(); // Reiniciar auto-scroll
+  }
+
+  // Método público para navegación manual
+  prevSlide(): void {
+    this.stopAutoScroll(); // Detener auto-scroll al navegar manualmente
+    this.currentIndex.update((current) => {
+      const itemWidth = this.slideWidth();
+      const maxOffset = itemWidth * this.totalProducts();
+
+      // Si estamos en 0, ir al final del primer conjunto
+      if (current === 0) {
+        return Math.floor(maxOffset / itemWidth) - 1;
+      }
+
+      return current - 1;
+    });
+    this.startAutoScroll(); // Reiniciar auto-scroll
   }
 }

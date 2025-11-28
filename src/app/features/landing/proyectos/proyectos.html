@@ -5,80 +5,118 @@
       NUESTROS PROYECTOS
     </h3>
 
-    <!-- Contenedor del carrusel -->
-    <div class="relative overflow-x-hidden overflow-y-visible w-full py-4">
-      <div
-        class="flex gap-3 md:gap-4 lg:gap-6 px-1"
-        [style.transform]="'translateX(-' + translateX() + '%)'"
-        style="transition: transform 10s"
+    <div class="relative">
+      <!-- Botón Anterior -->
+      <button
+        (click)="prevSlide()"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-bluerms/90 hover:bg-bluerms text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 -ml-4 md:-ml-6"
+        aria-label="Anterior"
       >
-        <!-- Duplicar proyectos para loop infinito -->
-        @for (proyecto of proyectos(); track proyecto.img + '-1') {
-          <div
-            class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col items-center"
-          >
-            <figure
-              class="h-40 sm:h-48 md:h-56 lg:h-64 w-full flex items-center justify-center mb-4"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 md:h-6 md:w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+
+      <!-- Botón Siguiente -->
+      <button
+        (click)="nextSlide()"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-bluerms/90 hover:bg-bluerms text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 -mr-4 md:-mr-6"
+        aria-label="Siguiente"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 md:h-6 md:w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      <!-- Contenedor del carrusel -->
+      <div class="overflow-hidden w-full">
+        <div
+          class="flex gap-2 md:gap-3 lg:gap-4"
+          [style.transform]="'translateX(-' + currentIndex() * slideWidth() + '%)'"
+          style="transition: transform 0.5s ease-in-out"
+        >
+          <!-- Duplicar proyectos para loop infinito -->
+          @for (proyecto of proyectos(); track proyecto.img + '-1') {
+            <div
+              class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col items-center"
             >
-              <img
-                [ngSrc]="proyecto.img"
-                [alt]="proyecto.title + ' - ' + proyecto.category"
-                width="400"
-                height="400"
-                class="w-full h-full object-cover mask mask-circle shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
-                priority
-              />
-            </figure>
-            <h4 class="text-base md:text-lg lg:text-xl font-bold text-neutral mb-2 text-center">
-              {{ proyecto.title }}
-            </h4>
-            <span class="text-xs md:text-sm font-semibold text-bluerms mb-2">
-              {{ proyecto.category }}
-            </span>
-            <p class="text-xs md:text-sm text-neutral/70 mb-3 md:mb-4 text-center px-2">
-              {{ proyecto.description }}
-            </p>
-            <a
-              href="#"
-              class="btn btn-sm md:btn-md bg-bluerms hover:bg-bluerms/90 text-white border-none rounded-lg transition-colors duration-200"
+              <figure
+                class="relative h-40 sm:h-48 md:h-56 lg:ect4 w-full flex items-center justify-center mb-4"
+              >
+                <img
+                  [ngSrc]="proyecto.img"
+                  [alt]="proyecto.title + ' - ' + proyecto.category"
+                  fill=""
+                  class="absolute inset-0 w-full h-full object-cover mask mask-circle shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
+                />
+              </figure>
+              <h4 class="text-base md:text-lg lg:text-xl font-bold text-neutral mb-2 text-center">
+                {{ proyecto.title }}
+              </h4>
+              <span class="text-xs md:text-sm font-semibold text-bluerms mb-2">
+                {{ proyecto.category }}
+              </span>
+              <p class="text-xs md:text-sm text-neutral/70 mb-3 md:mb-4 text-center px-2">
+                {{ proyecto.description }}
+              </p>
+              <a
+                href="#"
+                class="btn btn-sm md:btn-md bg-bluerms hover:bg-bluerms/90 text-white border-none rounded-lg transition-colors duration-200"
+              >
+                Ver más
+              </a>
+            </div>
+          }
+          <!-- Segunda copia para loop infinito -->
+          @for (proyecto of proyectos(); track proyecto.img + '-2') {
+            <div
+              class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col items-center"
             >
-              Ver más
-            </a>
-          </div>
-        }
-        <!-- Segunda copia para loop infinito -->
-        @for (proyecto of proyectos(); track proyecto.img + '-2') {
-          <div
-            class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col items-center"
-          >
-            <figure
-              class="h-40 sm:h-48 md:h-56 lg:h-64 w-full flex items-center justify-center mb-4"
-            >
-              <img
-                [ngSrc]="proyecto.img"
-                [alt]="proyecto.title + ' - ' + proyecto.category"
-                width="400"
-                height="400"
-                class="w-full h-full object-cover mask mask-circle shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
-              />
-            </figure>
-            <h4 class="text-base md:text-lg lg:text-xl font-bold text-neutral mb-2 text-center">
-              {{ proyecto.title }}
-            </h4>
-            <span class="text-xs md:text-sm font-semibold text-bluerms mb-2">
-              {{ proyecto.category }}
-            </span>
-            <p class="text-xs md:text-sm text-neutral/70 mb-3 md:mb-4 text-center px-2">
-              {{ proyecto.description }}
-            </p>
-            <a
-              href="#"
-              class="btn btn-sm md:btn-md bg-bluerms hover:bg-bluerms/90 text-white border-none rounded-lg transition-colors duration-200"
-            >
-              Ver más
-            </a>
-          </div>
-        }
+              <figure
+                class="relative h-40 sm:h-48 md:h-56 lg:h-64 w-full flex items-center justify-center mb-4"
+              >
+                <img
+                  [ngSrc]="proyecto.img"
+                  [alt]="proyecto.title + ' - ' + proyecto.category"
+                  fill
+                  class="absolute inset-0 w-full h-full object-cover mask mask-circle shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
+                />
+              </figure>
+              <h4 class="text-base md:text-lg lg:text-xl font-bold text-neutral mb-2 text-center">
+                {{ proyecto.title }}
+              </h4>
+              <span class="text-xs md:text-sm font-semibold text-bluerms mb-2">
+                {{ proyecto.category }}
+              </span>
+              <p class="text-xs md:text-sm text-neutral/70 mb-3 md:mb-4 text-center px-2">
+                {{ proyecto.description }}
+              </p>
+              <a
+                href="#"
+                class="btn btn-sm md:btn-md bg-bluerms hover:bg-bluerms/90 text-white border-none rounded-lg transition-colors duration-200"
+              >
+                Ver más
+              </a>
+            </div>
+          }
+        </div>
       </div>
     </div>
   </div>

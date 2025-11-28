@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { ProductImagesService } from '@core/services/product-images.service';
-import type { ProductImage } from '@core/models/product-image.models';
 
 interface SlideImage {
   url: string;

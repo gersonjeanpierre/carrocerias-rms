@@ -1,20 +1,12 @@
-/* Infinite scroll animation for brands carousel */
-
-@keyframes marcas-scroll {
-  0% {
-    transform: translateX(0);
+@keyframes spin {
+  from {
+    translate: 0;
   }
-
-  100% {
-    transform: translateX(-50%);
+  to {
+    translate: -100%;
   }
 }
 
-.animate-marcas {
-  animation: marcas-scroll 30s linear infinite;
-}
-
-/* Pause animation on hover for better UX */
-.animate-marcas:hover {
-  animation-play-state: paused;
+.spin {
+  animation: spin 35s infinite linear;
 }
