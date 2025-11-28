@@ -1,0 +1,148 @@
+<app-slider></app-slider>
+
+<!-- SECCIÓN: CARROCERÍAS RMS S.A.C -->
+<section class="w-full py-12 px-4 md:px-8 lg:px-16 bg-base-100">
+  <div class="container mx-auto max-w-7xl">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <!-- Imagen -->
+      <div class="flex justify-center">
+        @defer {
+          <div class="relative w-[612px] h-[408px] max-w-full aspect-4/3">
+            <img
+              ngSrc="/images/grupo.jpg"
+              alt="Carrocerías RMS"
+              fill
+              class="object-cover rounded-lg shadow-lg w-full h-full"
+            />
+          </div>
+        } @placeholder {
+          <div class="skeleton w-full max-w-lg aspect-video rounded-lg"></div>
+        }
+      </div>
+
+      <!-- Contenido -->
+      <div class="flex flex-col justify-center">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-16 h-1 bg-bluerms"></span>
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-bluerms">
+            CARROCERÍAS RMS S.A.C
+          </h2>
+        </div>
+        <p class="text-base md:text-lg text-base-content leading-relaxed">
+          Es una empresa peruana dedicada a la fabricación y elaboración de Carrocerías General
+          cuenta con experiencia en el mercado en la industria de diseño y fabricación en metal
+          mecánica.
+        </p>
+        <p class="text-base md:text-lg text-base-content leading-relaxed mt-4">
+          Nuestro personal cuenta con experiencia en el mercado, contamos con un buen servicio post
+          venta supliendo las necesidades del cliente, brindando la confianza en el servicio
+          ofrecido.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN: COMPARACIÓN ANTES/DESPUÉS -->
+@defer {
+  <section
+    class="w-full flex justify-center py-12 px-4 md:px-8 lg:px-16 xl:px-32 max-w-7xl mx-auto"
+  >
+    <figure
+      class="diff aspect-video w-full max-w-4xl rounded-lg shadow-lg overflow-hidden"
+      tabindex="0"
+    >
+      <div class="diff-item-1 bg-white" role="img" tabindex="0">
+        <img src="/images/discover/real.png" alt="Imagen Real RMS" class="object-cover" />
+      </div>
+      <div class="diff-item-2" role="img">
+        <img src="/images/discover/plano.jpg" alt="Plano RMS" fill class="object-cover" />
+      </div>
+      <div class="diff-resizer"></div>
+    </figure>
+  </section>
+} @loading (after 200ms; minimum 1s) {
+  <section
+    class="w-full flex justify-center py-12 px-4 md:px-8 lg:px-16 xl:px-32 max-w-7xl mx-auto"
+  >
+    <div class="skeleton w-full aspect-video max-w-4xl rounded-lg"></div>
+  </section>
+}
+
+<!-- SECCIÓN: EXPERIENCIA CARROCERÍAS -->
+<section class="w-full py-16 px-4 bg-base-200">
+  <div class="flex flex-col items-center text-center max-w-3xl mx-auto">
+    <div class="relative w-48 h-24 mb-6">
+      <img ngSrc="/images/logo.png" alt="Logo RMS" fill class="object-contain" />
+    </div>
+    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-bluerms mb-4">
+      Experiencia Carrocerías
+    </h2>
+    <p class="text-lg md:text-xl text-base-content">
+      Experiencia en la Industria que marca<br />
+      Confianza y precisión
+    </p>
+  </div>
+</section>
+
+<!-- SECCIÓN: PROCESOS INDUSTRIALES -->
+<section class="w-full py-12 px-4 md:px-8 lg:px-16 bg-base-100">
+  <div class="container mx-auto max-w-7xl space-y-8">
+    @for (feature of features(); track feature.id) {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-1"></div>
+
+        <div class="lg:col-span-5 flex items-center gap-4">
+          <span class="{{ feature.icon }}"></span>
+          <h3 class="text-xl md:text-2xl font-bold text-bluerms">{{ feature.title }}</h3>
+        </div>
+
+        <div class="lg:col-span-5">
+          <p class="text-base md:text-lg text-base-content leading-relaxed">
+            {{ feature.description }}
+          </p>
+        </div>
+
+        <div class="lg:col-span-1"></div>
+      </div>
+      @if (!$last) {
+        <hr class="border-base-300" />
+      }
+    }
+  </div>
+</section>
+
+<!-- SECCIÓN: MISIÓN, VISIÓN Y VALORES -->
+<section class="w-full py-16 px-4 md:px-8 lg:px-16 bg-base-200">
+  <div class="container mx-auto max-w-7xl">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (card of missionCards(); track card.id) {
+        <div
+          class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 border-l-6 border-bluerms"
+        >
+          <div class="card-body items-center text-center">
+            <span class="{{ card.icon }}"></span>
+            <h3 class="card-title text-4xl font-bold text-bluerms mb-4">{{ card.title }}</h3>
+            @if (card.content) {
+              <p class="text-base text-left text-base-content leading-relaxed">
+                {{ card.content }}
+              </p>
+            }
+            @if (card.values) {
+              <ul class="space-y-2 text-left w-full">
+                @for (value of card.values; track value) {
+                  <li class="flex items-center gap-2">
+                    <span
+                      class="icon-[material-symbols--check-circle-rounded] w-5 h-5 text-bluerms shrink-0"
+                    ></span>
+                    <span class="text-base">{{ value }}</span>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

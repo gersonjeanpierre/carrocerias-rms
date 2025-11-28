@@ -12,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'descubrenos',
-    loadComponent: () => import('./features/landing/landing')
+    loadComponent: () => import('./features/discover/discover')
   },
   {
     path: 'productos',
