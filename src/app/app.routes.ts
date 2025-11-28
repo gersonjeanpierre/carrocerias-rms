@@ -30,7 +30,7 @@ export const routes: Routes = [
   },
   {
     path: 'contactanos',
-    loadComponent: () => import('./features/landing/landing')
+    loadComponent: () => import('./features/contact/contact')
   },
   {
     path: 'blog',
