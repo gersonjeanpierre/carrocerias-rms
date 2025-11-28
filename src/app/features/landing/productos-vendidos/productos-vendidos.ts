@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
+import { ProductImagesService } from '@core/services/product-images.service';
 
 interface Product {
   img: string;
@@ -32,96 +33,59 @@ interface Product {
 export class ProductosVendidosComponent implements OnInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly productService = inject(ProductImagesService);
 
-  readonly products = signal<Product[]>([
-    // Brazo de Izaje (2 imágenes)
-    {
-      img: '/watermark/watermark-brazo-izaje/bzi-1.jpg',
-      title: 'Brazo de Izaje',
-      category: 'Carga Pesada'
-    },
-    {
-      img: '/watermark/watermark-brazo-izaje/bzi-2.jpg',
-      title: 'Brazo de Izaje',
-      category: 'Carga Pesada'
-    },
+  readonly products = computed<Product[]>(() => {
+    const allCategories = this.productService.categories();
+    const products: Product[] = [];
 
-    // Cama Baja (2 imágenes)
-    {
-      img: '/watermark/watermark-cama-baja/cb-1.jpg',
-      title: 'Cama Baja',
-      category: 'Transporte Especializado'
-    },
-    {
-      img: '/watermark/watermark-cama-baja/cb-2.jpg',
-      title: 'Cama Baja',
-      category: 'Transporte Especializado'
-    },
+    // Para cada categoría, tomar el primer modelo con su primera imagen
+    for (const category of allCategories) {
+      if (category.subcategories) {
+        // Categoría con subcategorías: tomar primer modelo de primera subcategoría
+        const firstSubcategory = category.subcategories[0];
+        if (firstSubcategory && firstSubcategory.models.length > 0) {
+          const firstModel = firstSubcategory.models[0];
+          const firstImage = firstModel.images[0];
 
-    // Cisterna Vacío (2 imágenes)
-    {
-      img: '/watermark/watermark-cisterna-vacio/cv-1.jpg',
-      title: 'Cisterna Vacío',
-      category: 'Transporte de Líquidos'
-    },
-    {
-      img: '/watermark/watermark-cisterna-vacio/cv-2.jpg',
-      title: 'Cisterna Vacío',
-      category: 'Transporte de Líquidos'
-    },
+          if (firstImage) {
+            const imagePath = this.productService.getImagePath(
+              category.path,
+              firstModel.folderName,
+              firstImage.fileName,
+              firstSubcategory.path
+            );
 
-    // Contenedores (2 imágenes)
-    {
-      img: '/watermark/watermark-contenedores/cont-1.jpg',
-      title: 'Contenedores',
-      category: 'Carga General'
-    },
-    {
-      img: '/watermark/watermark-contenedores/cont-2.jpg',
-      title: 'Contenedores',
-      category: 'Carga General'
-    },
+            products.push({
+              img: imagePath,
+              title: category.name,
+              category: category.name
+            });
+          }
+        }
+      } else if (category.models && category.models.length > 0) {
+        // Categoría sin subcategorías: tomar primer modelo
+        const firstModel = category.models[0];
+        const firstImage = firstModel.images[0];
 
-    // Furgón (2 imágenes)
-    { img: '/watermark/watermark-furgon/furg-1.jpg', title: 'Furgón', category: 'Carga Seca' },
-    { img: '/watermark/watermark-furgon/furg-2.jpg', title: 'Furgón', category: 'Carga Seca' },
+        if (firstImage) {
+          const imagePath = this.productService.getImagePath(
+            category.path,
+            firstModel.folderName,
+            firstImage.fileName
+          );
 
-    // Grúa Contenedor Chatarra (2 imágenes)
-    {
-      img: '/watermark/watermark-grua-contenedor-chatarra/gcc-1.jpg',
-      title: 'Grúa Contenedor',
-      category: 'Manejo de Chatarra'
-    },
-    {
-      img: '/watermark/watermark-grua-contenedor-chatarra/gcc-2.jpg',
-      title: 'Grúa Contenedor',
-      category: 'Manejo de Chatarra'
-    },
-
-    // Roquera Semirroquera (2 imágenes)
-    {
-      img: '/watermark/watermark-roquera-semirroquera/roq-1.jpg',
-      title: 'Roquera',
-      category: 'Materiales de Construcción'
-    },
-    {
-      img: '/watermark/watermark-roquera-semirroquera/roq-2.jpg',
-      title: 'Roquera',
-      category: 'Materiales de Construcción'
-    },
-
-    // Semirremolque Plataforma (2 imágenes)
-    {
-      img: '/watermark/watermark-semirremolque-plataforma/sp-1.jpg',
-      title: 'Semirremolque Plataforma',
-      category: 'Carga Plana'
-    },
-    {
-      img: '/watermark/watermark-semirremolque-plataforma/sp-2.jpg',
-      title: 'Semirremolque Plataforma',
-      category: 'Carga Plana'
+          products.push({
+            img: imagePath,
+            title: category.name,
+            category: category.name
+          });
+        }
+      }
     }
-  ]);
+
+    return products;
+  });
 
   readonly currentIndex = signal(0);
   readonly totalProducts = computed(() => this.products().length);

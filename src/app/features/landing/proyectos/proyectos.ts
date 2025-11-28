@@ -11,12 +11,13 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
+import { ProductImagesService } from '@core/services/product-images.service';
 
 interface Proyecto {
   img: string;
-  fecha: string;
   title: string;
   category: string;
+  description: string;
 }
 
 @Component({
@@ -32,124 +33,91 @@ interface Proyecto {
 export class ProyectosComponent implements OnInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly productService = inject(ProductImagesService);
 
-  readonly proyectos = signal<Proyecto[]>([
-    // Brazo de Izaje
-    {
-      img: '/watermark/watermark-brazo-izaje/bzi-3.jpg',
-      fecha: '15 / Noviembre / 2024',
-      title: 'Brazo de Izaje Industrial',
-      category: 'Carga Pesada'
-    },
-    {
-      img: '/watermark/watermark-brazo-izaje/bzi-4.jpg',
-      fecha: '10 / Noviembre / 2024',
-      title: 'Sistema de Izaje Especializado',
-      category: 'Carga Pesada'
-    },
+  // Mapa de descripciones por categoría
+  private readonly categoryDescriptions: Record<string, string> = {
+    '1-brazos-de-izaje': 'Sistemas especializados para carga y descarga de contenedores pesados',
+    '2-contenedores': 'Soluciones versátiles para transporte de carga general',
+    '3-tanques-cisternas-de-vacio':
+      'Equipos especializados para transporte de líquidos y residuos industriales',
+    '4-semirremolque-plataforma': 'Plataformas robustas para carga sobredimensionada',
+    '5-volquete-roquero-semirroquero':
+      'Equipos para transporte de materiales de construcción y minería',
+    '6-semirremolque-cama-baja-lowboy': 'Soluciones para transporte de maquinaria pesada',
+    '10-furgones': 'Unidades cerradas para protección de carga seca',
+    '11-baranda': 'Sistemas modulares para transporte de carga general',
+    '12-grua-con-contenedor-para-chatarra':
+      'Equipos especializados para manejo de materiales reciclables'
+  };
 
-    // Cama Baja
-    {
-      img: '/watermark/watermark-cama-baja/cb-3.jpg',
-      fecha: '05 / Noviembre / 2024',
-      title: 'Cama Baja para Transporte',
-      category: 'Transporte Especializado'
-    },
+  readonly proyectos = computed<Proyecto[]>(() => {
+    const categories = this.productService.categories();
+    const proyectos: Proyecto[] = [];
 
-    // Cisterna Vacío
-    {
-      img: '/watermark/watermark-cisterna-vacio/cv-3.jpg',
-      fecha: '28 / Octubre / 2024',
-      title: 'Cisterna de Vacío Industrial',
-      category: 'Transporte de Líquidos'
-    },
-    {
-      img: '/watermark/watermark-cisterna-vacio/cv-4.jpg',
-      fecha: '20 / Octubre / 2024',
-      title: 'Sistema de Cisterna Especializado',
-      category: 'Transporte de Líquidos'
-    },
+    for (const category of categories) {
+      // Obtener el primer modelo de la categoría
+      let firstModel = null;
+      let subcategoryPath: string | undefined = undefined;
 
-    // Contenedores
-    {
-      img: '/watermark/watermark-contenedores/cont-3.jpg',
-      fecha: '15 / Octubre / 2024',
-      title: 'Contenedores de Carga',
-      category: 'Carga General'
-    },
+      if (category.subcategories && category.subcategories.length > 0) {
+        // Buscar en subcategorías
+        for (const subcategory of category.subcategories) {
+          if (subcategory.models.length > 0) {
+            firstModel = subcategory.models[0];
+            subcategoryPath = subcategory.path;
+            break;
+          }
+        }
+      } else if (category.models && category.models.length > 0) {
+        // Modelos directos
+        firstModel = category.models[0];
+      }
 
-    // Furgón
-    {
-      img: '/watermark/watermark-furgon/furg-3.jpg',
-      fecha: '08 / Octubre / 2024',
-      title: 'Furgón de Carga Seca',
-      category: 'Carga Seca'
-    },
-    {
-      img: '/watermark/watermark-furgon/furg-4.jpg',
-      fecha: '01 / Octubre / 2024',
-      title: 'Furgón Refrigerado',
-      category: 'Carga Seca'
-    },
+      // Si encontramos un modelo con al menos una imagen
+      if (firstModel && firstModel.images.length > 0) {
+        const firstImage = firstModel.images[0];
+        const imagePath = this.productService.getImagePath(
+          category.path,
+          firstModel.folderName,
+          firstImage.fileName,
+          subcategoryPath
+        );
 
-    // Grúa Contenedor
-    {
-      img: '/watermark/watermark-grua-contenedor-chatarra/gcc-3.jpg',
-      fecha: '25 / Septiembre / 2024',
-      title: 'Grúa para Contenedores',
-      category: 'Manejo de Chatarra'
-    },
-
-    // Roquera
-    {
-      img: '/watermark/watermark-roquera-semirroquera/roq-1.jpg',
-      fecha: '18 / Septiembre / 2024',
-      title: 'Roquera para Materiales',
-      category: 'Materiales de Construcción'
-    },
-
-    // Semirremolque Plataforma
-    {
-      img: '/watermark/watermark-semirremolque-plataforma/sp-3.jpg',
-      fecha: '10 / Septiembre / 2024',
-      title: 'Semirremolque Plataforma',
-      category: 'Carga Plana'
-    },
-    {
-      img: '/watermark/watermark-semirremolque-plataforma/sp-4.jpg',
-      fecha: '05 / Septiembre / 2024',
-      title: 'Plataforma de Carga Extendida',
-      category: 'Carga Plana'
+        proyectos.push({
+          img: imagePath,
+          title: firstModel.name,
+          category: category.name,
+          description:
+            this.categoryDescriptions[category.id] || 'Soluciones industriales especializadas'
+        });
+      }
     }
-  ]);
 
-  readonly currentIndex = signal(0);
+    return proyectos;
+  });
+
+  // Slide continuo y suave
+  readonly translateX = signal(0);
   readonly totalProyectos = computed(() => this.proyectos().length);
 
   // Responsive: número de proyectos visibles según el ancho de pantalla
   readonly visibleProyectos = signal(3); // Default: desktop (lg)
 
-  // Computed: máximo índice basado en proyectos visibles
-  readonly maxIndex = computed(() => Math.max(0, this.totalProyectos() - this.visibleProyectos()));
-
-  // Computed: ancho de desplazamiento en porcentaje
-  readonly slideWidth = computed(() => {
-    const visible = this.visibleProyectos();
-    return 100 / visible;
-  });
-
-  private intervalId?: number;
+  private animationFrameId?: number;
+  private lastTimestamp = 0;
+  private readonly scrollSpeed = 0.02; // Velocidad de desplazamiento (píxeles por ms)
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.updateVisibleProyectos();
-      this.startAutoScroll();
+      this.startContinuousScroll();
       window.addEventListener('resize', this.onResize.bind(this));
     }
   }
 
   ngOnDestroy(): void {
-    this.stopAutoScroll();
+    this.stopContinuousScroll();
     if (isPlatformBrowser(this.platformId)) {
       window.removeEventListener('resize', this.onResize.bind(this));
     }
@@ -175,33 +143,45 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     } else {
       this.visibleProyectos.set(3); // Large+: 3 proyectos
     }
-
-    // Resetear índice si excede el máximo
-    if (this.currentIndex() > this.maxIndex()) {
-      this.currentIndex.set(0);
-    }
   }
 
-  private startAutoScroll(): void {
-    this.stopAutoScroll();
-    this.intervalId = window.setInterval(() => {
+  private startContinuousScroll(): void {
+    this.stopContinuousScroll();
+    this.lastTimestamp = performance.now();
+
+    const animate = (timestamp: number) => {
+      const deltaTime = timestamp - this.lastTimestamp;
+      this.lastTimestamp = timestamp;
+
       this.zone.run(() => {
-        this.nextSlide();
+        // Incrementar translateX de forma continua
+        this.translateX.update((current) => {
+          const newValue = current + deltaTime * this.scrollSpeed;
+
+          // Calcular el ancho de cada item basado en proyectos visibles
+          const itemWidth = 100 / this.visibleProyectos();
+          // El punto de reseteo es cuando completamos el primer conjunto
+          const resetPoint = itemWidth * this.totalProyectos();
+
+          // Resetear a 0 cuando alcanzamos el punto de reseteo para loop infinito
+          if (newValue >= resetPoint) {
+            return newValue - resetPoint;
+          }
+
+          return newValue;
+        });
       });
-    }, 3000);
+
+      this.animationFrameId = requestAnimationFrame(animate);
+    };
+
+    this.animationFrameId = requestAnimationFrame(animate);
   }
 
-  private stopAutoScroll(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = undefined;
+  private stopContinuousScroll(): void {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = undefined;
     }
-  }
-
-  private nextSlide(): void {
-    this.currentIndex.update((current) => {
-      const max = this.maxIndex();
-      return current >= max ? 0 : current + 1;
-    });
   }
 }

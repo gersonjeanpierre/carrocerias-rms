@@ -4,6 +4,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ProductImagesService } from '@core/services/product-images.service';
 import type { ProductImage } from '@core/models/product-image.models';
 
+import { Model3d } from '../../model3d/model3d';
+
 interface ProductDetailModel {
   readonly id: string;
   readonly modelId: string;
@@ -28,7 +30,7 @@ interface QuoteForm {
 
 @Component({
   selector: 'app-product-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, Model3d],
   templateUrl: './product-detail.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
