@@ -14,6 +14,18 @@ export interface ProductImage {
 }
 
 /**
+ * Especificación técnica de un producto
+ */
+export interface ProductSpecification {
+  /** Nombre de la especificación (ej: 'Capacidad', 'Material', 'Soldadura') */
+  readonly label: string;
+  /** Valor de la especificación (ej: '10 m³ a 40 m³', 'Acero ASTM A36') */
+  readonly value: string;
+  /** Categoría de la especificación para agrupar (opcional) */
+  readonly category?: string;
+}
+
+/**
  * Representa un modelo/producto específico con sus imágenes
  */
 export interface ProductModel {
@@ -37,6 +49,10 @@ export interface ProductSubcategory {
   readonly name: string;
   /** Ruta relativa de la subcategoría */
   readonly path: string;
+  /** Descripción de la subcategoría (opcional) */
+  readonly description?: string;
+  /** Especificaciones técnicas de la subcategoría (opcional) */
+  readonly specifications?: readonly ProductSpecification[];
   /** Modelos/productos pertenecientes a esta subcategoría */
   readonly models: readonly ProductModel[];
 }
@@ -51,6 +67,10 @@ export interface ProductCategory {
   readonly name: string;
   /** Ruta relativa de la categoría */
   readonly path: string;
+  /** Descripción de la categoría */
+  readonly description?: string;
+  /** Especificaciones técnicas de la categoría */
+  readonly specifications?: readonly ProductSpecification[];
   /** Subcategorías (si aplica) */
   readonly subcategories?: readonly ProductSubcategory[];
   /** Modelos directos (si la categoría no tiene subcategorías) */

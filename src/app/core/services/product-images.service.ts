@@ -2,7 +2,8 @@ import { Injectable, signal, computed } from '@angular/core';
 import type {
   ProductCategory,
   ProductModel,
-  ProductSubcategory
+  ProductSubcategory,
+  ProductSpecification
 } from '../models/product-image.models';
 
 /**
@@ -38,11 +39,24 @@ export class ProductImagesService {
       id: '1-brazos-de-izaje',
       name: 'Brazos de Izaje',
       path: '1-brazos-de-izaje',
+      description:
+        'Dispositivos mecánicos para la carga y descarga de contenedores y otros equipos, adaptables a diferentes chasis. Disponibles en versiones para carga pesada, intermedia y liviana.',
       subcategories: [
         {
           id: 'brazo-de-izaje-carga-pesada-14-20tn',
           name: 'Brazo de Izaje Carga Pesada (14-20tn)',
           path: 'brazo-de-izaje-carga-pesada-14-20tn',
+          description:
+            'Brazos de izaje diseñados para operaciones de carga pesada con capacidad de 14 a 20 toneladas.',
+          specifications: [
+            { label: 'Capacidad', value: '14 - 20 TN' },
+            { label: 'Material', value: 'Acero de alta resistencia y alto límite elástico' },
+            { label: 'Componentes', value: 'Fundición en zonas de gran esfuerzo' },
+            { label: 'Fijación', value: 'Piezas para diferentes tipos de chasis' },
+            { label: 'Bloqueo', value: 'Hidráulico posterior' },
+            { label: 'Adaptabilidad de Contenedor', value: '3700 mm - 6800 mm' },
+            { label: 'Sistema', value: 'Rodillo Posterior, Sistema hidráulico' }
+          ],
           models: [
             {
               id: 'brazo-de-izaje-1',
@@ -98,12 +112,36 @@ export class ProductImagesService {
           id: 'brazo-de-izaje-carga-intermedia-7-12tn',
           name: 'Brazo de Izaje Carga Intermedia (7-12tn)',
           path: 'brazo-de-izaje-carga-intermedia-7-12tn',
+          description:
+            'Brazos de izaje para operaciones de carga intermedia con capacidad de 7 a 12 toneladas.',
+          specifications: [
+            { label: 'Capacidad', value: '7 - 12 TN' },
+            { label: 'Material', value: 'Acero de alta resistencia y alto límite elástico' },
+            { label: 'Componentes', value: 'Fundición en zonas de gran esfuerzo' },
+            { label: 'Fijación', value: 'Piezas para diferentes tipos de chasis' },
+            { label: 'Bloqueo', value: 'Hidráulico posterior' },
+            { label: 'Adaptabilidad de Contenedor', value: '2700 mm - 5800 mm' },
+            { label: 'Sistema', value: 'Rodillo Posterior, Sistema hidráulico' }
+          ],
           models: []
         },
         {
           id: 'brazo-de-izaje-carga-liviana-3-5tn',
           name: 'Brazo de Izaje Carga Liviana (3-5tn)',
           path: 'brazo-de-izaje-carga-liviana-3-5tn',
+          description:
+            'Brazos de izaje articulados para operaciones livianas en entornos urbanos con capacidad de 3 a 5 toneladas.',
+          specifications: [
+            { label: 'Capacidad', value: '3 - 5 TN' },
+            { label: 'Aplicación', value: 'Entornos urbanos' },
+            { label: 'Seguridad', value: 'Integrada para limitar movimientos incorrectos' },
+            { label: 'Material', value: 'Acero de alta resistencia' },
+            { label: 'Peso', value: 'Optimizado para máxima carga útil' },
+            { label: 'Fijación', value: 'Piezas para diferentes tipos de chasis' },
+            { label: 'Altura de Gancho', value: '920 mm - 1570 mm' },
+            { label: 'Adaptabilidad de Contenedor', value: '2300 mm - 4900 mm' },
+            { label: 'Sistema', value: 'Rodillo Posterior, Sistema hidráulico' }
+          ],
           models: []
         }
       ]
@@ -114,6 +152,18 @@ export class ProductImagesService {
       id: '2-contenedores',
       name: 'Contenedores',
       path: '2-contenedores',
+      description:
+        'Fabricados en planchas de acero de alta resistencia para reducir peso y aumentar carga útil. Modelos herméticos disponibles para lodos.',
+      specifications: [
+        { label: 'Capacidad', value: '10 m³ a 40 m³' },
+        { label: 'Soldadura', value: 'AWS D1.1 GMAW' },
+        {
+          label: 'Puertas',
+          value: 'Traseras de doble hoja, bisagras soldadas y puntos de lubricación'
+        },
+        { label: 'Movilidad', value: 'Rodillos metálicos con lubricación interna' },
+        { label: 'Acceso', value: 'Escalera lateral y/o frontal' }
+      ],
       models: [
         {
           id: 'contenedor-1',
@@ -153,6 +203,14 @@ export class ProductImagesService {
       id: '3-tanques-cisternas-de-vacio',
       name: 'Tanques Cisternas de Vacío',
       path: '3-tanques-cisternas-de-vacio',
+      description:
+        'Adaptados para transporte y succión de residuos líquidos, lodos, grasas, arenas y aguas residuales.',
+      specifications: [
+        { label: 'Compactos', value: '0.5 m³, 1 m³, 2 m³' },
+        { label: 'Medianos', value: '3 m³ a 10 m³' },
+        { label: 'Industriales', value: '12 m³, 15 m³, 20 m³, hasta 30 m³' },
+        { label: 'Bomba', value: 'Bomba de vacío italiana' }
+      ],
       models: [
         {
           id: 'cisterna-de-vacio-1',
@@ -218,6 +276,13 @@ export class ProductImagesService {
       id: '4-semirremolque-plataforma',
       name: 'Semirremolque Plataforma',
       path: '4-semirremolque-plataforma',
+      description:
+        'Plataforma recta o extendible para transporte de carga general, contenedores y maquinaria pesada.',
+      specifications: [
+        { label: 'Largo', value: 'Hasta 14.5 m' },
+        { label: 'Capacidad', value: '40 TN' },
+        { label: 'Material', value: 'Acero estructural ASTM A36 / ASTM A-572 Grado 50' }
+      ],
       models: [
         {
           id: 'semirremolque-plataforma-1',
@@ -282,6 +347,18 @@ export class ProductImagesService {
       id: '5-volquete-roquero-semirroquero',
       name: 'Volquete Roquero/Semirroquero',
       path: '5-volquete-roquero-semirroquero',
+      description:
+        'Fabricados en acero de alta resistencia para reducir peso y aumentar carga útil. Tipos constructora, roquera o semirroquera.',
+      specifications: [
+        { label: 'Capacidad', value: '15 m³ a 26 m³' },
+        { label: 'Compuertas', value: 'Batiente, basculante, doble hoja, hidráulica' },
+        { label: 'Cajón', value: 'Rectangular o half-round' },
+        { label: 'Intercambiabilidad', value: 'Compatible con diferentes tracto camiones' },
+        { label: 'Tratamiento superficial', value: 'Arenado SSPC-SP6' },
+        { label: 'Acabado', value: 'Pintura epóxica' },
+        { label: 'Sistema', value: 'Sistema hidráulico importado' },
+        { label: 'Certificado', value: 'Certificado estructural (opcional)' }
+      ],
       models: [
         {
           id: 'roquera-1',
@@ -319,6 +396,20 @@ export class ProductImagesService {
       id: '6-semirremolque-cama-baja-lowboy',
       name: 'Semirremolque Cama Baja (Lowboy)',
       path: '6-semirremolque-cama-baja-lowboy',
+      description: 'Diseñados para transporte de cargas diversas hasta 60 TN.',
+      specifications: [
+        { label: 'Chasis', value: 'Acero estructural ASTM A-572 Grado 50 / ASTM A36' },
+        { label: 'Largo', value: 'Hasta 14.5 m' },
+        { label: 'Piso', value: 'Plancha estriada o madera' },
+        { label: 'Suspensión', value: 'Mecánica multibrazo o neumática' },
+        {
+          label: 'Frenos',
+          value: 'Neumáticos, válvula de relevo rápido, cámara de freno con resorte de emergencia'
+        },
+        { label: 'Kingpin', value: '2" estándar o 3.5" opcional' },
+        { label: 'Iluminación', value: 'LED' },
+        { label: 'Certificado', value: 'Certificado minero/vial (opcional)' }
+      ],
       models: [
         {
           id: 'cama-baja-1',
@@ -346,18 +437,41 @@ export class ProductImagesService {
       id: '7-semirremolque-volquete',
       name: 'Semirremolque Volquete',
       path: '7-semirremolque-volquete',
+      description: 'Tolva semirroquera con descarga trasera y sistema hidráulico importado.',
+      specifications: [
+        { label: 'Volumen útil', value: '25 m³ / 30 m³ / 35 m³' },
+        { label: 'Carga útil', value: 'Hasta 35 TN' },
+        { label: 'Material de piso', value: 'Acero antidesgaste HARDOX 450' },
+        { label: 'Laterales', value: 'Acero estructural ASTM A-572 Grado 50' },
+        { label: 'Descarga', value: 'Actuador hidráulico telescópico 4-5 etapas, ángulo 45°' },
+        { label: 'Puerta trasera', value: 'Basculante, apertura automática o manual' },
+        { label: 'Certificado', value: 'Certificado minero/vial (opcional)' }
+      ],
       models: []
     },
     {
       id: '8-semirremolque-cisterna',
       name: 'Semirremolque Cisterna',
       path: '8-semirremolque-cisterna',
+      description:
+        'Para agua, combustible y otros líquidos, cumpliendo normativa técnica nacional.',
+      specifications: [
+        { label: 'Capacidad agua', value: 'Hasta 10500 GL' },
+        { label: 'Combustible', value: 'Certificado de hermeticidad y cubicaje, válvula API' },
+        { label: 'Soldadura', value: 'AWS D1.1 GMAW' }
+      ],
       models: []
     },
     {
       id: '9-cisterna',
       name: 'Cisterna',
       path: '9-cisterna',
+      description: 'Para agua y combustible, diseño según norma MTC y OSINERGMIN.',
+      specifications: [
+        { label: 'Agua', value: '1000 GL – 8000 GL' },
+        { label: 'Combustible', value: 'Sistema de despacho simple, dual y triple' },
+        { label: 'Certificado', value: 'Certificado de hermeticidad y cubicaje' }
+      ],
       models: []
     },
 
@@ -366,6 +480,14 @@ export class ProductImagesService {
       id: '10-furgones',
       name: 'Furgones',
       path: '10-furgones',
+      description: 'Estructura reforzada y hermética, para transporte seguro de mercancías.',
+      specifications: [
+        { label: 'Soldadura', value: 'AWS D1.1 GMAW' },
+        { label: 'Tratamiento superficial', value: 'Arenado SSPC-SP6' },
+        { label: 'Acabado', value: 'Pintura epóxica' },
+        { label: 'Iluminación', value: 'LED' },
+        { label: 'Forro', value: 'Techo y laterales en acero galvanizado' }
+      ],
       models: [
         {
           id: 'furgon-1',
@@ -453,6 +575,16 @@ export class ProductImagesService {
       id: '11-baranda',
       name: 'Baranda',
       path: '11-baranda',
+      description:
+        'Configuración según necesidad de carga, con paneles removibles y pórticos opcionales.',
+      specifications: [
+        { label: 'Piso', value: 'Plancha estriada' },
+        { label: 'Acabado', value: 'Pintura epóxica' },
+        { label: 'Estructura', value: 'Puentes estabilizadores' },
+        { label: 'Capacidades', value: '6 a 30 TN' },
+        { label: 'Barandas', value: 'Puertas abatibles, paneles removibles' },
+        { label: 'Garantía', value: '12 meses' }
+      ],
       subcategories: [
         {
           id: '1-baranda-telera',
@@ -491,6 +623,16 @@ export class ProductImagesService {
       id: '12-grua-con-contenedor-para-chatarra',
       name: 'Grúa con Contenedor para Chatarra',
       path: '12-grua-con-contenedor-para-chatarra',
+      description:
+        'Grúa para chatarra metálica con brazo hidráulico extensible y contenedor, garra hidráulica para chatarra.',
+      specifications: [
+        { label: 'Grúa - Carga útil', value: '11 TN' },
+        { label: 'Grúa - Presión de trabajo', value: '250 bar' },
+        { label: 'Grúa - Giro', value: 'Infinito' },
+        { label: 'Grúa - Control', value: '2 joysticks electrónicos' },
+        { label: 'Garra - Capacidad', value: '0.5 m³ a 1 m³' },
+        { label: 'Garra - Presión máxima', value: '270 bar' }
+      ],
       models: [
         {
           id: 'grua-con-contenedor-para-chatarra-1',

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ProductImagesService } from '@core/services/product-images.service';
-import type { ProductImage } from '@core/models/product-image.models';
+import type { ProductImage, ProductSpecification } from '@core/models/product-image.models';
 
 import { Model3d } from '../../../shared/model3d/model3d';
 
@@ -17,6 +17,7 @@ interface ProductDetailModel {
   readonly modelFolderName: string;
   readonly description: string;
   readonly features: readonly string[];
+  readonly specifications: readonly ProductSpecification[];
   readonly images: readonly ProductImage[];
 }
 
@@ -78,7 +79,10 @@ export default class ProductDetail {
         subcategoryId,
         subcategoryPath: subcategory.path,
         modelFolderName: model.folderName,
-        description: `Producto de alta calidad fabricado según las especificaciones más exigentes del mercado. 
+        description:
+          subcategory.description ||
+          category.description ||
+          `Producto de alta calidad fabricado según las especificaciones más exigentes del mercado. 
         Este ${model.name} combina durabilidad y rendimiento excepcional, diseñado para satisfacer 
         las necesidades de operaciones industriales y comerciales de gran escala.`,
         features: [
@@ -88,6 +92,7 @@ export default class ProductDetail {
           'Mantenimiento simplificado',
           'Garantía extendida disponible'
         ],
+        specifications: subcategory.specifications || category.specifications || [],
         images: model.images
       };
     }
@@ -107,7 +112,9 @@ export default class ProductDetail {
         categoryId,
         categoryPath: category.path,
         modelFolderName: model.folderName,
-        description: `Producto de alta calidad fabricado según las especificaciones más exigentes del mercado. 
+        description:
+          category.description ||
+          `Producto de alta calidad fabricado según las especificaciones más exigentes del mercado. 
         Este ${model.name} combina durabilidad y rendimiento excepcional, diseñado para satisfacer 
         las necesidades de operaciones industriales y comerciales de gran escala.`,
         features: [
@@ -117,6 +124,7 @@ export default class ProductDetail {
           'Mantenimiento simplificado',
           'Garantía extendida disponible'
         ],
+        specifications: category.specifications || [],
         images: model.images
       };
     }
