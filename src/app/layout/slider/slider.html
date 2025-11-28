@@ -18,6 +18,8 @@
       [alt]="currentSlide().title"
       class="object-contain"
       sizes="100vw"
+      priority
+      fetchpriority="high"
       (load)="onImageLoad($event)"
     />
 

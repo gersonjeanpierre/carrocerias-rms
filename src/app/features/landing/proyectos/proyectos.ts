@@ -24,10 +24,7 @@ interface Proyecto {
   selector: 'app-proyectos',
   imports: [NgOptimizedImage],
   templateUrl: './proyectos.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(window:resize)': 'onResize()'
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProyectosComponent implements OnInit, OnDestroy {
   private readonly zone = inject(NgZone);

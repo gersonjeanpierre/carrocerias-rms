@@ -11,7 +11,7 @@ import type {
  * Nueva estructura:
  * - Cada MODELO es un producto (ej: brazo-de-izaje-1, furgon-3)
  * - Cada modelo puede tener MÚLTIPLES imágenes
- * - Ruta física: /category/[subcategory]/model-folder/image.jpg
+ * - Ruta física: /category/[subcategory]/model-folder/image.webp
  *
  * @example
  * ```typescript
@@ -49,7 +49,7 @@ export class ProductImagesService {
               name: 'Brazo de Izaje Modelo 1',
               folderName: 'brazo-de-izaje-1',
               images: [
-                { fileName: 'brazo-de-izaje-1.jpg', alt: 'Brazo de Izaje 1 - Vista Principal' }
+                { fileName: 'brazo-de-izaje-1.webp', alt: 'Brazo de Izaje 1 - Vista Principal' }
               ]
             },
             {
@@ -57,7 +57,7 @@ export class ProductImagesService {
               name: 'Brazo de Izaje Modelo 2',
               folderName: 'brazo-de-izaje-2',
               images: [
-                { fileName: 'brazo-de-izaje-2.jpg', alt: 'Brazo de Izaje 2 - Vista Principal' }
+                { fileName: 'brazo-de-izaje-2.webp', alt: 'Brazo de Izaje 2 - Vista Principal' }
               ]
             },
             {
@@ -65,7 +65,7 @@ export class ProductImagesService {
               name: 'Brazo de Izaje Modelo 3',
               folderName: 'brazo-de-izaje-3',
               images: [
-                { fileName: 'brazo-de-izaje-3.jpg', alt: 'Brazo de Izaje 3 - Vista Principal' }
+                { fileName: 'brazo-de-izaje-3.webp', alt: 'Brazo de Izaje 3 - Vista Principal' }
               ]
             },
             {
@@ -73,7 +73,7 @@ export class ProductImagesService {
               name: 'Brazo de Izaje Modelo 4',
               folderName: 'brazo-de-izaje-4',
               images: [
-                { fileName: 'brazo-de-izaje-4.jpg', alt: 'Brazo de Izaje 4 - Vista Principal' }
+                { fileName: 'brazo-de-izaje-4.webp', alt: 'Brazo de Izaje 4 - Vista Principal' }
               ]
             },
             {
@@ -81,7 +81,7 @@ export class ProductImagesService {
               name: 'Brazo de Izaje Modelo 5',
               folderName: 'brazo-de-izaje-5',
               images: [
-                { fileName: 'brazo-de-izaje-5.jpg', alt: 'Brazo de Izaje 5 - Vista Principal' }
+                { fileName: 'brazo-de-izaje-5.webp', alt: 'Brazo de Izaje 5 - Vista Principal' }
               ]
             },
             {
@@ -89,7 +89,7 @@ export class ProductImagesService {
               name: 'Brazo de Izaje Modelo 6',
               folderName: 'brazo-de-izaje-6',
               images: [
-                { fileName: 'brazo-de-izaje-6.jpg', alt: 'Brazo de Izaje 6 - Vista Principal' }
+                { fileName: 'brazo-de-izaje-6.webp', alt: 'Brazo de Izaje 6 - Vista Principal' }
               ]
             }
           ]
@@ -119,31 +119,31 @@ export class ProductImagesService {
           id: 'contenedor-1',
           name: 'Contenedor Modelo 1',
           folderName: 'contenedor-1',
-          images: [{ fileName: 'contenedor-1.jpg', alt: 'Contenedor 1 - Vista Principal' }]
+          images: [{ fileName: 'contenedor-1.webp', alt: 'Contenedor 1 - Vista Principal' }]
         },
         {
           id: 'contenedor-2',
           name: 'Contenedor Modelo 2',
           folderName: 'contenedor-2',
-          images: [{ fileName: 'contenedor-2.jpg', alt: 'Contenedor 2 - Vista Principal' }]
+          images: [{ fileName: 'contenedor-2.webp', alt: 'Contenedor 2 - Vista Principal' }]
         },
         {
           id: 'contenedor-3',
           name: 'Contenedor Modelo 3',
           folderName: 'contenedor-3',
-          images: [{ fileName: 'contenedor-3.jpg', alt: 'Contenedor 3 - Vista Principal' }]
+          images: [{ fileName: 'contenedor-3.webp', alt: 'Contenedor 3 - Vista Principal' }]
         },
         {
           id: 'contenedor-4',
           name: 'Contenedor Modelo 4',
           folderName: 'contenedor-4',
-          images: [{ fileName: 'contenedor-4.jpg', alt: 'Contenedor 4 - Vista Principal' }]
+          images: [{ fileName: 'contenedor-4.webp', alt: 'Contenedor 4 - Vista Principal' }]
         },
         {
           id: 'contenedor-5',
           name: 'Contenedor Modelo 5',
           folderName: 'contenedor-5',
-          images: [{ fileName: 'contenedor-5.jpg', alt: 'Contenedor 5 - Vista Principal' }]
+          images: [{ fileName: 'contenedor-5.webp', alt: 'Contenedor 5 - Vista Principal' }]
         }
       ]
     },
@@ -159,7 +159,7 @@ export class ProductImagesService {
           name: 'Cisterna de Vacío Modelo 1',
           folderName: 'cisterna-de-vacio-1',
           images: [
-            { fileName: 'cisterna-de-vacio-1.jpg', alt: 'Cisterna de Vacío 1 - Vista Principal' }
+            { fileName: 'cisterna-de-vacio-1.webp', alt: 'Cisterna de Vacío 1 - Vista Principal' }
           ]
         },
         {
@@ -167,7 +167,7 @@ export class ProductImagesService {
           name: 'Cisterna de Vacío Modelo 2',
           folderName: 'cisterna-de-vacio-2',
           images: [
-            { fileName: 'cisterna-de-vacio-2.jpg', alt: 'Cisterna de Vacío 2 - Vista Principal' }
+            { fileName: 'cisterna-de-vacio-2.webp', alt: 'Cisterna de Vacío 2 - Vista Principal' }
           ]
         },
         {
@@ -175,7 +175,7 @@ export class ProductImagesService {
           name: 'Cisterna de Vacío Modelo 3',
           folderName: 'cisterna-de-vacio-3',
           images: [
-            { fileName: 'cisterna-de-vacio-3.jpg', alt: 'Cisterna de Vacío 3 - Vista Principal' }
+            { fileName: 'cisterna-de-vacio-3.webp', alt: 'Cisterna de Vacío 3 - Vista Principal' }
           ]
         },
         {
@@ -183,7 +183,7 @@ export class ProductImagesService {
           name: 'Cisterna de Vacío Modelo 4',
           folderName: 'cisterna-de-vacio-4',
           images: [
-            { fileName: 'cisterna-de-vacio-4.jpg', alt: 'Cisterna de Vacío 4 - Vista Principal' }
+            { fileName: 'cisterna-de-vacio-4.webp', alt: 'Cisterna de Vacío 4 - Vista Principal' }
           ]
         },
         {
@@ -191,7 +191,7 @@ export class ProductImagesService {
           name: 'Cisterna de Vacío Modelo 5',
           folderName: 'cisterna-de-vacio-5',
           images: [
-            { fileName: 'cisterna-de-vacio-5.jpg', alt: 'Cisterna de Vacío 5 - Vista Principal' }
+            { fileName: 'cisterna-de-vacio-5.webp', alt: 'Cisterna de Vacío 5 - Vista Principal' }
           ]
         },
         {
@@ -199,7 +199,7 @@ export class ProductImagesService {
           name: 'Cisterna de Vacío Modelo 6',
           folderName: 'cisterna-de-vacio-6',
           images: [
-            { fileName: 'cisterna-de-vacio-6.jpg', alt: 'Cisterna de Vacío 6 - Vista Principal' }
+            { fileName: 'cisterna-de-vacio-6.webp', alt: 'Cisterna de Vacío 6 - Vista Principal' }
           ]
         },
         {
@@ -207,7 +207,7 @@ export class ProductImagesService {
           name: 'Cisterna de Vacío Modelo 7',
           folderName: 'cisterna-de-vacio-7',
           images: [
-            { fileName: 'cisterna-de-vacio-7.jpg', alt: 'Cisterna de Vacío 7 - Vista Principal' }
+            { fileName: 'cisterna-de-vacio-7.webp', alt: 'Cisterna de Vacío 7 - Vista Principal' }
           ]
         }
       ]
@@ -225,7 +225,7 @@ export class ProductImagesService {
           folderName: 'semirremolque-plataforma-1',
           images: [
             {
-              fileName: 'semirremolque-plataforma-1.jpg',
+              fileName: 'semirremolque-plataforma-1.webp',
               alt: 'Semirremolque Plataforma 1 - Vista Principal'
             }
           ]
@@ -236,7 +236,7 @@ export class ProductImagesService {
           folderName: 'semirremolque-plataforma-2',
           images: [
             {
-              fileName: 'semirremolque-plataforma-2.jpg',
+              fileName: 'semirremolque-plataforma-2.webp',
               alt: 'Semirremolque Plataforma 2 - Vista Principal'
             }
           ]
@@ -247,7 +247,7 @@ export class ProductImagesService {
           folderName: 'semirremolque-plataforma-3',
           images: [
             {
-              fileName: 'semirremolque-plataforma-3.jpg',
+              fileName: 'semirremolque-plataforma-3.webp',
               alt: 'Semirremolque Plataforma 3 - Vista Principal'
             }
           ]
@@ -258,7 +258,7 @@ export class ProductImagesService {
           folderName: 'semirremolque-plataforma-4',
           images: [
             {
-              fileName: 'semirremolque-plataforma-4.jpg',
+              fileName: 'semirremolque-plataforma-4.webp',
               alt: 'Semirremolque Plataforma 4 - Vista Principal'
             }
           ]
@@ -269,7 +269,7 @@ export class ProductImagesService {
           folderName: 'semirremolque-plataforma-5',
           images: [
             {
-              fileName: 'semirremolque-plataforma-5.jpg',
+              fileName: 'semirremolque-plataforma-5.webp',
               alt: 'Semirremolque Plataforma 5 - Vista Principal'
             }
           ]
@@ -287,20 +287,20 @@ export class ProductImagesService {
           id: 'roquera-1',
           name: 'Volquete Roquero Modelo 1',
           folderName: 'roquera-1',
-          images: [{ fileName: 'roquera-1.jpg', alt: 'Volquete Roquero 1 - Vista Principal' }]
+          images: [{ fileName: 'roquera-1.webp', alt: 'Volquete Roquero 1 - Vista Principal' }]
         },
         {
           id: 'roquera-2',
           name: 'Volquete Roquero Modelo 2',
           folderName: 'roquera-2',
-          images: [{ fileName: 'roquera-2.jpg', alt: 'Volquete Roquero 2 - Vista Principal' }]
+          images: [{ fileName: 'roquera-2.webp', alt: 'Volquete Roquero 2 - Vista Principal' }]
         },
         {
           id: 'semirroquera-1',
           name: 'Volquete Semirroquero Modelo 1',
           folderName: 'semirroquera-1',
           images: [
-            { fileName: 'semirroquera-1.jpg', alt: 'Volquete Semirroquero 1 - Vista Principal' }
+            { fileName: 'semirroquera-1.webp', alt: 'Volquete Semirroquero 1 - Vista Principal' }
           ]
         },
         {
@@ -308,7 +308,7 @@ export class ProductImagesService {
           name: 'Volquete Semirroquero Modelo 2',
           folderName: 'semirroquera-2',
           images: [
-            { fileName: 'semirroquera-2.jpg', alt: 'Volquete Semirroquero 2 - Vista Principal' }
+            { fileName: 'semirroquera-2.webp', alt: 'Volquete Semirroquero 2 - Vista Principal' }
           ]
         }
       ]
@@ -324,19 +324,19 @@ export class ProductImagesService {
           id: 'cama-baja-1',
           name: 'Semirremolque Cama Baja Modelo 1',
           folderName: 'cama-baja-1',
-          images: [{ fileName: 'cama-baja-1.jpg', alt: 'Cama Baja 1 - Vista Principal' }]
+          images: [{ fileName: 'cama-baja-1.webp', alt: 'Cama Baja 1 - Vista Principal' }]
         },
         {
           id: 'cama-baja-5',
           name: 'Semirremolque Cama Baja Modelo 5',
           folderName: 'cama-baja-5',
-          images: [{ fileName: 'cama-baja-5.jpg', alt: 'Cama Baja 5 - Vista Principal' }]
+          images: [{ fileName: 'cama-baja-5.webp', alt: 'Cama Baja 5 - Vista Principal' }]
         },
         {
           id: 'cama-baja-6',
           name: 'Semirremolque Cama Baja Modelo 6',
           folderName: 'cama-baja-6',
-          images: [{ fileName: 'cama-baja-6.jpg', alt: 'Cama Baja 6 - Vista Principal' }]
+          images: [{ fileName: 'cama-baja-6.webp', alt: 'Cama Baja 6 - Vista Principal' }]
         }
       ]
     },
@@ -371,79 +371,79 @@ export class ProductImagesService {
           id: 'furgon-1',
           name: 'Furgón Modelo 1',
           folderName: 'furgon-1',
-          images: [{ fileName: 'furgon-1.jpg', alt: 'Furgón 1 - Vista Principal' }]
+          images: [{ fileName: 'furgon-1.webp', alt: 'Furgón 1 - Vista Principal' }]
         },
         {
           id: 'furgon-3',
           name: 'Furgón Modelo 3',
           folderName: 'furgon-3',
-          images: [{ fileName: 'furgon-3.jpg', alt: 'Furgón 3 - Vista Principal' }]
+          images: [{ fileName: 'furgon-3.webp', alt: 'Furgón 3 - Vista Principal' }]
         },
         {
           id: 'furgon-4',
           name: 'Furgón Modelo 4',
           folderName: 'furgon-4',
-          images: [{ fileName: 'furgon-4.jpg', alt: 'Furgón 4 - Vista Principal' }]
+          images: [{ fileName: 'furgon-4.webp', alt: 'Furgón 4 - Vista Principal' }]
         },
         {
           id: 'furgon-5',
           name: 'Furgón Modelo 5',
           folderName: 'furgon-5',
-          images: [{ fileName: 'furgon-5.jpg', alt: 'Furgón 5 - Vista Principal' }]
+          images: [{ fileName: 'furgon-5.webp', alt: 'Furgón 5 - Vista Principal' }]
         },
         {
           id: 'furgon-7',
           name: 'Furgón Modelo 7',
           folderName: 'furgon-7',
-          images: [{ fileName: 'furgon-7.jpg', alt: 'Furgón 7 - Vista Principal' }]
+          images: [{ fileName: 'furgon-7.webp', alt: 'Furgón 7 - Vista Principal' }]
         },
         {
           id: 'furgon-8',
           name: 'Furgón Modelo 8',
           folderName: 'furgon-8',
-          images: [{ fileName: 'furgon-8.jpg', alt: 'Furgón 8 - Vista Principal' }]
+          images: [{ fileName: 'furgon-8.webp', alt: 'Furgón 8 - Vista Principal' }]
         },
         {
           id: 'furgon-9',
           name: 'Furgón Modelo 9',
           folderName: 'furgon-9',
-          images: [{ fileName: 'furgon-9.jpg', alt: 'Furgón 9 - Vista Principal' }]
+          images: [{ fileName: 'furgon-9.webp', alt: 'Furgón 9 - Vista Principal' }]
         },
         {
           id: 'furgon-10',
           name: 'Furgón Modelo 10',
           folderName: 'furgon-10',
-          images: [{ fileName: 'furgon-10.jpg', alt: 'Furgón 10 - Vista Principal' }]
+          images: [{ fileName: 'furgon-10.webp', alt: 'Furgón 10 - Vista Principal' }]
         },
         {
           id: 'furgon-11',
           name: 'Furgón Modelo 11',
           folderName: 'furgon-11',
-          images: [{ fileName: 'furgon-11.jpg', alt: 'Furgón 11 - Vista Principal' }]
+          images: [{ fileName: 'furgon-11.webp', alt: 'Furgón 11 - Vista Principal' }]
         },
         {
           id: 'furgon-12',
           name: 'Furgón Modelo 12',
           folderName: 'furgon-12',
-          images: [{ fileName: 'furgon-12.jpg', alt: 'Furgón 12 - Vista Principal' }]
+          images: [{ fileName: 'furgon-12.webp', alt: 'Furgón 12 - Vista Principal' }]
         },
         {
           id: 'furgon-13',
           name: 'Furgón Modelo 13',
           folderName: 'furgon-13',
-          images: [{ fileName: 'furgon-13.jpg', alt: 'Furgón 13 - Vista Principal' }]
+          images: [{ fileName: 'furgon-13.webp', alt: 'Furgón 13 - Vista Principal' }]
         },
         {
           id: 'furgon-14',
           name: 'Furgón Modelo 14',
           folderName: 'furgon-14',
-          images: [{ fileName: 'furgon-14.jpg', alt: 'Furgón 14 - Vista Principal' }]
+          images: [{ fileName: 'furgon-14.webp', alt: 'Furgón 14 - Vista Principal' }]
         },
         {
           id: 'furgon-15',
           name: 'Furgón Modelo 15',
           folderName: 'furgon-15',
-          images: [{ fileName: 'furgon-15.jpg', alt: 'Furgón 15 - Vista Principal' }]
+          images: [{ fileName: 'furgon-15.webp', alt: 'Furgón 15 - Vista Principal' }]
         }
       ]
     },
@@ -470,7 +470,7 @@ export class ProductImagesService {
               name: 'Baranda Rebatible Modelo 1',
               folderName: 'rebatible-1',
               images: [
-                { fileName: 'rebatible-1.jpg', alt: 'Baranda Rebatible 1 - Vista Principal' }
+                { fileName: 'rebatible-1.webp', alt: 'Baranda Rebatible 1 - Vista Principal' }
               ]
             },
             {
@@ -478,7 +478,7 @@ export class ProductImagesService {
               name: 'Baranda Rebatible Modelo 2',
               folderName: 'rebatible-2',
               images: [
-                { fileName: 'rebatible-2.jpg', alt: 'Baranda Rebatible 2 - Vista Principal' }
+                { fileName: 'rebatible-2.webp', alt: 'Baranda Rebatible 2 - Vista Principal' }
               ]
             }
           ]
@@ -498,7 +498,7 @@ export class ProductImagesService {
           folderName: 'grua-con-contenedor-para-chatarra-1',
           images: [
             {
-              fileName: 'grua-con-contenedor-para-chatarra-1.jpg',
+              fileName: 'grua-con-contenedor-para-chatarra-1.webp',
               alt: 'Grúa con Contenedor 1 - Vista Principal'
             }
           ]
@@ -509,7 +509,7 @@ export class ProductImagesService {
           folderName: 'grua-con-contenedor-para-chatarra-2',
           images: [
             {
-              fileName: 'grua-con-contenedor-para-chatarra-2.jpg',
+              fileName: 'grua-con-contenedor-para-chatarra-2.webp',
               alt: 'Grúa con Contenedor 2 - Vista Principal'
             }
           ]
@@ -520,7 +520,7 @@ export class ProductImagesService {
           folderName: 'grua-con-contenedor-para-chatarra-3',
           images: [
             {
-              fileName: 'grua-con-contenedor-para-chatarra-3.jpg',
+              fileName: 'grua-con-contenedor-para-chatarra-3.webp',
               alt: 'Grúa con Contenedor 3 - Vista Principal'
             }
           ]
@@ -531,7 +531,7 @@ export class ProductImagesService {
           folderName: 'grua-con-contenedor-para-chatarra-4',
           images: [
             {
-              fileName: 'grua-con-contenedor-para-chatarra-4.jpg',
+              fileName: 'grua-con-contenedor-para-chatarra-4.webp',
               alt: 'Grúa con Contenedor 4 - Vista Principal'
             }
           ]
@@ -542,7 +542,7 @@ export class ProductImagesService {
           folderName: 'grua-con-contenedor-para-chatarra-5',
           images: [
             {
-              fileName: 'grua-con-contenedor-para-chatarra-5.jpg',
+              fileName: 'grua-con-contenedor-para-chatarra-5.webp',
               alt: 'Grúa con Contenedor 5 - Vista Principal'
             }
           ]
@@ -568,12 +568,12 @@ export class ProductImagesService {
    * @example
    * ```typescript
    * // Con subcategoría
-   * getImagePath('1-brazos-de-izaje', 'brazo-de-izaje-1', 'vista-frontal.jpg', 'brazo-de-izaje-carga-pesada-14-20tn')
-   * // => '/images/products/1-brazos-de-izaje/brazo-de-izaje-carga-pesada-14-20tn/brazo-de-izaje-1/vista-frontal.jpg'
+   * getImagePath('1-brazos-de-izaje', 'brazo-de-izaje-1', 'vista-frontal.webp', 'brazo-de-izaje-carga-pesada-14-20tn')
+   * // => '/images/products/1-brazos-de-izaje/brazo-de-izaje-carga-pesada-14-20tn/brazo-de-izaje-1/vista-frontal.webp'
    *
    * // Sin subcategoría
-   * getImagePath('10-furgones', 'furgon-1', 'furgon-1.jpg')
-   * // => '/images/products/10-furgones/furgon-1/furgon-1.jpg'
+   * getImagePath('10-furgones', 'furgon-1', 'furgon-1.webp')
+   * // => '/images/products/10-furgones/furgon-1/furgon-1.webp'
    * ```
    */
   getImagePath(

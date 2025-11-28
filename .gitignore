@@ -46,3 +46,12 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Python virtual environments
+venv/
+.env/
+.venv/
+__pycache__/
+
+# Python bytecode
+*.pyc

@@ -20,10 +20,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 @Component({
   selector: 'app-model3d',
   templateUrl: './model3d.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(window:resize)': 'onWindowResize()'
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Model3d implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);

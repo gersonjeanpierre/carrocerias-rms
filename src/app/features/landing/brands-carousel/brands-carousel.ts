@@ -7,7 +7,8 @@ import {
   ChangeDetectionStrategy,
   inject,
   NgZone,
-  PLATFORM_ID
+  PLATFORM_ID,
+  ElementRef
 } from '@angular/core';
 import { isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 
@@ -26,6 +27,11 @@ interface Brand {
 export class BrandsCarouselComponent implements OnInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly elementRef = inject(ElementRef);
+
+  private intervalId?: number;
+  private intersectionObserver?: IntersectionObserver;
+  private isVisible = signal(false);
 
   readonly brands = signal<Brand[]>([
     { name: 'Mercedes-Benz', logo: '/images/slider/marcas/mercedes-benz.png' },
@@ -45,13 +51,28 @@ export class BrandsCarouselComponent implements OnInit, OnDestroy {
   // Duplicar marcas para loop infinito
   readonly duplicatedBrands = computed(() => [...this.brands(), ...this.brands()]);
 
-  private intervalId?: number;
-
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.updateVisibleBrands();
-      this.startAutoScroll();
       window.addEventListener('resize', this.onResize.bind(this));
+
+      // Iniciar auto-scroll solo cuando el componente sea visible
+      this.intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !this.isVisible()) {
+              this.isVisible.set(true);
+              this.startAutoScroll();
+            } else if (!entry.isIntersecting && this.isVisible()) {
+              this.isVisible.set(false);
+              this.stopAutoScroll();
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      this.intersectionObserver.observe(this.elementRef.nativeElement);
     }
   }
 
@@ -59,6 +80,7 @@ export class BrandsCarouselComponent implements OnInit, OnDestroy {
     this.stopAutoScroll();
     if (isPlatformBrowser(this.platformId)) {
       window.removeEventListener('resize', this.onResize.bind(this));
+      this.intersectionObserver?.disconnect();
     }
   }
 

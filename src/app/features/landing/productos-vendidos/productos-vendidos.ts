@@ -7,7 +7,8 @@ import {
   ChangeDetectionStrategy,
   inject,
   NgZone,
-  PLATFORM_ID
+  PLATFORM_ID,
+  ElementRef
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
@@ -23,15 +24,17 @@ interface Product {
   selector: 'app-productos-vendidos',
   imports: [NgOptimizedImage],
   templateUrl: './productos-vendidos.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '(window:resize)': 'onResize()'
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductosVendidosComponent implements OnInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly productService = inject(ProductImagesService);
+  private readonly elementRef = inject(ElementRef);
+
+  private intervalId?: number;
+  private intersectionObserver?: IntersectionObserver;
+  private isVisible = signal(false);
 
   readonly products = computed<Product[]>(() => {
     const allCategories = this.productService.categories();
@@ -97,13 +100,28 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
     return 100 / visible;
   });
 
-  private intervalId?: number;
-
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.updateVisibleProducts();
-      this.startAutoScroll();
       window.addEventListener('resize', this.onResize.bind(this));
+
+      // Iniciar auto-scroll solo cuando el componente sea visible
+      this.intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !this.isVisible()) {
+              this.isVisible.set(true);
+              this.startAutoScroll();
+            } else if (!entry.isIntersecting && this.isVisible()) {
+              this.isVisible.set(false);
+              this.stopAutoScroll();
+            }
+          });
+        },
+        { threshold: 0.1 } // Iniciar cuando 10% sea visible
+      );
+
+      this.intersectionObserver.observe(this.elementRef.nativeElement);
     }
   }
 
@@ -111,6 +129,7 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
     this.stopAutoScroll();
     if (isPlatformBrowser(this.platformId)) {
       window.removeEventListener('resize', this.onResize.bind(this));
+      this.intersectionObserver?.disconnect();
     }
   }
 
