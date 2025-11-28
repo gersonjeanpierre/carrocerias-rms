@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 interface ContactInfo {
   icon: string;
@@ -9,7 +9,8 @@ interface ContactInfo {
   selector: 'app-contact',
   imports: [],
   templateUrl: './contact.html',
-  styleUrl: './contact.css'
+  styleUrl: './contact.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Contact {
   readonly contactInfo = signal<ContactInfo[]>([

@@ -6,7 +6,6 @@ import { ProductImagesService } from '@core/services/product-images.service';
  */
 @Component({
   selector: 'app-product-images-test',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="p-4">

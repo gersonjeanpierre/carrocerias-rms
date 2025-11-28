@@ -10,11 +10,10 @@ interface Feature {
 
 @Component({
   selector: 'app-equipos-medida',
-  standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './equipos-medida.html',
   styleUrls: ['./equipos-medida.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EquiposMedidaComponent {
   readonly features = signal<Feature[]>([
@@ -23,21 +22,20 @@ export class EquiposMedidaComponent {
       icon: 'icon-[fluent--shield-task-32-regular]',
       title: 'Seguridad',
       description:
-        'Materiales A1, maquinaria de punta y personal capacitado que permiten fabricar carrocerías 100% seguras.',
+        'Materiales A1, maquinaria de punta y personal capacitado que permiten fabricar carrocerías 100% seguras.'
     },
     {
       id: 'garantia',
       icon: 'icon-[fluent--clock-24-regular]',
       title: 'Garantía',
-      description:
-        '24 meses de garantía en todos los productos y seguimiento post-venta escribenos',
+      description: '24 meses de garantía en todos los productos y seguimiento post-venta escribenos'
     },
     {
       id: 'puntualidad',
       icon: 'icon-[fluent--vehicle-truck-profile-32-regular]',
       title: 'Puntualidad',
       description:
-        'Amplia planta de fabricación y personal dedicado que nos permite fabricar en tiempo récord.',
-    },
+        'Amplia planta de fabricación y personal dedicado que nos permite fabricar en tiempo récord.'
+    }
   ]);
 }

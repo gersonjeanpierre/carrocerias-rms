@@ -22,7 +22,6 @@ interface Proyecto {
 
 @Component({
   selector: 'app-proyectos',
-  standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './proyectos.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -104,10 +103,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   // Responsive: número de proyectos visibles según el ancho de pantalla
   readonly visibleProyectos = signal(3); // Default: desktop (lg)
 
-  private animationFrameId?: number;
-  private lastTimestamp = 0;
-  private readonly scrollSpeed = 0.02; // Velocidad de desplazamiento (píxeles por ms)
-
   readonly currentIndex = signal(0);
   readonly totalProducts = computed(() => this.proyectos().length);
 
@@ -125,7 +120,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.updateVisibleProyectos();
-      this.startAutoScroll();
       window.addEventListener('resize', this.onResize.bind(this));
     }
   }
@@ -190,7 +184,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
       return newIndex;
     });
-    this.startAutoScroll(); // Reiniciar auto-scroll
   }
 
   // Método público para navegación manual
@@ -207,6 +200,5 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
       return current - 1;
     });
-    this.startAutoScroll(); // Reiniciar auto-scroll
   }
 }

@@ -21,7 +21,6 @@ interface Product {
 
 @Component({
   selector: 'app-productos-vendidos',
-  standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './productos-vendidos.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IMAGE_CONFIG, NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 
 interface FooterLink {
   label: string;
@@ -10,17 +10,9 @@ interface FooterLink {
 
 @Component({
   selector: 'app-footer',
-  standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './footer.html',
-  providers: [
-    {
-      provide: IMAGE_CONFIG,
-      useValue: {
-        breakpoints: [16, 48, 96, 128, 384, 640, 750, 828, 1080, 1200, 1920]
-      }
-    }
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
   menuLinks: FooterLink[] = [

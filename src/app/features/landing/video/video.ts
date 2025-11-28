@@ -22,7 +22,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       </div>
     </section>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VideoComponent {}

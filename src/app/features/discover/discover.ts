@@ -1,6 +1,6 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, signal } from '@angular/core';
-import { SliderComponent } from '@features/landing/slider/slider';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { SliderComponent } from '../../layout/slider/slider';
 
 interface Feature {
   id: number;
@@ -19,9 +19,10 @@ interface MissionCard {
 
 @Component({
   selector: 'app-discover',
-  imports: [SliderComponent, NgOptimizedImage],
+  imports: [NgOptimizedImage],
   templateUrl: './discover.html',
-  styleUrl: './discover.css'
+  styleUrl: './discover.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Discover {
   protected readonly features = signal<Feature[]>([

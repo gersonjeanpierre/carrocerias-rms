@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { SliderComponent } from './slider/slider';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CatalogCtaComponent } from './catalog-cta/catalog-cta';
 import { BrandsCarouselComponent } from './brands-carousel/brands-carousel';
 import { VideoComponent } from './video/video';
@@ -10,7 +9,6 @@ import { ProyectosComponent } from './proyectos/proyectos';
 @Component({
   selector: 'app-landing',
   imports: [
-    SliderComponent,
     EquiposMedidaComponent,
     ProductosVendidosComponent,
     ProyectosComponent,
@@ -18,6 +16,7 @@ import { ProyectosComponent } from './proyectos/proyectos';
     VideoComponent,
     BrandsCarouselComponent
   ],
-  templateUrl: './landing.html'
+  templateUrl: './landing.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class LandingComponent {}

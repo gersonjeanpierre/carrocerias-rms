@@ -18,7 +18,6 @@ interface Brand {
 
 @Component({
   selector: 'app-brands-carousel',
-  standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './brands-carousel.html',
   styleUrls: ['./brands-carousel.css'],
