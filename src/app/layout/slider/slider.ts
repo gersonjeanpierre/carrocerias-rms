@@ -23,7 +23,7 @@ interface SlideImage {
   imports: [NgOptimizedImage]
 })
 export class SliderComponent implements OnDestroy {
-  private readonly autoPlayInterval = 5000; // 5 seconds
+  private readonly autoPlayInterval = signal<number>(2900);
   private intervalId?: number;
 
   @ViewChild('container', { static: true }) container!: ElementRef;
@@ -198,7 +198,7 @@ export class SliderComponent implements OnDestroy {
     this.stopAutoPlay();
     this.intervalId = window.setInterval(() => {
       this.nextSlide();
-    }, this.autoPlayInterval);
+    }, this.autoPlayInterval());
   }
 
   private stopAutoPlay(): void {

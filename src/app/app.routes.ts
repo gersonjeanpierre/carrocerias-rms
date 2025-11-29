@@ -34,6 +34,6 @@ export const routes: Routes = [
   },
   {
     path: 'blog',
-    loadComponent: () => import('./features/landing/landing')
+    loadComponent: () => import('./features/blog/blog')
   }
 ];

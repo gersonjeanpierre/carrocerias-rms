@@ -13,7 +13,7 @@ export class Header {
     { label: 'Inicio', link: '/landing' },
     { label: 'Descubrenos', link: '/descubrenos' },
     { label: 'Productos', link: '/productos' },
-    { label: 'Contactanos', link: '/contactanos' }
-    // { label: 'Blog', link: '/blog' }
+    { label: 'Contactanos', link: '/contactanos' },
+    { label: 'Blog', link: '/blog' }
   ];
 }

@@ -1,5 +1,5 @@
 <section class="w-full py-8 md:py-12 lg:py-16 bg-base-100">
-  <div class="w-full px-3 md:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="w-10/12 px-3 md:px-6 lg:px-8 mx-auto">
     <!-- Título responsivo -->
     <h3 class="mb-6 md:mb-8 lg:mb-10 font-bold text-xl md:text-2xl lg:text-3xl text-neutral">
       NUESTROS PROYECTOS
@@ -9,7 +9,7 @@
       <!-- Botón Anterior -->
       <button
         (click)="prevSlide()"
-        class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-bluerms/90 hover:bg-bluerms text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 -ml-4 md:-ml-6"
+        class="btn btn-circle btn-lg absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-bluerms/90 hover:bg-bluerms text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 -ml-4 md:-ml-6"
         aria-label="Anterior"
       >
         <svg
@@ -31,7 +31,7 @@
       <!-- Botón Siguiente -->
       <button
         (click)="nextSlide()"
-        class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-bluerms/90 hover:bg-bluerms text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 -mr-4 md:-mr-6"
+        class="btn btn-circle btn-lg absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-bluerms/90 hover:bg-bluerms text-white p-2 md:p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 -mr-4 md:-mr-6"
         aria-label="Siguiente"
       >
         <svg
@@ -55,16 +55,16 @@
           <!-- Duplicar proyectos para loop infinito -->
           @for (proyecto of proyectos(); track proyecto.img + '-1') {
             <div
-              class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col items-center"
+              class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[320px] flex flex-col items-center justify-between"
             >
               <figure
-                class="relative h-40 sm:h-48 md:h-56 lg:ect4 w-full flex items-center justify-center mb-4"
+                class="relative h-40 sm:h-48 md:h-56 lg:h-72 w-[400px] flex items-center justify-center mb-4"
               >
                 <img
                   [ngSrc]="proyecto.img"
                   [alt]="proyecto.title + ' - ' + proyecto.category"
                   fill=""
-                  class="absolute inset-0 w-full h-full object-cover mask mask-circle shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
+                  class="relative object-contain mask mask-circle shadow-lg hover:shadow-xl hover:scale-110 transition-transform duration-300"
                 />
               </figure>
               <h4 class="text-base md:text-lg lg:text-xl font-bold text-neutral mb-2 text-center">
