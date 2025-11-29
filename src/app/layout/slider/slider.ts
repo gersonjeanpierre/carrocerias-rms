@@ -5,11 +5,9 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
   ViewChild,
-  ElementRef,
-  inject
+  ElementRef
 } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { ProductImagesService } from '@core/services/product-images.service';
 
 interface SlideImage {
   url: string;
@@ -27,68 +25,113 @@ interface SlideImage {
 export class SliderComponent implements OnDestroy {
   private readonly autoPlayInterval = 5000; // 5 seconds
   private intervalId?: number;
-  private readonly productService = inject(ProductImagesService);
 
   @ViewChild('container', { static: true }) container!: ElementRef;
 
-  slides = computed<SlideImage[]>(() => {
-    const allCategories = this.productService.categories();
-    const slides: SlideImage[] = [];
-
-    // Para cada categoría, tomar los primeros 2 modelos con sus primeras 2 imágenes
-    for (const category of allCategories) {
-      if (category.subcategories) {
-        // Categoría con subcategorías
-        for (const subcategory of category.subcategories) {
-          const selectedModels = subcategory.models.slice(0, 2); // Primeros 2 modelos
-
-          for (const model of selectedModels) {
-            const firstImages = model.images.slice(0, 2); // Primeras 2 imágenes
-
-            for (const image of firstImages) {
-              const imagePath = this.productService.getImagePath(
-                category.path,
-                model.folderName,
-                image.fileName,
-                subcategory.path
-              );
-
-              slides.push({
-                url: imagePath,
-                title: category.name,
-                width: 1600,
-                height: 1200
-              });
-            }
-          }
-        }
-      } else if (category.models) {
-        // Categoría sin subcategorías
-        const selectedModels = category.models.slice(0, 2); // Primeros 2 modelos
-
-        for (const model of selectedModels) {
-          const firstImages = model.images.slice(0, 2); // Primeras 2 imágenes
-
-          for (const image of firstImages) {
-            const imagePath = this.productService.getImagePath(
-              category.path,
-              model.folderName,
-              image.fileName
-            );
-
-            slides.push({
-              url: imagePath,
-              title: category.name,
-              width: 1600,
-              height: 1200
-            });
-          }
-        }
-      }
+  slides = signal<SlideImage[]>([
+    {
+      url: '/images/portada/cisterna-6.webp',
+      title: 'Cisterna de Vacío',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/cisterna-de-vacio-1.webp',
+      title: 'Cisterna de Vacío',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/cisterna-de-vacio-2.webp',
+      title: 'Cisterna de Vacío',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/cisterna-de-vacio-3.webp',
+      title: 'Cisterna de Vacío',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/cisterna-de-vacio-4-b.webp',
+      title: 'Cisterna de Vacío',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/cisterna-de-vacio-4.webp',
+      title: 'Cisterna de Vacío',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/cisterna-de-vacio-5.webp',
+      title: 'Cisterna de Vacío',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/contenedor-1.webp',
+      title: 'Contenedor',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/contenedor-2.webp',
+      title: 'Contenedor',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/contenedor-3.webp',
+      title: 'Contenedor',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/contenedor-4.webp',
+      title: 'Contenedor',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/contenedor-5.webp',
+      title: 'Contenedor',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/semirremolque-plataforma-1.webp',
+      title: 'Semirremolque Plataforma',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/semirremolque-plataforma-2.webp',
+      title: 'Semirremolque Plataforma',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/semirremolque-plataforma-3.webp',
+      title: 'Semirremolque Plataforma',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/semirremolque-plataforma-4.webp',
+      title: 'Semirremolque Plataforma',
+      width: 1600,
+      height: 1200
+    },
+    {
+      url: '/images/portada/semirremolque-plataforma-5.webp',
+      title: 'Semirremolque Plataforma',
+      width: 1600,
+      height: 1200
     }
-
-    return slides;
-  });
+  ]);
 
   currentIndex = signal(0);
 

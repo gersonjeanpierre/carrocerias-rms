@@ -22,18 +22,6 @@
       fetchpriority="high"
       (load)="onImageLoad($event)"
     />
-
-    <!-- Title overlay -->
-    <div
-      class="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-[10px] p-4 rounded-lg z-20 max-w-[90%] text-center"
-    >
-      <h2
-        class="text-white m-0 text-lg md:text-2xl font-semibold"
-        style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)"
-      >
-        {{ currentSlide().title }}
-      </h2>
-    </div>
   </div>
 
   <!-- Navigation buttons -->
@@ -71,27 +59,13 @@
     </svg>
   </button>
 
-  <!-- Slide indicators -->
-  <div
-    class="absolute bottom-16 md:bottom-24 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-3 z-30"
-  >
-    @for (slide of slides(); track $index) {
-      <button
-        class="btn btn-circle btn-ghost btn-xs p-0"
-        [class]="{ 'btn-active': $index === currentIndex() }"
-        (click)="goToSlide($index)"
-        [attr.aria-label]="'Ir a imagen ' + ($index + 1)"
-      ></button>
-    }
-  </div>
-
   <!-- Side dot textures -->
   <div
     class="absolute top-0 w-24 h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2720%27%20height%3D%2720%27%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cg%20fill%3D%27%23ffffff%27%20fill-opacity%3D%270.89%27%20fill-rule%3D%27evenodd%27%3E%3Ccircle%20cx%3D%273%27%20cy%3D%273%27%20r%3D%271.5%27/%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%271.5%27/%3E%3C/g%3E%3C/svg%3E')] bg-repeat bg-center z-15"
     [style.left.px]="imageLeft() - 48"
     style="
-      mask-image: linear-gradient(to bottom, black, transparent);
-      -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+      mask-image: linear-gradient(to left, black, transparent);
+      -webkit-mask-image: linear-gradient(to left, black, transparent);
     "
     aria-hidden="true"
   ></div>
@@ -99,8 +73,8 @@
     class="absolute top-0 w-24 h-full bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2720%27%20height%3D%2720%27%20viewBox%3D%270%200%2020%2020%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cg%20fill%3D%27%23ffffff%27%20fill-opacity%3D%270.89%27%20fill-rule%3D%27evenodd%27%3E%3Ccircle%20cx%3D%273%27%20cy%3D%273%27%20r%3D%271.5%27/%3E%3Ccircle%20cx%3D%2713%27%20cy%3D%2713%27%20r%3D%271.5%27/%3E%3C/g%3E%3C/svg%3E')] bg-repeat bg-center z-15"
     [style.left.px]="imageRight() - 48"
     style="
-      mask-image: linear-gradient(to bottom, black, transparent);
-      -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+      mask-image: linear-gradient(to right, black, transparent);
+      -webkit-mask-image: linear-gradient(to right, black, transparent);
     "
     aria-hidden="true"
   ></div>

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CatalogCtaComponent } from './catalog-cta/catalog-cta';
 import { BrandsCarouselComponent } from './brands-carousel/brands-carousel';
 import { VideoComponent } from './video/video';
 import { EquiposMedidaComponent } from './equipos-medida/equipos-medida';
@@ -12,7 +11,6 @@ import { ProyectosComponent } from './proyectos/proyectos';
     EquiposMedidaComponent,
     ProductosVendidosComponent,
     ProyectosComponent,
-    CatalogCtaComponent,
     VideoComponent,
     BrandsCarouselComponent
   ],
