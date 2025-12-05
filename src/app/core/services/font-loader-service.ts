@@ -13,26 +13,26 @@ interface FontConfig {
 export class FontLoaderService {
   private readonly fonts: readonly FontConfig[] = [
     {
-      family: 'Poppins',
-      fileName: 'Poppins-Regular.ttf',
+      family: 'Rubik',
+      fileName: 'Rubik-Regular.ttf',
       weight: '400',
       style: 'normal'
     },
     {
-      family: 'Poppins',
-      fileName: 'Poppins-Medium.ttf',
+      family: 'Rubik',
+      fileName: 'Rubik-Medium.ttf',
       weight: '500',
       style: 'normal'
     },
     {
-      family: 'Poppins',
-      fileName: 'Poppins-Bold.ttf',
+      family: 'Rubik',
+      fileName: 'Rubik-Bold.ttf',
       weight: '700',
       style: 'normal'
     },
     {
-      family: 'Poppins',
-      fileName: 'Poppins-Italic.ttf',
+      family: 'Rubik',
+      fileName: 'Rubik-Italic.ttf',
       weight: '400',
       style: 'italic'
     }
@@ -72,7 +72,7 @@ export class FontLoaderService {
     const loadPromises = this.fonts.map((font) => this.loadFont(font, root));
     await Promise.all(loadPromises);
     this.isLoaded.set(true);
-    console.log(`${this.fonts.length} variantes de Poppins cargadas exitosamente.`);
+    console.log(`${this.fonts.length} variantes de Rubik cargadas exitosamente.`);
   }
 
   private async loadAllFontsFromUrl(): Promise<void> {
@@ -81,7 +81,7 @@ export class FontLoaderService {
     );
     await Promise.all(loadPromises);
     this.isLoaded.set(true);
-    console.log(`${this.fonts.length} variantes de Poppins cargadas desde URL.`);
+    console.log(`${this.fonts.length} variantes de Rubik cargadas desde URL.`);
   }
 
   private async loadFont(fontConfig: FontConfig, root: FileSystemDirectoryHandle): Promise<void> {
