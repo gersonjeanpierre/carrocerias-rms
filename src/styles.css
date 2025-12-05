@@ -1,17 +1,22 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-bluerms: #10639D;
+  --color-bluerms: #10639d;
+
+  /* Configuración de fuentes */
+  --font-family-base:
+    Poppins, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 @plugin "daisyui";
 @plugin "@iconify/tailwind4";
 
 @plugin "daisyui/theme" {
-  name: "light";
+  name: 'light';
   default: true;
   prefersdark: true;
-  color-scheme: "light";
+  color-scheme: 'light';
   --color-base-100: oklch(100% 0 0);
   --color-base-200: oklch(100% 0 0);
   --color-base-300: oklch(95% 0 0);
@@ -40,4 +45,9 @@
   --border: 1px;
   --depth: 1;
   --noise: 0;
+}
+
+/* Aplicar Poppins como fuente predeterminada para todo el proyecto */
+* {
+  font-family: var(--font-family-base);
 }
