@@ -100,6 +100,13 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
     return 100 / visible;
   });
 
+  // Computed: índice máximo antes de reset (para loop infinito)
+  readonly maxIndex = computed(() => {
+    const total = this.totalProducts();
+    const visible = this.visibleProducts();
+    return total - visible;
+  });
+
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.updateVisibleProducts();
@@ -144,16 +151,14 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
 
     const width = window.innerWidth;
 
-    // Breakpoints de Tailwind:
-    // sm: 640px, md: 768px, lg: 1024px
+    // Breakpoints consistentes:
+    // sm: 640px, md: 768px, lg: 1024px, xl: 1280px
     if (width < 640) {
       this.visibleProducts.set(1); // Mobile: 1 producto
-    } else if (width < 768) {
-      this.visibleProducts.set(2); // Small: 2 productos
     } else if (width < 1024) {
-      this.visibleProducts.set(2); // Medium: 2 productos
+      this.visibleProducts.set(2); // Tablet: 2 productos
     } else {
-      this.visibleProducts.set(4); // Large+: 4 productos
+      this.visibleProducts.set(4); // Desktop: 4 productos
     }
   }
 
@@ -177,12 +182,11 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
   nextSlide(): void {
     this.stopAutoScroll(); // Detener auto-scroll al navegar manualmente
     this.currentIndex.update((current) => {
-      const itemWidth = this.slideWidth();
-      const maxOffset = itemWidth * this.totalProducts();
+      const maxIndex = this.maxIndex();
       const newIndex = current + 1;
 
-      // Reset a 0 cuando alcanzamos el final del primer conjunto (loop infinito)
-      if (newIndex * itemWidth >= maxOffset) {
+      // Reset a 0 cuando alcanzamos el final (loop infinito)
+      if (newIndex > maxIndex) {
         return 0;
       }
 
@@ -195,12 +199,11 @@ export class ProductosVendidosComponent implements OnInit, OnDestroy {
   prevSlide(): void {
     this.stopAutoScroll(); // Detener auto-scroll al navegar manualmente
     this.currentIndex.update((current) => {
-      const itemWidth = this.slideWidth();
-      const maxOffset = itemWidth * this.totalProducts();
+      const maxIndex = this.maxIndex();
 
-      // Si estamos en 0, ir al final del primer conjunto
+      // Si estamos en 0, ir al final
       if (current === 0) {
-        return Math.floor(maxOffset / itemWidth) - 1;
+        return maxIndex;
       }
 
       return current - 1;

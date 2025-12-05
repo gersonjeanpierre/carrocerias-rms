@@ -8,7 +8,8 @@ import {
   inject,
   PLATFORM_ID,
   viewChild,
-  effect
+  effect,
+  computed
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { input } from '@angular/core';
@@ -26,7 +27,12 @@ export class Model3d implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
 
   private canvasContainer = viewChild<ElementRef>('canvasContainer');
-  modelPath = input<string>('models/3d/bi-model-3d.glb');
+
+  // Input para el nombre del archivo del modelo (sin extensión ni ruta)
+  modelName = input<string>('bi-model-3d');
+
+  // Computed signal para construir el path completo
+  private readonly modelPath = computed(() => `models/3d/${this.modelName()}.glb`);
 
   // Signals para estado reactivo
   readonly isAutoRotating = signal(false);
@@ -52,8 +58,8 @@ export class Model3d implements AfterViewInit, OnDestroy {
     this.gltfLoader.setDRACOLoader(dracoLoader);
 
     effect(() => {
-      const path = this.modelPath();
-      if (path && this.scene) {
+      const name = this.modelName();
+      if (name && this.scene) {
         this.loadGltfModel();
       }
     });

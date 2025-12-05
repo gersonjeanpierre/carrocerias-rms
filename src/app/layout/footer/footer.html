@@ -14,23 +14,23 @@
 <!-- IMÁGENES DE POSICIÓN -->
 <div class="flex flex-wrap justify-center items-center gap-4 mt-12 mb-8 px-4">
   @defer {
-    <div class="w-32 h-10 relative">
+    <div class="w-36 h-20 relative">
       <img [ngSrc]="'/images/footer/pos-1.webp'" alt="Posición 1" fill class="object-contain" />
     </div>
-    <div class="h-16 w-44 relative">
+    <div class="h-16 w-32 relative">
       <img [ngSrc]="'/images/footer/pos-2.webp'" alt="Posición 2" fill class="object-contain" />
     </div>
-    <div class="w-44 h-16 relative">
+    <div class="w-32 h-16 relative">
       <img [ngSrc]="'/images/footer/pos-3.webp'" alt="Posición 3" fill class="object-contain" />
     </div>
-    <div class="w-44 h-16 relative">
+    <div class="w-32 h-16 relative">
       <img [ngSrc]="'/images/footer/pos-4.webp'" alt="Posición 4" fill class="object-contain" />
     </div>
   } @loading (after 200ms; minimum 1s) {
-    <div class="w-32 h-10 skeleton"></div>
-    <div class="h-16 w-44 skeleton"></div>
-    <div class="w-44 h-16 skeleton"></div>
-    <div class="w-44 h-16 skeleton"></div>
+    <div class="w-32 h-16 skeleton"></div>
+    <div class="w-32 h-16 skeleton"></div>
+    <div class="w-32 h-16 skeleton"></div>
+    <div class="w-32 h-16 skeleton"></div>
   }
 </div>
 

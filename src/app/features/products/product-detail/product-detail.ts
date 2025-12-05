@@ -54,6 +54,37 @@ export default class ProductDetail {
   // Estado de la imagen seleccionada
   protected readonly selectedImageIndex = signal(0);
 
+  // Determinar si mostrar modelo 3D (solo para brazos de izaje)
+  protected readonly shouldShow3DModel = computed(() => {
+    const product = this.product();
+    return product?.categoryId === '1-brazos-de-izaje';
+  });
+
+  // Obtener el nombre del modelo 3D basado en el producto
+  protected readonly model3DName = computed(() => {
+    const product = this.product();
+    if (!product || product.categoryId !== '1-brazos-de-izaje') return '';
+
+    /**
+     * MAPEO DE MODELOS 3D
+     * ---------------------
+     * Para agregar más modelos 3D:
+     * 1. Coloca el archivo .glb en: src/assets/models/3d/nombre-modelo.glb
+     * 2. Agrega el mapeo aquí según subcategoryId o modelId
+     *
+     * Ejemplo:
+     * if (product.subcategoryId === 'brazo-de-izaje-carga-pesada-14-20tn') {
+     *   return 'brazo-pesado-model';
+     * }
+     * if (product.subcategoryId === 'brazo-de-izaje-carga-liviana-3-5tn') {
+     *   return 'brazo-liviano-model';
+     * }
+     */
+
+    // Modelo por defecto para brazos de izaje
+    return 'bi-model-3d';
+  });
+
   // Producto actual basado en modelo
   protected readonly product = computed<ProductDetailModel | null>(() => {
     const id = this.productId()?.get('id');

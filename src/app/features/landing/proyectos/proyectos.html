@@ -87,16 +87,16 @@
           <!-- Segunda copia para loop infinito -->
           @for (proyecto of proyectos(); track proyecto.img + '-2') {
             <div
-              class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex flex-col items-center"
+              class="shrink-0 w-full sm:w-[calc(50%-0.75rem)] lg:w-[320px] flex flex-col items-center justify-between"
             >
               <figure
-                class="relative h-40 sm:h-48 md:h-56 lg:h-64 w-full flex items-center justify-center mb-4"
+                class="relative h-40 sm:h-48 md:h-56 lg:h-72 w-[400px] flex items-center justify-center mb-4"
               >
                 <img
                   [ngSrc]="proyecto.img"
                   [alt]="proyecto.title + ' - ' + proyecto.category"
-                  fill
-                  class="absolute inset-0 w-full h-full object-cover mask mask-circle shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
+                  fill=""
+                  class="relative object-contain mask mask-circle shadow-lg hover:shadow-xl hover:scale-110 transition-transform duration-300"
                 />
               </figure>
               <h4 class="text-base md:text-lg lg:text-xl font-bold text-neutral mb-2 text-center">
